@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<Context swallowOutput="true">
+  <Parameter name="mysql.username" value="@mysql.username@" override="false"/>
+  <Parameter name="mysql.password" value="@mysql.password@" override="false"/>
+  <Parameter name="mysql.url" value="@mysql.url@" override="false"/>
+</Context>

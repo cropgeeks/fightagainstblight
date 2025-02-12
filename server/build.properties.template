@@ -1,0 +1,11 @@
+tomcat.manager.url = http://hostname:8080/manager/text
+
+tomcat.manager.username =
+tomcat.manager.password =
+tomcat.manager.app = fab
+
+mysql.username =
+mysql.password =
+mysql.url =
+
+project.dist =

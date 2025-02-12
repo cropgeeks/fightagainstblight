@@ -1,0 +1,83 @@
+<project name="fab" default="compile" basedir=".">
+
+	<property file="build.properties" />
+
+	<property name="cls" location="classes"/>
+	<property name="lib" location="lib"/>
+	<property name="jar" location="${lib}/fab.jar"/>
+	<property name="src" location="src"/>
+	<property name="tmp" location="tmp"/>
+	<property name="web" location="web"/>
+
+
+	<!-- Development classpath -->
+	<path id="project.classpath">
+		<fileset dir="${lib}">
+			<exclude name="**/fab.jar"/>
+		</fileset>
+	</path>
+
+	<!-- Runtime classpath (manifest formatted) -->
+	<manifestclasspath property="jar.classpath" jarfile="${jar}">
+		<classpath>
+			<fileset dir="${lib}"/>
+		</classpath>
+	</manifestclasspath>
+
+	<target name="compile">
+		<javac srcdir="${src}" destdir="${cls}" source="11" target="11" debug="true" includeantruntime="false">
+			<classpath refid="project.classpath"/>
+		</javac>
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true">
+			<fileset dir="${cls}" includes="**/*"/>
+		</delete>
+	</target>
+
+	<target name="jar" depends="clean, compile">
+		<jar jarfile="${jar}">
+			<fileset dir="${cls}"/>
+			<manifest>
+				<attribute name="Class-Path" value="${jar.classpath}"/>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="war" depends="jar">
+		<filter filtersfile="build.properties"/>
+		<copy file="${web}/META-INF/context.xml.template"
+			tofile="${web}/META-INF/context.xml"
+			overwrite="true" filtering="true"/>
+
+		<copy todir="${tmp}" flatten="true">
+			<fileset dir="${lib}">
+				<exclude name="**/lib-devel/**"/>
+			</fileset>
+		</copy>
+
+		<war destfile="${tomcat.manager.app}.war" update="false">
+			<fileset dir="${project.dist}"/>
+			<webinf dir="web/WEB-INF"/>
+			<metainf dir="web/META-INF"/>
+			<lib dir="${tmp}"/>
+		</war>
+
+		<delete dir="${tmp}"/>
+	</target>
+
+	<target name="deploy" depends="war">
+		<taskdef name="undeploy" classpathref="project.classpath"
+			classname="org.apache.catalina.ant.UndeployTask"/>
+		<taskdef name="deploy" classpathref="project.classpath"
+			classname="org.apache.catalina.ant.DeployTask"/>
+
+		<undeploy url="${tomcat.manager.url}" username="${tomcat.manager.username}" password="${tomcat.manager.password}"
+			path="/${tomcat.manager.app}" failOnError="false"/>
+
+		<deploy url="${tomcat.manager.url}"	username="${tomcat.manager.username}" password="${tomcat.manager.password}"
+			path="/${tomcat.manager.app}" war="${tomcat.manager.app}.war"/>
+	</target>
+
+</project>
