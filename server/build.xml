@@ -25,7 +25,7 @@
 	</manifestclasspath>
 
 	<target name="compile">
-		<javac srcdir="${src}" destdir="${cls}" source="11" target="11" debug="true" includeantruntime="false">
+		<javac srcdir="${src}" destdir="${cls}" source="21" target="21" debug="true" includeantruntime="false">
 			<classpath refid="project.classpath"/>
 		</javac>
 	</target>
