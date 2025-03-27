@@ -245,4 +245,28 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
         setStatus(status);
         resetTouchedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised OutbreaksRecord
+     */
+    public OutbreaksRecord(jhi.fab.codegen.tables.pojos.Outbreaks value) {
+        super(Outbreaks.OUTBREAKS);
+
+        if (value != null) {
+            setOutbreakId(value.getOutbreakId());
+            setUserId(value.getUserId());
+            setLatitude(value.getLatitude());
+            setLongitude(value.getLongitude());
+            setDate(value.getDate());
+            setVarietyId(value.getVarietyId());
+            setSeverityId(value.getSeverityId());
+            setSourceId(value.getSourceId());
+            setSeverityother(value.getSeverityother());
+            setSourceother(value.getSourceother());
+            setComments(value.getComments());
+            setAdditionalinfo(value.getAdditionalinfo());
+            setStatus(value.getStatus());
+            resetTouchedOnNotNull();
+        }
+    }
 }

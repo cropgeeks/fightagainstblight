@@ -91,4 +91,18 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
         setGenotypeId(genotypeId);
         resetTouchedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised SubsamplesRecord
+     */
+    public SubsamplesRecord(jhi.fab.codegen.tables.pojos.Subsamples value) {
+        super(Subsamples.SUBSAMPLES);
+
+        if (value != null) {
+            setSubsampleId(value.getSubsampleId());
+            setOutbreakId(value.getOutbreakId());
+            setGenotypeId(value.getGenotypeId());
+            resetTouchedOnNotNull();
+        }
+    }
 }

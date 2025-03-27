@@ -76,4 +76,17 @@ public class SourcesRecord extends UpdatableRecordImpl<SourcesRecord> {
         setSourceName(sourceName);
         resetTouchedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised SourcesRecord
+     */
+    public SourcesRecord(jhi.fab.codegen.tables.pojos.Sources value) {
+        super(Sources.SOURCES);
+
+        if (value != null) {
+            setSourceId(value.getSourceId());
+            setSourceName(value.getSourceName());
+            resetTouchedOnNotNull();
+        }
+    }
 }

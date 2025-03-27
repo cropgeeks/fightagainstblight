@@ -76,4 +76,17 @@ public class SeveritiesRecord extends UpdatableRecordImpl<SeveritiesRecord> {
         setSeverityName(severityName);
         resetTouchedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised SeveritiesRecord
+     */
+    public SeveritiesRecord(jhi.fab.codegen.tables.pojos.Severities value) {
+        super(Severities.SEVERITIES);
+
+        if (value != null) {
+            setSeverityId(value.getSeverityId());
+            setSeverityName(value.getSeverityName());
+            resetTouchedOnNotNull();
+        }
+    }
 }

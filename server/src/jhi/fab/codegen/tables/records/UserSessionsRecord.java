@@ -93,4 +93,18 @@ public class UserSessionsRecord extends UpdatableRecordImpl<UserSessionsRecord> 
         setCreatedOn(createdOn);
         resetTouchedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised UserSessionsRecord
+     */
+    public UserSessionsRecord(jhi.fab.codegen.tables.pojos.UserSessions value) {
+        super(UserSessions.USER_SESSIONS);
+
+        if (value != null) {
+            setUserId(value.getUserId());
+            setToken(value.getToken());
+            setCreatedOn(value.getCreatedOn());
+            resetTouchedOnNotNull();
+        }
+    }
 }

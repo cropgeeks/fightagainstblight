@@ -76,4 +76,17 @@ public class SsrGenotypesRecord extends UpdatableRecordImpl<SsrGenotypesRecord> 
         setGenotypeName(genotypeName);
         resetTouchedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised SsrGenotypesRecord
+     */
+    public SsrGenotypesRecord(jhi.fab.codegen.tables.pojos.SsrGenotypes value) {
+        super(SsrGenotypes.SSR_GENOTYPES);
+
+        if (value != null) {
+            setGenotypeId(value.getGenotypeId());
+            setGenotypeName(value.getGenotypeName());
+            resetTouchedOnNotNull();
+        }
+    }
 }

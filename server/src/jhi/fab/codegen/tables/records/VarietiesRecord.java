@@ -76,4 +76,17 @@ public class VarietiesRecord extends UpdatableRecordImpl<VarietiesRecord> {
         setVarietyName(varietyName);
         resetTouchedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised VarietiesRecord
+     */
+    public VarietiesRecord(jhi.fab.codegen.tables.pojos.Varieties value) {
+        super(Varieties.VARIETIES);
+
+        if (value != null) {
+            setVarietyId(value.getVarietyId());
+            setVarietyName(value.getVarietyName());
+            resetTouchedOnNotNull();
+        }
+    }
 }

@@ -91,4 +91,18 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> {
         setIsAdmin(isAdmin);
         resetTouchedOnNotNull();
     }
+
+    /**
+     * Create a detached, initialised UsersRecord
+     */
+    public UsersRecord(jhi.fab.codegen.tables.pojos.Users value) {
+        super(Users.USERS);
+
+        if (value != null) {
+            setUserId(value.getUserId());
+            setEmail(value.getEmail());
+            setIsAdmin(value.getIsAdmin());
+            resetTouchedOnNotNull();
+        }
+    }
 }
