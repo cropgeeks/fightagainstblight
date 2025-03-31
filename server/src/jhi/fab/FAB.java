@@ -41,13 +41,13 @@ public class FAB extends ResourceConfig implements ServletContextListener
 		DatabaseUtils.close();
 	}
 
-	public static void email(String address, String htmlMessage)
+	public static void email(String address, String subject, String htmlMessage)
 		throws Exception
-    {
-        String emailServer = System.getenv("EMAIL_HOST");
+	{
+		String emailServer = System.getenv("EMAIL_HOST");
 		String emailPort = System.getenv("EMAIL_PORT");
-        String emailAddress = System.getenv("EMAIL_ADDRESS");
-        String emailAlias = System.getenv("EMAIL_ALIAS");
+		String emailAddress = System.getenv("EMAIL_ADDRESS");
+		String emailAlias = System.getenv("EMAIL_ALIAS");
 
 		Properties props = new Properties();
 		props.put("mail.smtp.host", emailServer);
@@ -59,9 +59,9 @@ public class FAB extends ResourceConfig implements ServletContextListener
 		Message message = new MimeMessage(session);
 		message.setContent(htmlMessage, "text/html; charset=utf-8");
 		message.setFrom(new InternetAddress(emailAddress, emailAlias));
-
+		message.setSubject(subject);
 		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(address));
-		message.setSubject("Login to FightAgainstBlight");
+
 
 		Transport.send(message);
 	}

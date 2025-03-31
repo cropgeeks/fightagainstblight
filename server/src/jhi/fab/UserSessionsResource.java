@@ -47,7 +47,7 @@ public class UserSessionsResource
 				String message = "<p>To log in to Flight Against Blight, please click the link below:</p>"
 					+ "<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + host + "?token=" + uuid.toString() + "'>Login</a></p>";
 
-				FAB.email(user.getEmail(), message);
+				FAB.email(user.getEmail(), "Login to FlightAgainstBlight", message);
 			}
 
 			// We'll always return OK, even when the user isn't found as the UI
