@@ -9,8 +9,9 @@ import jakarta.ws.rs.core.*;
 
 import org.jooq.*;
 import org.jooq.impl.*;
-import static jhi.fab.codegen.Tables.OUTBREAKS;
+
 import jhi.fab.codegen.tables.pojos.*;
+import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 
 @Path("/outbreaks")
 public class OutbreaksResource
