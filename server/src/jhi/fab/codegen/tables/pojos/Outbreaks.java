@@ -6,7 +6,7 @@ package jhi.fab.codegen.tables.pojos;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jhi.fab.codegen.enums.OutbreaksStatus;
 
@@ -20,10 +20,11 @@ public class Outbreaks implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer outbreakId;
+    private String outbreakCode;
     private Integer userId;
     private BigDecimal latitude;
     private BigDecimal longitude;
-    private LocalDateTime date;
+    private LocalDate date;
     private Integer varietyId;
     private Integer severityId;
     private Integer sourceId;
@@ -37,6 +38,7 @@ public class Outbreaks implements Serializable {
 
     public Outbreaks(Outbreaks value) {
         this.outbreakId = value.outbreakId;
+        this.outbreakCode = value.outbreakCode;
         this.userId = value.userId;
         this.latitude = value.latitude;
         this.longitude = value.longitude;
@@ -53,10 +55,11 @@ public class Outbreaks implements Serializable {
 
     public Outbreaks(
         Integer outbreakId,
+        String outbreakCode,
         Integer userId,
         BigDecimal latitude,
         BigDecimal longitude,
-        LocalDateTime date,
+        LocalDate date,
         Integer varietyId,
         Integer severityId,
         Integer sourceId,
@@ -67,6 +70,7 @@ public class Outbreaks implements Serializable {
         OutbreaksStatus status
     ) {
         this.outbreakId = outbreakId;
+        this.outbreakCode = outbreakCode;
         this.userId = userId;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -93,6 +97,20 @@ public class Outbreaks implements Serializable {
      */
     public void setOutbreakId(Integer outbreakId) {
         this.outbreakId = outbreakId;
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.outbreak_code</code>.
+     */
+    public String getOutbreakCode() {
+        return this.outbreakCode;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.outbreak_code</code>.
+     */
+    public void setOutbreakCode(String outbreakCode) {
+        this.outbreakCode = outbreakCode;
     }
 
     /**
@@ -140,14 +158,14 @@ public class Outbreaks implements Serializable {
     /**
      * Getter for <code>fab.outbreaks.date</code>.
      */
-    public LocalDateTime getDate() {
+    public LocalDate getDate() {
         return this.date;
     }
 
     /**
      * Setter for <code>fab.outbreaks.date</code>.
      */
-    public void setDate(LocalDateTime date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -278,6 +296,12 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.outbreakId.equals(other.outbreakId))
             return false;
+        if (this.outbreakCode == null) {
+            if (other.outbreakCode != null)
+                return false;
+        }
+        else if (!this.outbreakCode.equals(other.outbreakCode))
+            return false;
         if (this.userId == null) {
             if (other.userId != null)
                 return false;
@@ -358,6 +382,7 @@ public class Outbreaks implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.outbreakId == null) ? 0 : this.outbreakId.hashCode());
+        result = prime * result + ((this.outbreakCode == null) ? 0 : this.outbreakCode.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.latitude == null) ? 0 : this.latitude.hashCode());
         result = prime * result + ((this.longitude == null) ? 0 : this.longitude.hashCode());
@@ -378,6 +403,7 @@ public class Outbreaks implements Serializable {
         StringBuilder sb = new StringBuilder("Outbreaks (");
 
         sb.append(outbreakId);
+        sb.append(", ").append(outbreakCode);
         sb.append(", ").append(userId);
         sb.append(", ").append(latitude);
         sb.append(", ").append(longitude);

@@ -5,7 +5,7 @@ package jhi.fab.codegen.tables;
 
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -72,6 +72,11 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     public final TableField<OutbreaksRecord, Integer> OUTBREAK_ID = createField(DSL.name("outbreak_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
+     * The column <code>fab.outbreaks.outbreak_code</code>.
+     */
+    public final TableField<OutbreaksRecord, String> OUTBREAK_CODE = createField(DSL.name("outbreak_code"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+
+    /**
      * The column <code>fab.outbreaks.user_id</code>.
      */
     public final TableField<OutbreaksRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "");
@@ -89,7 +94,7 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     /**
      * The column <code>fab.outbreaks.date</code>.
      */
-    public final TableField<OutbreaksRecord, LocalDateTime> DATE = createField(DSL.name("date"), SQLDataType.LOCALDATETIME(0), this, "");
+    public final TableField<OutbreaksRecord, LocalDate> DATE = createField(DSL.name("date"), SQLDataType.LOCALDATE, this, "");
 
     /**
      * The column <code>fab.outbreaks.variety_id</code>.

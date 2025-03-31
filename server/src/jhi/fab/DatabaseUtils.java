@@ -14,7 +14,7 @@ public class DatabaseUtils
 	{
 		String username = System.getenv("FAB_USERNAME");
 		String password = System.getenv("FAB_PASSWORD");
-		String url = System.getenv("FAB_URL");
+		String url = System.getenv("FAB_DATABASE");
 
 		if (ds == null)
 		{
