@@ -18,9 +18,11 @@ public class VarietiesResource
 {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response varieties()
+	public Response varieties(@HeaderParam("Authorization") String authHeader)
 		throws SQLException
 	{
+		RequestToken token = new RequestToken(authHeader);
+		
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
