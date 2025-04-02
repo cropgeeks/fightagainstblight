@@ -5,6 +5,7 @@ package jhi.fab.codegen.tables.pojos;
 
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 
 /**
@@ -18,6 +19,8 @@ public class Subsamples implements Serializable {
     private Integer subsampleId;
     private Integer outbreakId;
     private Integer genotypeId;
+    private LocalDate dategenotyped;
+    private String comments;
 
     public Subsamples() {}
 
@@ -25,16 +28,22 @@ public class Subsamples implements Serializable {
         this.subsampleId = value.subsampleId;
         this.outbreakId = value.outbreakId;
         this.genotypeId = value.genotypeId;
+        this.dategenotyped = value.dategenotyped;
+        this.comments = value.comments;
     }
 
     public Subsamples(
         Integer subsampleId,
         Integer outbreakId,
-        Integer genotypeId
+        Integer genotypeId,
+        LocalDate dategenotyped,
+        String comments
     ) {
         this.subsampleId = subsampleId;
         this.outbreakId = outbreakId;
         this.genotypeId = genotypeId;
+        this.dategenotyped = dategenotyped;
+        this.comments = comments;
     }
 
     /**
@@ -79,6 +88,34 @@ public class Subsamples implements Serializable {
         this.genotypeId = genotypeId;
     }
 
+    /**
+     * Getter for <code>fab.subsamples.dateGenotyped</code>.
+     */
+    public LocalDate getDategenotyped() {
+        return this.dategenotyped;
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.dateGenotyped</code>.
+     */
+    public void setDategenotyped(LocalDate dategenotyped) {
+        this.dategenotyped = dategenotyped;
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.comments</code>.
+     */
+    public String getComments() {
+        return this.comments;
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.comments</code>.
+     */
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -106,6 +143,18 @@ public class Subsamples implements Serializable {
         }
         else if (!this.genotypeId.equals(other.genotypeId))
             return false;
+        if (this.dategenotyped == null) {
+            if (other.dategenotyped != null)
+                return false;
+        }
+        else if (!this.dategenotyped.equals(other.dategenotyped))
+            return false;
+        if (this.comments == null) {
+            if (other.comments != null)
+                return false;
+        }
+        else if (!this.comments.equals(other.comments))
+            return false;
         return true;
     }
 
@@ -116,6 +165,8 @@ public class Subsamples implements Serializable {
         result = prime * result + ((this.subsampleId == null) ? 0 : this.subsampleId.hashCode());
         result = prime * result + ((this.outbreakId == null) ? 0 : this.outbreakId.hashCode());
         result = prime * result + ((this.genotypeId == null) ? 0 : this.genotypeId.hashCode());
+        result = prime * result + ((this.dategenotyped == null) ? 0 : this.dategenotyped.hashCode());
+        result = prime * result + ((this.comments == null) ? 0 : this.comments.hashCode());
         return result;
     }
 
@@ -126,6 +177,8 @@ public class Subsamples implements Serializable {
         sb.append(subsampleId);
         sb.append(", ").append(outbreakId);
         sb.append(", ").append(genotypeId);
+        sb.append(", ").append(dategenotyped);
+        sb.append(", ").append(comments);
 
         sb.append(")");
         return sb.toString();

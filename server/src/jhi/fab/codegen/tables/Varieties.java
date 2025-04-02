@@ -14,7 +14,6 @@ import jhi.fab.codegen.tables.records.VarietiesRecord;
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -58,7 +57,7 @@ public class Varieties extends TableImpl<VarietiesRecord> {
     /**
      * The column <code>fab.varieties.variety_id</code>.
      */
-    public final TableField<VarietiesRecord, Integer> VARIETY_ID = createField(DSL.name("variety_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<VarietiesRecord, Integer> VARIETY_ID = createField(DSL.name("variety_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>fab.varieties.variety_name</code>.
@@ -133,11 +132,6 @@ public class Varieties extends TableImpl<VarietiesRecord> {
     }
 
     @Override
-    public Identity<VarietiesRecord, Integer> getIdentity() {
-        return (Identity<VarietiesRecord, Integer>) super.getIdentity();
-    }
-
-    @Override
     public UniqueKey<VarietiesRecord> getPrimaryKey() {
         return Keys.KEY_VARIETIES_PRIMARY;
     }
@@ -150,7 +144,7 @@ public class Varieties extends TableImpl<VarietiesRecord> {
      */
     public OutbreaksPath outbreaks() {
         if (_outbreaks == null)
-            _outbreaks = new OutbreaksPath(this, null, Keys.OUTBREAKS_IBFK_1.getInverseKey());
+            _outbreaks = new OutbreaksPath(this, null, Keys.OUTBREAKS_IBFK_2.getInverseKey());
 
         return _outbreaks;
     }

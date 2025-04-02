@@ -4,6 +4,7 @@
 package jhi.fab.codegen.tables;
 
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -74,6 +75,16 @@ public class Subsamples extends TableImpl<SubsamplesRecord> {
      * The column <code>fab.subsamples.genotype_id</code>.
      */
     public final TableField<SubsamplesRecord, Integer> GENOTYPE_ID = createField(DSL.name("genotype_id"), SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
+     * The column <code>fab.subsamples.dateGenotyped</code>.
+     */
+    public final TableField<SubsamplesRecord, LocalDate> DATEGENOTYPED = createField(DSL.name("dateGenotyped"), SQLDataType.LOCALDATE.nullable(false), this, "");
+
+    /**
+     * The column <code>fab.subsamples.comments</code>.
+     */
+    public final TableField<SubsamplesRecord, String> COMMENTS = createField(DSL.name("comments"), SQLDataType.VARCHAR(255), this, "");
 
     private Subsamples(Name alias, Table<SubsamplesRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

@@ -5,7 +5,6 @@ package jhi.fab.codegen.tables.pojos;
 
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jhi.fab.codegen.enums.OutbreaksStatus;
@@ -22,9 +21,10 @@ public class Outbreaks implements Serializable {
     private Integer outbreakId;
     private String outbreakCode;
     private Integer userId;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
-    private LocalDate date;
+    private Double latitude;
+    private Double longitude;
+    private LocalDate datesubmitted;
+    private LocalDate datereceived;
     private Integer varietyId;
     private Integer severityId;
     private Integer sourceId;
@@ -42,7 +42,8 @@ public class Outbreaks implements Serializable {
         this.userId = value.userId;
         this.latitude = value.latitude;
         this.longitude = value.longitude;
-        this.date = value.date;
+        this.datesubmitted = value.datesubmitted;
+        this.datereceived = value.datereceived;
         this.varietyId = value.varietyId;
         this.severityId = value.severityId;
         this.sourceId = value.sourceId;
@@ -57,9 +58,10 @@ public class Outbreaks implements Serializable {
         Integer outbreakId,
         String outbreakCode,
         Integer userId,
-        BigDecimal latitude,
-        BigDecimal longitude,
-        LocalDate date,
+        Double latitude,
+        Double longitude,
+        LocalDate datesubmitted,
+        LocalDate datereceived,
         Integer varietyId,
         Integer severityId,
         Integer sourceId,
@@ -74,7 +76,8 @@ public class Outbreaks implements Serializable {
         this.userId = userId;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.date = date;
+        this.datesubmitted = datesubmitted;
+        this.datereceived = datereceived;
         this.varietyId = varietyId;
         this.severityId = severityId;
         this.sourceId = sourceId;
@@ -130,43 +133,57 @@ public class Outbreaks implements Serializable {
     /**
      * Getter for <code>fab.outbreaks.latitude</code>.
      */
-    public BigDecimal getLatitude() {
+    public Double getLatitude() {
         return this.latitude;
     }
 
     /**
      * Setter for <code>fab.outbreaks.latitude</code>.
      */
-    public void setLatitude(BigDecimal latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
     /**
      * Getter for <code>fab.outbreaks.longitude</code>.
      */
-    public BigDecimal getLongitude() {
+    public Double getLongitude() {
         return this.longitude;
     }
 
     /**
      * Setter for <code>fab.outbreaks.longitude</code>.
      */
-    public void setLongitude(BigDecimal longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
     /**
-     * Getter for <code>fab.outbreaks.date</code>.
+     * Getter for <code>fab.outbreaks.dateSubmitted</code>.
      */
-    public LocalDate getDate() {
-        return this.date;
+    public LocalDate getDatesubmitted() {
+        return this.datesubmitted;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.date</code>.
+     * Setter for <code>fab.outbreaks.dateSubmitted</code>.
      */
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDatesubmitted(LocalDate datesubmitted) {
+        this.datesubmitted = datesubmitted;
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.dateReceived</code>.
+     */
+    public LocalDate getDatereceived() {
+        return this.datereceived;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.dateReceived</code>.
+     */
+    public void setDatereceived(LocalDate datereceived) {
+        this.datereceived = datereceived;
     }
 
     /**
@@ -320,11 +337,17 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.longitude.equals(other.longitude))
             return false;
-        if (this.date == null) {
-            if (other.date != null)
+        if (this.datesubmitted == null) {
+            if (other.datesubmitted != null)
                 return false;
         }
-        else if (!this.date.equals(other.date))
+        else if (!this.datesubmitted.equals(other.datesubmitted))
+            return false;
+        if (this.datereceived == null) {
+            if (other.datereceived != null)
+                return false;
+        }
+        else if (!this.datereceived.equals(other.datereceived))
             return false;
         if (this.varietyId == null) {
             if (other.varietyId != null)
@@ -386,7 +409,8 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.latitude == null) ? 0 : this.latitude.hashCode());
         result = prime * result + ((this.longitude == null) ? 0 : this.longitude.hashCode());
-        result = prime * result + ((this.date == null) ? 0 : this.date.hashCode());
+        result = prime * result + ((this.datesubmitted == null) ? 0 : this.datesubmitted.hashCode());
+        result = prime * result + ((this.datereceived == null) ? 0 : this.datereceived.hashCode());
         result = prime * result + ((this.varietyId == null) ? 0 : this.varietyId.hashCode());
         result = prime * result + ((this.severityId == null) ? 0 : this.severityId.hashCode());
         result = prime * result + ((this.sourceId == null) ? 0 : this.sourceId.hashCode());
@@ -407,7 +431,8 @@ public class Outbreaks implements Serializable {
         sb.append(", ").append(userId);
         sb.append(", ").append(latitude);
         sb.append(", ").append(longitude);
-        sb.append(", ").append(date);
+        sb.append(", ").append(datesubmitted);
+        sb.append(", ").append(datereceived);
         sb.append(", ").append(varietyId);
         sb.append(", ").append(severityId);
         sb.append(", ").append(sourceId);

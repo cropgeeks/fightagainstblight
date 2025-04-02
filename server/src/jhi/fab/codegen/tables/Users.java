@@ -156,7 +156,7 @@ public class Users extends TableImpl<UsersRecord> {
      */
     public OutbreaksPath outbreaks() {
         if (_outbreaks == null)
-            _outbreaks = new OutbreaksPath(this, null, Keys.OUTBREAKS_IBFK_4.getInverseKey());
+            _outbreaks = new OutbreaksPath(this, null, Keys.OUTBREAKS_IBFK_1.getInverseKey());
 
         return _outbreaks;
     }

@@ -14,7 +14,6 @@ import jhi.fab.codegen.tables.records.SeveritiesRecord;
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Identity;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -58,7 +57,7 @@ public class Severities extends TableImpl<SeveritiesRecord> {
     /**
      * The column <code>fab.severities.severity_id</code>.
      */
-    public final TableField<SeveritiesRecord, Integer> SEVERITY_ID = createField(DSL.name("severity_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<SeveritiesRecord, Integer> SEVERITY_ID = createField(DSL.name("severity_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>fab.severities.severity_name</code>.
@@ -133,11 +132,6 @@ public class Severities extends TableImpl<SeveritiesRecord> {
     }
 
     @Override
-    public Identity<SeveritiesRecord, Integer> getIdentity() {
-        return (Identity<SeveritiesRecord, Integer>) super.getIdentity();
-    }
-
-    @Override
     public UniqueKey<SeveritiesRecord> getPrimaryKey() {
         return Keys.KEY_SEVERITIES_PRIMARY;
     }
@@ -150,7 +144,7 @@ public class Severities extends TableImpl<SeveritiesRecord> {
      */
     public OutbreaksPath outbreaks() {
         if (_outbreaks == null)
-            _outbreaks = new OutbreaksPath(this, null, Keys.OUTBREAKS_IBFK_2.getInverseKey());
+            _outbreaks = new OutbreaksPath(this, null, Keys.OUTBREAKS_IBFK_4.getInverseKey());
 
         return _outbreaks;
     }

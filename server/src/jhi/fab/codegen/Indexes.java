@@ -25,8 +25,5 @@ public class Indexes {
 
     public static final Index SUBSAMPLES_GENOTYPE_ID = Internal.createIndex(DSL.name("genotype_id"), Subsamples.SUBSAMPLES, new OrderField[] { Subsamples.SUBSAMPLES.GENOTYPE_ID }, false);
     public static final Index SUBSAMPLES_OUTBREAK_ID = Internal.createIndex(DSL.name("outbreak_id"), Subsamples.SUBSAMPLES, new OrderField[] { Subsamples.SUBSAMPLES.OUTBREAK_ID }, false);
-    public static final Index OUTBREAKS_SEVERITY_ID = Internal.createIndex(DSL.name("severity_id"), Outbreaks.OUTBREAKS, new OrderField[] { Outbreaks.OUTBREAKS.SEVERITY_ID }, false);
     public static final Index OUTBREAKS_SOURCE_ID = Internal.createIndex(DSL.name("source_id"), Outbreaks.OUTBREAKS, new OrderField[] { Outbreaks.OUTBREAKS.SOURCE_ID }, false);
-    public static final Index OUTBREAKS_USER_ID = Internal.createIndex(DSL.name("user_id"), Outbreaks.OUTBREAKS, new OrderField[] { Outbreaks.OUTBREAKS.USER_ID }, false);
-    public static final Index OUTBREAKS_VARIETY_ID = Internal.createIndex(DSL.name("variety_id"), Outbreaks.OUTBREAKS, new OrderField[] { Outbreaks.OUTBREAKS.VARIETY_ID }, false);
 }

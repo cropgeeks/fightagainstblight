@@ -4,7 +4,6 @@
 package jhi.fab.codegen.tables;
 
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
@@ -84,17 +83,22 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     /**
      * The column <code>fab.outbreaks.latitude</code>.
      */
-    public final TableField<OutbreaksRecord, BigDecimal> LATITUDE = createField(DSL.name("latitude"), SQLDataType.DECIMAL(10, 8), this, "");
+    public final TableField<OutbreaksRecord, Double> LATITUDE = createField(DSL.name("latitude"), SQLDataType.FLOAT, this, "");
 
     /**
      * The column <code>fab.outbreaks.longitude</code>.
      */
-    public final TableField<OutbreaksRecord, BigDecimal> LONGITUDE = createField(DSL.name("longitude"), SQLDataType.DECIMAL(11, 8), this, "");
+    public final TableField<OutbreaksRecord, Double> LONGITUDE = createField(DSL.name("longitude"), SQLDataType.FLOAT, this, "");
 
     /**
-     * The column <code>fab.outbreaks.date</code>.
+     * The column <code>fab.outbreaks.dateSubmitted</code>.
      */
-    public final TableField<OutbreaksRecord, LocalDate> DATE = createField(DSL.name("date"), SQLDataType.LOCALDATE, this, "");
+    public final TableField<OutbreaksRecord, LocalDate> DATESUBMITTED = createField(DSL.name("dateSubmitted"), SQLDataType.LOCALDATE, this, "");
+
+    /**
+     * The column <code>fab.outbreaks.dateReceived</code>.
+     */
+    public final TableField<OutbreaksRecord, LocalDate> DATERECEIVED = createField(DSL.name("dateReceived"), SQLDataType.LOCALDATE, this, "");
 
     /**
      * The column <code>fab.outbreaks.variety_id</code>.
@@ -205,7 +209,7 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.OUTBREAKS_SEVERITY_ID, Indexes.OUTBREAKS_SOURCE_ID, Indexes.OUTBREAKS_USER_ID, Indexes.OUTBREAKS_VARIETY_ID);
+        return Arrays.asList(Indexes.OUTBREAKS_SOURCE_ID);
     }
 
     @Override
@@ -223,6 +227,18 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
         return Arrays.asList(Keys.OUTBREAKS_IBFK_1, Keys.OUTBREAKS_IBFK_2, Keys.OUTBREAKS_IBFK_3, Keys.OUTBREAKS_IBFK_4);
     }
 
+    private transient UsersPath _users;
+
+    /**
+     * Get the implicit join path to the <code>fab.users</code> table.
+     */
+    public UsersPath users() {
+        if (_users == null)
+            _users = new UsersPath(this, Keys.OUTBREAKS_IBFK_1, null);
+
+        return _users;
+    }
+
     private transient VarietiesPath _varieties;
 
     /**
@@ -230,21 +246,9 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
      */
     public VarietiesPath varieties() {
         if (_varieties == null)
-            _varieties = new VarietiesPath(this, Keys.OUTBREAKS_IBFK_1, null);
+            _varieties = new VarietiesPath(this, Keys.OUTBREAKS_IBFK_2, null);
 
         return _varieties;
-    }
-
-    private transient SeveritiesPath _severities;
-
-    /**
-     * Get the implicit join path to the <code>fab.severities</code> table.
-     */
-    public SeveritiesPath severities() {
-        if (_severities == null)
-            _severities = new SeveritiesPath(this, Keys.OUTBREAKS_IBFK_2, null);
-
-        return _severities;
     }
 
     private transient SourcesPath _sources;
@@ -259,16 +263,16 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
         return _sources;
     }
 
-    private transient UsersPath _users;
+    private transient SeveritiesPath _severities;
 
     /**
-     * Get the implicit join path to the <code>fab.users</code> table.
+     * Get the implicit join path to the <code>fab.severities</code> table.
      */
-    public UsersPath users() {
-        if (_users == null)
-            _users = new UsersPath(this, Keys.OUTBREAKS_IBFK_4, null);
+    public SeveritiesPath severities() {
+        if (_severities == null)
+            _severities = new SeveritiesPath(this, Keys.OUTBREAKS_IBFK_4, null);
 
-        return _users;
+        return _severities;
     }
 
     private transient SubsamplesPath _subsamples;

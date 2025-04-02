@@ -4,6 +4,8 @@
 package jhi.fab.codegen.tables.records;
 
 
+import java.time.LocalDate;
+
 import jhi.fab.codegen.tables.Subsamples;
 
 import org.jooq.Record1;
@@ -60,6 +62,34 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
         return (Integer) get(2);
     }
 
+    /**
+     * Setter for <code>fab.subsamples.dateGenotyped</code>.
+     */
+    public void setDategenotyped(LocalDate value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.dateGenotyped</code>.
+     */
+    public LocalDate getDategenotyped() {
+        return (LocalDate) get(3);
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.comments</code>.
+     */
+    public void setComments(String value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.comments</code>.
+     */
+    public String getComments() {
+        return (String) get(4);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -83,12 +113,14 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
     /**
      * Create a detached, initialised SubsamplesRecord
      */
-    public SubsamplesRecord(Integer subsampleId, Integer outbreakId, Integer genotypeId) {
+    public SubsamplesRecord(Integer subsampleId, Integer outbreakId, Integer genotypeId, LocalDate dategenotyped, String comments) {
         super(Subsamples.SUBSAMPLES);
 
         setSubsampleId(subsampleId);
         setOutbreakId(outbreakId);
         setGenotypeId(genotypeId);
+        setDategenotyped(dategenotyped);
+        setComments(comments);
         resetTouchedOnNotNull();
     }
 
@@ -102,6 +134,8 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
             setSubsampleId(value.getSubsampleId());
             setOutbreakId(value.getOutbreakId());
             setGenotypeId(value.getGenotypeId());
+            setDategenotyped(value.getDategenotyped());
+            setComments(value.getComments());
             resetTouchedOnNotNull();
         }
     }
