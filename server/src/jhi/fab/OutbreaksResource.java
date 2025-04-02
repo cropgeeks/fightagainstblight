@@ -43,7 +43,7 @@ public class OutbreaksResource
 				.fetch()
 				.stream()
 				.map(record -> {
-					return mapDTO(record);
+					return mapDTO(record, user);
 				})
 				.collect(Collectors.toList());
 
@@ -79,21 +79,18 @@ public class OutbreaksResource
 				.fetchOne();
 
 			if (record != null)
-				return Response.ok(mapDTO(record)).build();
+				return Response.ok(mapDTO(record, user)).build();
 
 			else
 				return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
 
-	OutbreaksDTO mapDTO(org.jooq.Record record)
+	OutbreaksDTO mapDTO(org.jooq.Record record, User user)
 	{
 		OutbreaksDTO dto = new OutbreaksDTO();
 		dto.setOutbreakId(record.get(OUTBREAKS.OUTBREAK_ID));
 		dto.setOutbreakCode(record.get(OUTBREAKS.OUTBREAK_CODE));
-////	dto.setUserId(record.get(OUTBREAKS.USER_ID));
-		dto.setLatitude(record.get(OUTBREAKS.LATITUDE));
-		dto.setLongitude(record.get(OUTBREAKS.LONGITUDE));
 		dto.setDatesubmitted(record.get(OUTBREAKS.DATESUBMITTED));
 		dto.setDatereceived(record.get(OUTBREAKS.DATERECEIVED));
 		dto.setVarietyId(record.get(VARIETIES.VARIETY_ID));
@@ -107,6 +104,14 @@ public class OutbreaksResource
 		dto.setComments(record.get(OUTBREAKS.COMMENTS));
 		dto.setAdditionalinfo(record.get(OUTBREAKS.ADDITIONALINFO));
 		dto.setStatus(record.get(OUTBREAKS.STATUS));
+
+		// Fields that require either the owner of this record or an admin
+		if (user.getUserID() == record.get(OUTBREAKS.USER_ID) || user.isAdmin())
+		{
+			dto.setUserId(record.get(OUTBREAKS.USER_ID));
+			dto.setLatitude(record.get(OUTBREAKS.LATITUDE));
+			dto.setLongitude(record.get(OUTBREAKS.LONGITUDE));
+		}
 
 		return dto;
 	}

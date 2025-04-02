@@ -19,11 +19,15 @@ class User
 	private static int FORBIDDEN = 403;
 	private int status = UNAUTHORIZED;
 
-	private int userID;
-	private String token;
+	private int userID = -1;
+	private boolean isAdmin = false;
 
 	int getUserID() {
 		return userID;
+	}
+
+	boolean isAdmin() {
+		return isAdmin;
 	}
 
 	User(String authHeader)
@@ -33,7 +37,7 @@ class User
 		if (authHeader != null && authHeader.startsWith("Bearer "))
 		{
 			// Extract the Bearer token from the Authorization header
-			token = authHeader.substring("Bearer ".length()).trim();
+			String token = authHeader.substring("Bearer ".length()).trim();
 
 			// Does this token exist?
 			try (Connection conn = DatabaseUtils.getConnection())
@@ -67,6 +71,9 @@ class User
 						if (user != null)
 						{
 							System.out.println("Token linked to " + user.getEmail());
+
+							// Are they an admin?
+							isAdmin = user.getIsAdmin() != 0;
 
 							context.update(USER_SESSIONS)
 								.set(USER_SESSIONS.CREATED_ON, LocalDateTime.now())
