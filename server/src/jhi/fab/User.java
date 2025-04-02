@@ -12,7 +12,7 @@ import jhi.fab.codegen.tables.pojos.*;
 import static jhi.fab.codegen.tables.UserSessions.USER_SESSIONS;
 import static jhi.fab.codegen.tables.Users.USERS;
 
-class RequestToken
+class User
 {
 	private static int OK = 200;
 	private static int UNAUTHORIZED = 401;
@@ -26,7 +26,7 @@ class RequestToken
 		return userID;
 	}
 
-	RequestToken(String authHeader)
+	User(String authHeader)
 		throws SQLException
 	{
 		// Check if the Authorization header is not null and starts with "Bearer "

@@ -27,7 +27,7 @@ public class OutbreaksResource
 	{
 		// You don't *need* a token for this call, but if we have one (and a
 		// valid user) we'll use it to fill out a more detailed response
-		RequestToken token = new RequestToken(authHeader);
+		User user = new User(authHeader);
 
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
@@ -61,7 +61,7 @@ public class OutbreaksResource
 	{
 		// You don't *need* a token for this call, but if we have one (and a
 		// valid user) we'll use it to fill out a more detailed response
-		RequestToken token = new RequestToken(authHeader);
+		User user = new User(authHeader);
 
 		try (Connection conn = DatabaseUtils.getConnection())
 		{

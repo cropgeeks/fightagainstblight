@@ -21,7 +21,7 @@ public class SeveritiesResource
 	public Response varieties(@HeaderParam("Authorization") String authHeader)
 		throws SQLException
 	{
-		RequestToken token = new RequestToken(authHeader);
+		User user = new User(authHeader);
 
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
