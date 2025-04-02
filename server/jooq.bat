@@ -1,0 +1,1 @@
+java -cp .;lib\*;lib\jooq-3.20.1\* org.jooq.codegen.GenerationTool jooq-config.xml

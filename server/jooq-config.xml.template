@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd">
+
+    <jdbc>
+        <driver>com.mysql.cj.jdbc.Driver</driver>
+        <url>jdbc:mysql://HOST:PORT/fab?serverTimezone=UTC</url>
+        <user>USERNAME</user>
+        <password>PASSWORD</password>
+    </jdbc>
+
+    <generator>
+        <name>org.jooq.codegen.JavaGenerator</name>
+		<generate>
+			<pojos>true</pojos>
+		</generate>
+
+        <database>
+            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+            <inputSchema>fab</inputSchema>
+            <includes>.*</includes>
+            <excludes></excludes>
+        </database>
+
+        <target>
+            <packageName>jhi.fab.codegen</packageName>
+            <directory>src</directory>
+        </target>
+    </generator>
+</configuration>
