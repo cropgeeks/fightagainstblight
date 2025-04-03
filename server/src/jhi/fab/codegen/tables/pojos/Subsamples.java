@@ -17,8 +17,11 @@ public class Subsamples implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer subsampleId;
+    private String subsampleCode;
     private Integer outbreakId;
     private Integer genotypeId;
+    private Integer varietyId;
+    private String material;
     private LocalDate dategenotyped;
     private String comments;
 
@@ -26,22 +29,31 @@ public class Subsamples implements Serializable {
 
     public Subsamples(Subsamples value) {
         this.subsampleId = value.subsampleId;
+        this.subsampleCode = value.subsampleCode;
         this.outbreakId = value.outbreakId;
         this.genotypeId = value.genotypeId;
+        this.varietyId = value.varietyId;
+        this.material = value.material;
         this.dategenotyped = value.dategenotyped;
         this.comments = value.comments;
     }
 
     public Subsamples(
         Integer subsampleId,
+        String subsampleCode,
         Integer outbreakId,
         Integer genotypeId,
+        Integer varietyId,
+        String material,
         LocalDate dategenotyped,
         String comments
     ) {
         this.subsampleId = subsampleId;
+        this.subsampleCode = subsampleCode;
         this.outbreakId = outbreakId;
         this.genotypeId = genotypeId;
+        this.varietyId = varietyId;
+        this.material = material;
         this.dategenotyped = dategenotyped;
         this.comments = comments;
     }
@@ -58,6 +70,20 @@ public class Subsamples implements Serializable {
      */
     public void setSubsampleId(Integer subsampleId) {
         this.subsampleId = subsampleId;
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.subsample_code</code>.
+     */
+    public String getSubsampleCode() {
+        return this.subsampleCode;
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.subsample_code</code>.
+     */
+    public void setSubsampleCode(String subsampleCode) {
+        this.subsampleCode = subsampleCode;
     }
 
     /**
@@ -86,6 +112,34 @@ public class Subsamples implements Serializable {
      */
     public void setGenotypeId(Integer genotypeId) {
         this.genotypeId = genotypeId;
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.variety_id</code>.
+     */
+    public Integer getVarietyId() {
+        return this.varietyId;
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.variety_id</code>.
+     */
+    public void setVarietyId(Integer varietyId) {
+        this.varietyId = varietyId;
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.material</code>.
+     */
+    public String getMaterial() {
+        return this.material;
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.material</code>.
+     */
+    public void setMaterial(String material) {
+        this.material = material;
     }
 
     /**
@@ -131,6 +185,12 @@ public class Subsamples implements Serializable {
         }
         else if (!this.subsampleId.equals(other.subsampleId))
             return false;
+        if (this.subsampleCode == null) {
+            if (other.subsampleCode != null)
+                return false;
+        }
+        else if (!this.subsampleCode.equals(other.subsampleCode))
+            return false;
         if (this.outbreakId == null) {
             if (other.outbreakId != null)
                 return false;
@@ -142,6 +202,18 @@ public class Subsamples implements Serializable {
                 return false;
         }
         else if (!this.genotypeId.equals(other.genotypeId))
+            return false;
+        if (this.varietyId == null) {
+            if (other.varietyId != null)
+                return false;
+        }
+        else if (!this.varietyId.equals(other.varietyId))
+            return false;
+        if (this.material == null) {
+            if (other.material != null)
+                return false;
+        }
+        else if (!this.material.equals(other.material))
             return false;
         if (this.dategenotyped == null) {
             if (other.dategenotyped != null)
@@ -163,8 +235,11 @@ public class Subsamples implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.subsampleId == null) ? 0 : this.subsampleId.hashCode());
+        result = prime * result + ((this.subsampleCode == null) ? 0 : this.subsampleCode.hashCode());
         result = prime * result + ((this.outbreakId == null) ? 0 : this.outbreakId.hashCode());
         result = prime * result + ((this.genotypeId == null) ? 0 : this.genotypeId.hashCode());
+        result = prime * result + ((this.varietyId == null) ? 0 : this.varietyId.hashCode());
+        result = prime * result + ((this.material == null) ? 0 : this.material.hashCode());
         result = prime * result + ((this.dategenotyped == null) ? 0 : this.dategenotyped.hashCode());
         result = prime * result + ((this.comments == null) ? 0 : this.comments.hashCode());
         return result;
@@ -175,8 +250,11 @@ public class Subsamples implements Serializable {
         StringBuilder sb = new StringBuilder("Subsamples (");
 
         sb.append(subsampleId);
+        sb.append(", ").append(subsampleCode);
         sb.append(", ").append(outbreakId);
         sb.append(", ").append(genotypeId);
+        sb.append(", ").append(varietyId);
+        sb.append(", ").append(material);
         sb.append(", ").append(dategenotyped);
         sb.append(", ").append(comments);
 

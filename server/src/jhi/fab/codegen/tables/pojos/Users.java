@@ -16,6 +16,7 @@ public class Users implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer userId;
+    private String userName;
     private String email;
     private Byte isAdmin;
 
@@ -23,16 +24,19 @@ public class Users implements Serializable {
 
     public Users(Users value) {
         this.userId = value.userId;
+        this.userName = value.userName;
         this.email = value.email;
         this.isAdmin = value.isAdmin;
     }
 
     public Users(
         Integer userId,
+        String userName,
         String email,
         Byte isAdmin
     ) {
         this.userId = userId;
+        this.userName = userName;
         this.email = email;
         this.isAdmin = isAdmin;
     }
@@ -49,6 +53,20 @@ public class Users implements Serializable {
      */
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    /**
+     * Getter for <code>fab.users.user_name</code>.
+     */
+    public String getUserName() {
+        return this.userName;
+    }
+
+    /**
+     * Setter for <code>fab.users.user_name</code>.
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     /**
@@ -94,6 +112,12 @@ public class Users implements Serializable {
         }
         else if (!this.userId.equals(other.userId))
             return false;
+        if (this.userName == null) {
+            if (other.userName != null)
+                return false;
+        }
+        else if (!this.userName.equals(other.userName))
+            return false;
         if (this.email == null) {
             if (other.email != null)
                 return false;
@@ -114,6 +138,7 @@ public class Users implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
+        result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
         result = prime * result + ((this.email == null) ? 0 : this.email.hashCode());
         result = prime * result + ((this.isAdmin == null) ? 0 : this.isAdmin.hashCode());
         return result;
@@ -124,6 +149,7 @@ public class Users implements Serializable {
         StringBuilder sb = new StringBuilder("Users (");
 
         sb.append(userId);
+        sb.append(", ").append(userName);
         sb.append(", ").append(email);
         sb.append(", ").append(isAdmin);
 

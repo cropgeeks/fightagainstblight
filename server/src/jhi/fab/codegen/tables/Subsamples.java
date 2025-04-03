@@ -10,17 +10,16 @@ import java.util.Collection;
 import java.util.List;
 
 import jhi.fab.codegen.Fab;
-import jhi.fab.codegen.Indexes;
 import jhi.fab.codegen.Keys;
 import jhi.fab.codegen.tables.Outbreaks.OutbreaksPath;
 import jhi.fab.codegen.tables.SsrGenotypes.SsrGenotypesPath;
+import jhi.fab.codegen.tables.Varieties.VarietiesPath;
 import jhi.fab.codegen.tables.records.SubsamplesRecord;
 
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
-import org.jooq.Index;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -67,6 +66,11 @@ public class Subsamples extends TableImpl<SubsamplesRecord> {
     public final TableField<SubsamplesRecord, Integer> SUBSAMPLE_ID = createField(DSL.name("subsample_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
+     * The column <code>fab.subsamples.subsample_code</code>.
+     */
+    public final TableField<SubsamplesRecord, String> SUBSAMPLE_CODE = createField(DSL.name("subsample_code"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+
+    /**
      * The column <code>fab.subsamples.outbreak_id</code>.
      */
     public final TableField<SubsamplesRecord, Integer> OUTBREAK_ID = createField(DSL.name("outbreak_id"), SQLDataType.INTEGER.nullable(false), this, "");
@@ -74,12 +78,22 @@ public class Subsamples extends TableImpl<SubsamplesRecord> {
     /**
      * The column <code>fab.subsamples.genotype_id</code>.
      */
-    public final TableField<SubsamplesRecord, Integer> GENOTYPE_ID = createField(DSL.name("genotype_id"), SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<SubsamplesRecord, Integer> GENOTYPE_ID = createField(DSL.name("genotype_id"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>fab.subsamples.variety_id</code>.
+     */
+    public final TableField<SubsamplesRecord, Integer> VARIETY_ID = createField(DSL.name("variety_id"), SQLDataType.INTEGER, this, "");
+
+    /**
+     * The column <code>fab.subsamples.material</code>.
+     */
+    public final TableField<SubsamplesRecord, String> MATERIAL = createField(DSL.name("material"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>fab.subsamples.dateGenotyped</code>.
      */
-    public final TableField<SubsamplesRecord, LocalDate> DATEGENOTYPED = createField(DSL.name("dateGenotyped"), SQLDataType.LOCALDATE.nullable(false), this, "");
+    public final TableField<SubsamplesRecord, LocalDate> DATEGENOTYPED = createField(DSL.name("dateGenotyped"), SQLDataType.LOCALDATE, this, "");
 
     /**
      * The column <code>fab.subsamples.comments</code>.
@@ -154,11 +168,6 @@ public class Subsamples extends TableImpl<SubsamplesRecord> {
     }
 
     @Override
-    public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.SUBSAMPLES_GENOTYPE_ID, Indexes.SUBSAMPLES_OUTBREAK_ID);
-    }
-
-    @Override
     public Identity<SubsamplesRecord, Integer> getIdentity() {
         return (Identity<SubsamplesRecord, Integer>) super.getIdentity();
     }
@@ -170,7 +179,7 @@ public class Subsamples extends TableImpl<SubsamplesRecord> {
 
     @Override
     public List<ForeignKey<SubsamplesRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.SUBSAMPLES_IBFK_1, Keys.SUBSAMPLES_IBFK_2);
+        return Arrays.asList(Keys.GENOTYPES, Keys.OUTBREAKS, Keys.VARIETIES);
     }
 
     private transient SsrGenotypesPath _ssrGenotypes;
@@ -180,7 +189,7 @@ public class Subsamples extends TableImpl<SubsamplesRecord> {
      */
     public SsrGenotypesPath ssrGenotypes() {
         if (_ssrGenotypes == null)
-            _ssrGenotypes = new SsrGenotypesPath(this, Keys.SUBSAMPLES_IBFK_1, null);
+            _ssrGenotypes = new SsrGenotypesPath(this, Keys.GENOTYPES, null);
 
         return _ssrGenotypes;
     }
@@ -192,9 +201,21 @@ public class Subsamples extends TableImpl<SubsamplesRecord> {
      */
     public OutbreaksPath outbreaks() {
         if (_outbreaks == null)
-            _outbreaks = new OutbreaksPath(this, Keys.SUBSAMPLES_IBFK_2, null);
+            _outbreaks = new OutbreaksPath(this, Keys.OUTBREAKS, null);
 
         return _outbreaks;
+    }
+
+    private transient VarietiesPath _varieties;
+
+    /**
+     * Get the implicit join path to the <code>fab.varieties</code> table.
+     */
+    public VarietiesPath varieties() {
+        if (_varieties == null)
+            _varieties = new VarietiesPath(this, Keys.VARIETIES, null);
+
+        return _varieties;
     }
 
     @Override

@@ -62,6 +62,11 @@ public class Users extends TableImpl<UsersRecord> {
     public final TableField<UsersRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
+     * The column <code>fab.users.user_name</code>.
+     */
+    public final TableField<UsersRecord, String> USER_NAME = createField(DSL.name("user_name"), SQLDataType.VARCHAR(255).nullable(false), this, "");
+
+    /**
      * The column <code>fab.users.email</code>.
      */
     public final TableField<UsersRecord, String> EMAIL = createField(DSL.name("email"), SQLDataType.VARCHAR(255).nullable(false), this, "");
@@ -156,7 +161,7 @@ public class Users extends TableImpl<UsersRecord> {
      */
     public OutbreaksPath outbreaks() {
         if (_outbreaks == null)
-            _outbreaks = new OutbreaksPath(this, null, Keys.OUTBREAKS_IBFK_1.getInverseKey());
+            _outbreaks = new OutbreaksPath(this, null, Keys.USER.getInverseKey());
 
         return _outbreaks;
     }

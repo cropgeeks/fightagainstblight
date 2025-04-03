@@ -21,11 +21,12 @@ public class Outbreaks implements Serializable {
     private Integer outbreakId;
     private String outbreakCode;
     private Integer userId;
-    private Double latitude;
-    private Double longitude;
+    private Double reallatitude;
+    private Double reallongitude;
+    private Double viewlatitude;
+    private Double viewlongitude;
     private LocalDate datesubmitted;
     private LocalDate datereceived;
-    private Integer varietyId;
     private Integer severityId;
     private Integer sourceId;
     private String severityother;
@@ -40,11 +41,12 @@ public class Outbreaks implements Serializable {
         this.outbreakId = value.outbreakId;
         this.outbreakCode = value.outbreakCode;
         this.userId = value.userId;
-        this.latitude = value.latitude;
-        this.longitude = value.longitude;
+        this.reallatitude = value.reallatitude;
+        this.reallongitude = value.reallongitude;
+        this.viewlatitude = value.viewlatitude;
+        this.viewlongitude = value.viewlongitude;
         this.datesubmitted = value.datesubmitted;
         this.datereceived = value.datereceived;
-        this.varietyId = value.varietyId;
         this.severityId = value.severityId;
         this.sourceId = value.sourceId;
         this.severityother = value.severityother;
@@ -58,11 +60,12 @@ public class Outbreaks implements Serializable {
         Integer outbreakId,
         String outbreakCode,
         Integer userId,
-        Double latitude,
-        Double longitude,
+        Double reallatitude,
+        Double reallongitude,
+        Double viewlatitude,
+        Double viewlongitude,
         LocalDate datesubmitted,
         LocalDate datereceived,
-        Integer varietyId,
         Integer severityId,
         Integer sourceId,
         String severityother,
@@ -74,11 +77,12 @@ public class Outbreaks implements Serializable {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
         this.userId = userId;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.reallatitude = reallatitude;
+        this.reallongitude = reallongitude;
+        this.viewlatitude = viewlatitude;
+        this.viewlongitude = viewlongitude;
         this.datesubmitted = datesubmitted;
         this.datereceived = datereceived;
-        this.varietyId = varietyId;
         this.severityId = severityId;
         this.sourceId = sourceId;
         this.severityother = severityother;
@@ -131,31 +135,59 @@ public class Outbreaks implements Serializable {
     }
 
     /**
-     * Getter for <code>fab.outbreaks.latitude</code>.
+     * Getter for <code>fab.outbreaks.realLatitude</code>.
      */
-    public Double getLatitude() {
-        return this.latitude;
+    public Double getReallatitude() {
+        return this.reallatitude;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.latitude</code>.
+     * Setter for <code>fab.outbreaks.realLatitude</code>.
      */
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setReallatitude(Double reallatitude) {
+        this.reallatitude = reallatitude;
     }
 
     /**
-     * Getter for <code>fab.outbreaks.longitude</code>.
+     * Getter for <code>fab.outbreaks.realLongitude</code>.
      */
-    public Double getLongitude() {
-        return this.longitude;
+    public Double getReallongitude() {
+        return this.reallongitude;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.longitude</code>.
+     * Setter for <code>fab.outbreaks.realLongitude</code>.
      */
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setReallongitude(Double reallongitude) {
+        this.reallongitude = reallongitude;
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.viewLatitude</code>.
+     */
+    public Double getViewlatitude() {
+        return this.viewlatitude;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.viewLatitude</code>.
+     */
+    public void setViewlatitude(Double viewlatitude) {
+        this.viewlatitude = viewlatitude;
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.viewLongitude</code>.
+     */
+    public Double getViewlongitude() {
+        return this.viewlongitude;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.viewLongitude</code>.
+     */
+    public void setViewlongitude(Double viewlongitude) {
+        this.viewlongitude = viewlongitude;
     }
 
     /**
@@ -184,20 +216,6 @@ public class Outbreaks implements Serializable {
      */
     public void setDatereceived(LocalDate datereceived) {
         this.datereceived = datereceived;
-    }
-
-    /**
-     * Getter for <code>fab.outbreaks.variety_id</code>.
-     */
-    public Integer getVarietyId() {
-        return this.varietyId;
-    }
-
-    /**
-     * Setter for <code>fab.outbreaks.variety_id</code>.
-     */
-    public void setVarietyId(Integer varietyId) {
-        this.varietyId = varietyId;
     }
 
     /**
@@ -325,17 +343,29 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.userId.equals(other.userId))
             return false;
-        if (this.latitude == null) {
-            if (other.latitude != null)
+        if (this.reallatitude == null) {
+            if (other.reallatitude != null)
                 return false;
         }
-        else if (!this.latitude.equals(other.latitude))
+        else if (!this.reallatitude.equals(other.reallatitude))
             return false;
-        if (this.longitude == null) {
-            if (other.longitude != null)
+        if (this.reallongitude == null) {
+            if (other.reallongitude != null)
                 return false;
         }
-        else if (!this.longitude.equals(other.longitude))
+        else if (!this.reallongitude.equals(other.reallongitude))
+            return false;
+        if (this.viewlatitude == null) {
+            if (other.viewlatitude != null)
+                return false;
+        }
+        else if (!this.viewlatitude.equals(other.viewlatitude))
+            return false;
+        if (this.viewlongitude == null) {
+            if (other.viewlongitude != null)
+                return false;
+        }
+        else if (!this.viewlongitude.equals(other.viewlongitude))
             return false;
         if (this.datesubmitted == null) {
             if (other.datesubmitted != null)
@@ -348,12 +378,6 @@ public class Outbreaks implements Serializable {
                 return false;
         }
         else if (!this.datereceived.equals(other.datereceived))
-            return false;
-        if (this.varietyId == null) {
-            if (other.varietyId != null)
-                return false;
-        }
-        else if (!this.varietyId.equals(other.varietyId))
             return false;
         if (this.severityId == null) {
             if (other.severityId != null)
@@ -407,11 +431,12 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.outbreakId == null) ? 0 : this.outbreakId.hashCode());
         result = prime * result + ((this.outbreakCode == null) ? 0 : this.outbreakCode.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
-        result = prime * result + ((this.latitude == null) ? 0 : this.latitude.hashCode());
-        result = prime * result + ((this.longitude == null) ? 0 : this.longitude.hashCode());
+        result = prime * result + ((this.reallatitude == null) ? 0 : this.reallatitude.hashCode());
+        result = prime * result + ((this.reallongitude == null) ? 0 : this.reallongitude.hashCode());
+        result = prime * result + ((this.viewlatitude == null) ? 0 : this.viewlatitude.hashCode());
+        result = prime * result + ((this.viewlongitude == null) ? 0 : this.viewlongitude.hashCode());
         result = prime * result + ((this.datesubmitted == null) ? 0 : this.datesubmitted.hashCode());
         result = prime * result + ((this.datereceived == null) ? 0 : this.datereceived.hashCode());
-        result = prime * result + ((this.varietyId == null) ? 0 : this.varietyId.hashCode());
         result = prime * result + ((this.severityId == null) ? 0 : this.severityId.hashCode());
         result = prime * result + ((this.sourceId == null) ? 0 : this.sourceId.hashCode());
         result = prime * result + ((this.severityother == null) ? 0 : this.severityother.hashCode());
@@ -429,11 +454,12 @@ public class Outbreaks implements Serializable {
         sb.append(outbreakId);
         sb.append(", ").append(outbreakCode);
         sb.append(", ").append(userId);
-        sb.append(", ").append(latitude);
-        sb.append(", ").append(longitude);
+        sb.append(", ").append(reallatitude);
+        sb.append(", ").append(reallongitude);
+        sb.append(", ").append(viewlatitude);
+        sb.append(", ").append(viewlongitude);
         sb.append(", ").append(datesubmitted);
         sb.append(", ").append(datereceived);
-        sb.append(", ").append(varietyId);
         sb.append(", ").append(severityId);
         sb.append(", ").append(sourceId);
         sb.append(", ").append(severityother);

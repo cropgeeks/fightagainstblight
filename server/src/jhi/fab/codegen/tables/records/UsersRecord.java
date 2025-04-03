@@ -33,31 +33,45 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> {
     }
 
     /**
+     * Setter for <code>fab.users.user_name</code>.
+     */
+    public void setUserName(String value) {
+        set(1, value);
+    }
+
+    /**
+     * Getter for <code>fab.users.user_name</code>.
+     */
+    public String getUserName() {
+        return (String) get(1);
+    }
+
+    /**
      * Setter for <code>fab.users.email</code>.
      */
     public void setEmail(String value) {
-        set(1, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>fab.users.email</code>.
      */
     public String getEmail() {
-        return (String) get(1);
+        return (String) get(2);
     }
 
     /**
      * Setter for <code>fab.users.is_admin</code>.
      */
     public void setIsAdmin(Byte value) {
-        set(2, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>fab.users.is_admin</code>.
      */
     public Byte getIsAdmin() {
-        return (Byte) get(2);
+        return (Byte) get(3);
     }
 
     // -------------------------------------------------------------------------
@@ -83,10 +97,11 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> {
     /**
      * Create a detached, initialised UsersRecord
      */
-    public UsersRecord(Integer userId, String email, Byte isAdmin) {
+    public UsersRecord(Integer userId, String userName, String email, Byte isAdmin) {
         super(Users.USERS);
 
         setUserId(userId);
+        setUserName(userName);
         setEmail(email);
         setIsAdmin(isAdmin);
         resetTouchedOnNotNull();
@@ -100,6 +115,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> {
 
         if (value != null) {
             setUserId(value.getUserId());
+            setUserName(value.getUserName());
             setEmail(value.getEmail());
             setIsAdmin(value.getIsAdmin());
             resetTouchedOnNotNull();

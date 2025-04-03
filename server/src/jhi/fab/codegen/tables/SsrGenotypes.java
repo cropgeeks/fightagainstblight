@@ -150,7 +150,7 @@ public class SsrGenotypes extends TableImpl<SsrGenotypesRecord> {
      */
     public SubsamplesPath subsamples() {
         if (_subsamples == null)
-            _subsamples = new SubsamplesPath(this, null, Keys.SUBSAMPLES_IBFK_1.getInverseKey());
+            _subsamples = new SubsamplesPath(this, null, Keys.GENOTYPES.getInverseKey());
 
         return _subsamples;
     }

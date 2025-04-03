@@ -8,7 +8,7 @@ import java.util.Collection;
 
 import jhi.fab.codegen.Fab;
 import jhi.fab.codegen.Keys;
-import jhi.fab.codegen.tables.Outbreaks.OutbreaksPath;
+import jhi.fab.codegen.tables.Subsamples.SubsamplesPath;
 import jhi.fab.codegen.tables.records.VarietiesRecord;
 
 import org.jooq.Condition;
@@ -136,17 +136,17 @@ public class Varieties extends TableImpl<VarietiesRecord> {
         return Keys.KEY_VARIETIES_PRIMARY;
     }
 
-    private transient OutbreaksPath _outbreaks;
+    private transient SubsamplesPath _subsamples;
 
     /**
-     * Get the implicit to-many join path to the <code>fab.outbreaks</code>
+     * Get the implicit to-many join path to the <code>fab.subsamples</code>
      * table
      */
-    public OutbreaksPath outbreaks() {
-        if (_outbreaks == null)
-            _outbreaks = new OutbreaksPath(this, null, Keys.OUTBREAKS_IBFK_2.getInverseKey());
+    public SubsamplesPath subsamples() {
+        if (_subsamples == null)
+            _subsamples = new SubsamplesPath(this, null, Keys.VARIETIES.getInverseKey());
 
-        return _outbreaks;
+        return _subsamples;
     }
 
     @Override

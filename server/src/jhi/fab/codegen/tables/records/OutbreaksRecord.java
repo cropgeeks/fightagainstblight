@@ -64,171 +64,185 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
     }
 
     /**
-     * Setter for <code>fab.outbreaks.latitude</code>.
+     * Setter for <code>fab.outbreaks.realLatitude</code>.
      */
-    public void setLatitude(Double value) {
+    public void setReallatitude(Double value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>fab.outbreaks.latitude</code>.
+     * Getter for <code>fab.outbreaks.realLatitude</code>.
      */
-    public Double getLatitude() {
+    public Double getReallatitude() {
         return (Double) get(3);
     }
 
     /**
-     * Setter for <code>fab.outbreaks.longitude</code>.
+     * Setter for <code>fab.outbreaks.realLongitude</code>.
      */
-    public void setLongitude(Double value) {
+    public void setReallongitude(Double value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>fab.outbreaks.longitude</code>.
+     * Getter for <code>fab.outbreaks.realLongitude</code>.
      */
-    public Double getLongitude() {
+    public Double getReallongitude() {
         return (Double) get(4);
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.viewLatitude</code>.
+     */
+    public void setViewlatitude(Double value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.viewLatitude</code>.
+     */
+    public Double getViewlatitude() {
+        return (Double) get(5);
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.viewLongitude</code>.
+     */
+    public void setViewlongitude(Double value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.viewLongitude</code>.
+     */
+    public Double getViewlongitude() {
+        return (Double) get(6);
     }
 
     /**
      * Setter for <code>fab.outbreaks.dateSubmitted</code>.
      */
     public void setDatesubmitted(LocalDate value) {
-        set(5, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>fab.outbreaks.dateSubmitted</code>.
      */
     public LocalDate getDatesubmitted() {
-        return (LocalDate) get(5);
+        return (LocalDate) get(7);
     }
 
     /**
      * Setter for <code>fab.outbreaks.dateReceived</code>.
      */
     public void setDatereceived(LocalDate value) {
-        set(6, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>fab.outbreaks.dateReceived</code>.
      */
     public LocalDate getDatereceived() {
-        return (LocalDate) get(6);
-    }
-
-    /**
-     * Setter for <code>fab.outbreaks.variety_id</code>.
-     */
-    public void setVarietyId(Integer value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>fab.outbreaks.variety_id</code>.
-     */
-    public Integer getVarietyId() {
-        return (Integer) get(7);
+        return (LocalDate) get(8);
     }
 
     /**
      * Setter for <code>fab.outbreaks.severity_id</code>.
      */
     public void setSeverityId(Integer value) {
-        set(8, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>fab.outbreaks.severity_id</code>.
      */
     public Integer getSeverityId() {
-        return (Integer) get(8);
+        return (Integer) get(9);
     }
 
     /**
      * Setter for <code>fab.outbreaks.source_id</code>.
      */
     public void setSourceId(Integer value) {
-        set(9, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>fab.outbreaks.source_id</code>.
      */
     public Integer getSourceId() {
-        return (Integer) get(9);
+        return (Integer) get(10);
     }
 
     /**
      * Setter for <code>fab.outbreaks.severityOther</code>.
      */
     public void setSeverityother(String value) {
-        set(10, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>fab.outbreaks.severityOther</code>.
      */
     public String getSeverityother() {
-        return (String) get(10);
+        return (String) get(11);
     }
 
     /**
      * Setter for <code>fab.outbreaks.sourceOther</code>.
      */
     public void setSourceother(String value) {
-        set(11, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>fab.outbreaks.sourceOther</code>.
      */
     public String getSourceother() {
-        return (String) get(11);
+        return (String) get(12);
     }
 
     /**
      * Setter for <code>fab.outbreaks.comments</code>.
      */
     public void setComments(String value) {
-        set(12, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>fab.outbreaks.comments</code>.
      */
     public String getComments() {
-        return (String) get(12);
+        return (String) get(13);
     }
 
     /**
      * Setter for <code>fab.outbreaks.additionalInfo</code>.
      */
     public void setAdditionalinfo(String value) {
-        set(13, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>fab.outbreaks.additionalInfo</code>.
      */
     public String getAdditionalinfo() {
-        return (String) get(13);
+        return (String) get(14);
     }
 
     /**
      * Setter for <code>fab.outbreaks.status</code>.
      */
     public void setStatus(OutbreaksStatus value) {
-        set(14, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>fab.outbreaks.status</code>.
      */
     public OutbreaksStatus getStatus() {
-        return (OutbreaksStatus) get(14);
+        return (OutbreaksStatus) get(15);
     }
 
     // -------------------------------------------------------------------------
@@ -254,17 +268,18 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
     /**
      * Create a detached, initialised OutbreaksRecord
      */
-    public OutbreaksRecord(Integer outbreakId, String outbreakCode, Integer userId, Double latitude, Double longitude, LocalDate datesubmitted, LocalDate datereceived, Integer varietyId, Integer severityId, Integer sourceId, String severityother, String sourceother, String comments, String additionalinfo, OutbreaksStatus status) {
+    public OutbreaksRecord(Integer outbreakId, String outbreakCode, Integer userId, Double reallatitude, Double reallongitude, Double viewlatitude, Double viewlongitude, LocalDate datesubmitted, LocalDate datereceived, Integer severityId, Integer sourceId, String severityother, String sourceother, String comments, String additionalinfo, OutbreaksStatus status) {
         super(Outbreaks.OUTBREAKS);
 
         setOutbreakId(outbreakId);
         setOutbreakCode(outbreakCode);
         setUserId(userId);
-        setLatitude(latitude);
-        setLongitude(longitude);
+        setReallatitude(reallatitude);
+        setReallongitude(reallongitude);
+        setViewlatitude(viewlatitude);
+        setViewlongitude(viewlongitude);
         setDatesubmitted(datesubmitted);
         setDatereceived(datereceived);
-        setVarietyId(varietyId);
         setSeverityId(severityId);
         setSourceId(sourceId);
         setSeverityother(severityother);
@@ -285,11 +300,12 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
             setOutbreakId(value.getOutbreakId());
             setOutbreakCode(value.getOutbreakCode());
             setUserId(value.getUserId());
-            setLatitude(value.getLatitude());
-            setLongitude(value.getLongitude());
+            setReallatitude(value.getReallatitude());
+            setReallongitude(value.getReallongitude());
+            setViewlatitude(value.getViewlatitude());
+            setViewlongitude(value.getViewlongitude());
             setDatesubmitted(value.getDatesubmitted());
             setDatereceived(value.getDatereceived());
-            setVarietyId(value.getVarietyId());
             setSeverityId(value.getSeverityId());
             setSourceId(value.getSourceId());
             setSeverityother(value.getSeverityother());

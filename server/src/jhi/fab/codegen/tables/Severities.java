@@ -144,7 +144,7 @@ public class Severities extends TableImpl<SeveritiesRecord> {
      */
     public OutbreaksPath outbreaks() {
         if (_outbreaks == null)
-            _outbreaks = new OutbreaksPath(this, null, Keys.OUTBREAKS_IBFK_4.getInverseKey());
+            _outbreaks = new OutbreaksPath(this, null, Keys.SEVERITY.getInverseKey());
 
         return _outbreaks;
     }

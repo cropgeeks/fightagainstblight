@@ -10,21 +10,18 @@ import java.util.Collection;
 import java.util.List;
 
 import jhi.fab.codegen.Fab;
-import jhi.fab.codegen.Indexes;
 import jhi.fab.codegen.Keys;
 import jhi.fab.codegen.enums.OutbreaksStatus;
 import jhi.fab.codegen.tables.Severities.SeveritiesPath;
 import jhi.fab.codegen.tables.Sources.SourcesPath;
 import jhi.fab.codegen.tables.Subsamples.SubsamplesPath;
 import jhi.fab.codegen.tables.Users.UsersPath;
-import jhi.fab.codegen.tables.Varieties.VarietiesPath;
 import jhi.fab.codegen.tables.records.OutbreaksRecord;
 
 import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
-import org.jooq.Index;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -81,14 +78,24 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     public final TableField<OutbreaksRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>fab.outbreaks.latitude</code>.
+     * The column <code>fab.outbreaks.realLatitude</code>.
      */
-    public final TableField<OutbreaksRecord, Double> LATITUDE = createField(DSL.name("latitude"), SQLDataType.FLOAT, this, "");
+    public final TableField<OutbreaksRecord, Double> REALLATITUDE = createField(DSL.name("realLatitude"), SQLDataType.FLOAT, this, "");
 
     /**
-     * The column <code>fab.outbreaks.longitude</code>.
+     * The column <code>fab.outbreaks.realLongitude</code>.
      */
-    public final TableField<OutbreaksRecord, Double> LONGITUDE = createField(DSL.name("longitude"), SQLDataType.FLOAT, this, "");
+    public final TableField<OutbreaksRecord, Double> REALLONGITUDE = createField(DSL.name("realLongitude"), SQLDataType.FLOAT, this, "");
+
+    /**
+     * The column <code>fab.outbreaks.viewLatitude</code>.
+     */
+    public final TableField<OutbreaksRecord, Double> VIEWLATITUDE = createField(DSL.name("viewLatitude"), SQLDataType.FLOAT, this, "");
+
+    /**
+     * The column <code>fab.outbreaks.viewLongitude</code>.
+     */
+    public final TableField<OutbreaksRecord, Double> VIEWLONGITUDE = createField(DSL.name("viewLongitude"), SQLDataType.FLOAT, this, "");
 
     /**
      * The column <code>fab.outbreaks.dateSubmitted</code>.
@@ -99,11 +106,6 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
      * The column <code>fab.outbreaks.dateReceived</code>.
      */
     public final TableField<OutbreaksRecord, LocalDate> DATERECEIVED = createField(DSL.name("dateReceived"), SQLDataType.LOCALDATE, this, "");
-
-    /**
-     * The column <code>fab.outbreaks.variety_id</code>.
-     */
-    public final TableField<OutbreaksRecord, Integer> VARIETY_ID = createField(DSL.name("variety_id"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>fab.outbreaks.severity_id</code>.
@@ -208,11 +210,6 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     }
 
     @Override
-    public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.OUTBREAKS_SOURCE_ID);
-    }
-
-    @Override
     public Identity<OutbreaksRecord, Integer> getIdentity() {
         return (Identity<OutbreaksRecord, Integer>) super.getIdentity();
     }
@@ -224,43 +221,7 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
 
     @Override
     public List<ForeignKey<OutbreaksRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.OUTBREAKS_IBFK_1, Keys.OUTBREAKS_IBFK_2, Keys.OUTBREAKS_IBFK_3, Keys.OUTBREAKS_IBFK_4);
-    }
-
-    private transient UsersPath _users;
-
-    /**
-     * Get the implicit join path to the <code>fab.users</code> table.
-     */
-    public UsersPath users() {
-        if (_users == null)
-            _users = new UsersPath(this, Keys.OUTBREAKS_IBFK_1, null);
-
-        return _users;
-    }
-
-    private transient VarietiesPath _varieties;
-
-    /**
-     * Get the implicit join path to the <code>fab.varieties</code> table.
-     */
-    public VarietiesPath varieties() {
-        if (_varieties == null)
-            _varieties = new VarietiesPath(this, Keys.OUTBREAKS_IBFK_2, null);
-
-        return _varieties;
-    }
-
-    private transient SourcesPath _sources;
-
-    /**
-     * Get the implicit join path to the <code>fab.sources</code> table.
-     */
-    public SourcesPath sources() {
-        if (_sources == null)
-            _sources = new SourcesPath(this, Keys.OUTBREAKS_IBFK_3, null);
-
-        return _sources;
+        return Arrays.asList(Keys.SEVERITY, Keys.SOURCE, Keys.USER);
     }
 
     private transient SeveritiesPath _severities;
@@ -270,9 +231,33 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
      */
     public SeveritiesPath severities() {
         if (_severities == null)
-            _severities = new SeveritiesPath(this, Keys.OUTBREAKS_IBFK_4, null);
+            _severities = new SeveritiesPath(this, Keys.SEVERITY, null);
 
         return _severities;
+    }
+
+    private transient SourcesPath _sources;
+
+    /**
+     * Get the implicit join path to the <code>fab.sources</code> table.
+     */
+    public SourcesPath sources() {
+        if (_sources == null)
+            _sources = new SourcesPath(this, Keys.SOURCE, null);
+
+        return _sources;
+    }
+
+    private transient UsersPath _users;
+
+    /**
+     * Get the implicit join path to the <code>fab.users</code> table.
+     */
+    public UsersPath users() {
+        if (_users == null)
+            _users = new UsersPath(this, Keys.USER, null);
+
+        return _users;
     }
 
     private transient SubsamplesPath _subsamples;
@@ -283,7 +268,7 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
      */
     public SubsamplesPath subsamples() {
         if (_subsamples == null)
-            _subsamples = new SubsamplesPath(this, null, Keys.SUBSAMPLES_IBFK_2.getInverseKey());
+            _subsamples = new SubsamplesPath(this, null, Keys.OUTBREAKS.getInverseKey());
 
         return _subsamples;
     }

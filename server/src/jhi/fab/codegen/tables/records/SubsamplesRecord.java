@@ -35,59 +35,101 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
     }
 
     /**
+     * Setter for <code>fab.subsamples.subsample_code</code>.
+     */
+    public void setSubsampleCode(String value) {
+        set(1, value);
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.subsample_code</code>.
+     */
+    public String getSubsampleCode() {
+        return (String) get(1);
+    }
+
+    /**
      * Setter for <code>fab.subsamples.outbreak_id</code>.
      */
     public void setOutbreakId(Integer value) {
-        set(1, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>fab.subsamples.outbreak_id</code>.
      */
     public Integer getOutbreakId() {
-        return (Integer) get(1);
+        return (Integer) get(2);
     }
 
     /**
      * Setter for <code>fab.subsamples.genotype_id</code>.
      */
     public void setGenotypeId(Integer value) {
-        set(2, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>fab.subsamples.genotype_id</code>.
      */
     public Integer getGenotypeId() {
-        return (Integer) get(2);
+        return (Integer) get(3);
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.variety_id</code>.
+     */
+    public void setVarietyId(Integer value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.variety_id</code>.
+     */
+    public Integer getVarietyId() {
+        return (Integer) get(4);
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.material</code>.
+     */
+    public void setMaterial(String value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.material</code>.
+     */
+    public String getMaterial() {
+        return (String) get(5);
     }
 
     /**
      * Setter for <code>fab.subsamples.dateGenotyped</code>.
      */
     public void setDategenotyped(LocalDate value) {
-        set(3, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>fab.subsamples.dateGenotyped</code>.
      */
     public LocalDate getDategenotyped() {
-        return (LocalDate) get(3);
+        return (LocalDate) get(6);
     }
 
     /**
      * Setter for <code>fab.subsamples.comments</code>.
      */
     public void setComments(String value) {
-        set(4, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>fab.subsamples.comments</code>.
      */
     public String getComments() {
-        return (String) get(4);
+        return (String) get(7);
     }
 
     // -------------------------------------------------------------------------
@@ -113,12 +155,15 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
     /**
      * Create a detached, initialised SubsamplesRecord
      */
-    public SubsamplesRecord(Integer subsampleId, Integer outbreakId, Integer genotypeId, LocalDate dategenotyped, String comments) {
+    public SubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, Integer varietyId, String material, LocalDate dategenotyped, String comments) {
         super(Subsamples.SUBSAMPLES);
 
         setSubsampleId(subsampleId);
+        setSubsampleCode(subsampleCode);
         setOutbreakId(outbreakId);
         setGenotypeId(genotypeId);
+        setVarietyId(varietyId);
+        setMaterial(material);
         setDategenotyped(dategenotyped);
         setComments(comments);
         resetTouchedOnNotNull();
@@ -132,8 +177,11 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
 
         if (value != null) {
             setSubsampleId(value.getSubsampleId());
+            setSubsampleCode(value.getSubsampleCode());
             setOutbreakId(value.getOutbreakId());
             setGenotypeId(value.getGenotypeId());
+            setVarietyId(value.getVarietyId());
+            setMaterial(value.getMaterial());
             setDategenotyped(value.getDategenotyped());
             setComments(value.getComments());
             resetTouchedOnNotNull();

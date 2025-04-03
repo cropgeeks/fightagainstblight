@@ -150,7 +150,7 @@ public class Sources extends TableImpl<SourcesRecord> {
      */
     public OutbreaksPath outbreaks() {
         if (_outbreaks == null)
-            _outbreaks = new OutbreaksPath(this, null, Keys.OUTBREAKS_IBFK_3.getInverseKey());
+            _outbreaks = new OutbreaksPath(this, null, Keys.SOURCE.getInverseKey());
 
         return _outbreaks;
     }
