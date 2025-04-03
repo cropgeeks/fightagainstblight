@@ -7,6 +7,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.*;
 import java.util.stream.*;
+import jhi.fab.codegen.enums.*;
 
 import org.jooq.*;
 import org.jooq.impl.*;
@@ -15,14 +16,19 @@ import jhi.fab.dto.*;
 import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Severities.SEVERITIES;
 import static jhi.fab.codegen.tables.Sources.SOURCES;
-import static jhi.fab.codegen.tables.Varieties.VARIETIES;
+import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
 
 @Path("/outbreaks")
 public class OutbreaksResource
 {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getOutbreaks(@HeaderParam("Authorization") String authHeader)
+	public Response getOutbreaks(@HeaderParam("Authorization") String authHeader,
+								 @QueryParam("year") Integer year,
+								 @QueryParam("status") String status,
+								 @QueryParam("source") Integer source,
+								 @QueryParam("severity") Integer severity,
+								 @QueryParam("variety") Integer variety)
 		throws SQLException
 	{
 		// You don't *need* a token for this call, but if we have one (and a
@@ -35,12 +41,28 @@ public class OutbreaksResource
 //			List<Outbreaks> list = context.selectFrom(OUTBREAKS)
 //				.fetchInto(Outbreaks.class);
 
-			List<OutbreaksDTO> results = context.select()
+			var query = context.selectDistinct(OUTBREAKS.fields())
+				.select(SEVERITIES.fields())
+				.select(SOURCES.fields())
 				.from(OUTBREAKS)
-				.innerJoin(VARIETIES).on(OUTBREAKS.VARIETY_ID.eq(VARIETIES.VARIETY_ID))
-				.innerJoin(SEVERITIES).on(OUTBREAKS.SEVERITY_ID.eq(SEVERITIES.SEVERITY_ID))
-//				.innerJoin(SOURCES).on(SOURCES.SOURCE_ID.eq(SOURCES.SOURCE_ID))
-				.fetch()
+				.join(SUBSAMPLES).on(SUBSAMPLES.OUTBREAK_ID.eq(OUTBREAKS.OUTBREAK_ID))
+				.join(SEVERITIES).on(OUTBREAKS.SEVERITY_ID.eq(SEVERITIES.SEVERITY_ID))
+				.join(SOURCES).on(OUTBREAKS.SOURCE_ID.eq(SOURCES.SOURCE_ID));
+
+			if (year != null)
+				query.where(DSL.year(OUTBREAKS.DATESUBMITTED).eq(year));
+			if (status != null)
+				query.where(OUTBREAKS.STATUS.eq(OutbreaksStatus.lookupLiteral(status)));
+			if (source != null)
+				query.where(OUTBREAKS.SOURCE_ID.eq(source));
+			if (severity != null)
+				query.where(OUTBREAKS.SEVERITY_ID.eq(severity));
+			if (variety != null)
+				query.where(SUBSAMPLES.VARIETY_ID.eq(variety));
+
+			query.groupBy(OUTBREAKS.OUTBREAK_ID);
+
+			List<OutbreaksDTO> results = query.fetch()
 				.stream()
 				.map(record -> {
 					return mapDTO(record, user);
@@ -72,9 +94,8 @@ public class OutbreaksResource
 
 			org.jooq.Record record = context.select()
 				.from(OUTBREAKS)
-				.innerJoin(VARIETIES).on(OUTBREAKS.VARIETY_ID.eq(VARIETIES.VARIETY_ID))
 				.innerJoin(SEVERITIES).on(OUTBREAKS.SEVERITY_ID.eq(SEVERITIES.SEVERITY_ID))
-//				.innerJoin(SOURCES).on(SOURCES.SOURCE_ID.eq(SOURCES.SOURCE_ID))
+				.innerJoin(SOURCES).on(SOURCES.SOURCE_ID.eq(SOURCES.SOURCE_ID))
 				.where(OUTBREAKS.OUTBREAK_ID.eq(id))
 				.fetchOne();
 
@@ -91,14 +112,14 @@ public class OutbreaksResource
 		OutbreaksDTO dto = new OutbreaksDTO();
 		dto.setOutbreakId(record.get(OUTBREAKS.OUTBREAK_ID));
 		dto.setOutbreakCode(record.get(OUTBREAKS.OUTBREAK_CODE));
+		dto.setViewlongitude(record.get(OUTBREAKS.VIEWLATITUDE));
+		dto.setViewlatitude(record.get(OUTBREAKS.VIEWLONGITUDE));
 		dto.setDatesubmitted(record.get(OUTBREAKS.DATESUBMITTED));
 		dto.setDatereceived(record.get(OUTBREAKS.DATERECEIVED));
-		dto.setVarietyId(record.get(VARIETIES.VARIETY_ID));
-		dto.setVarietyName(record.get(VARIETIES.VARIETY_NAME));
 		dto.setSeverityId(record.get(SEVERITIES.SEVERITY_ID));
 		dto.setSeverityName(record.get(SEVERITIES.SEVERITY_NAME));
-//		dto.setSourceId(record.get(SOURCES.SOURCE_ID));
-//		dto.setSourceName(record.get(SOURCES.SOURCE_NAME));
+		dto.setSourceId(record.get(SOURCES.SOURCE_ID));
+		dto.setSourceName(record.get(SOURCES.SOURCE_NAME));
 		dto.setSeverityother(record.get(OUTBREAKS.SEVERITYOTHER));
 		dto.setSourceother(record.get(OUTBREAKS.SOURCEOTHER));
 		dto.setComments(record.get(OUTBREAKS.COMMENTS));
@@ -109,8 +130,12 @@ public class OutbreaksResource
 		if (user.getUserID() == record.get(OUTBREAKS.USER_ID) || user.isAdmin())
 		{
 			dto.setUserId(record.get(OUTBREAKS.USER_ID));
-			dto.setLatitude(record.get(OUTBREAKS.LATITUDE));
-			dto.setLongitude(record.get(OUTBREAKS.LONGITUDE));
+			dto.setReallatitude(record.get(OUTBREAKS.REALLATITUDE));
+			dto.setReallongitude(record.get(OUTBREAKS.REALLONGITUDE));
+
+			// Overwrite the "view" coordinates with the real position
+			dto.setViewlatitude(record.get(OUTBREAKS.REALLATITUDE));
+			dto.setViewlongitude(record.get(OUTBREAKS.REALLONGITUDE));
 		}
 
 		return dto;
