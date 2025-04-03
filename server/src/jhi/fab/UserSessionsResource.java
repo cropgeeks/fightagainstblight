@@ -18,7 +18,7 @@ import static jhi.fab.codegen.tables.Users.USERS;
 @Path("/login")
 public class UserSessionsResource
 {
-	@GET
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response login(@QueryParam("email") String email)
 		throws Exception, SQLException
