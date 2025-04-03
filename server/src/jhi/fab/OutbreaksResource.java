@@ -95,7 +95,7 @@ public class OutbreaksResource
 			org.jooq.Record record = context.select()
 				.from(OUTBREAKS)
 				.innerJoin(SEVERITIES).on(OUTBREAKS.SEVERITY_ID.eq(SEVERITIES.SEVERITY_ID))
-				.innerJoin(SOURCES).on(SOURCES.SOURCE_ID.eq(SOURCES.SOURCE_ID))
+				.innerJoin(SOURCES).on(OUTBREAKS.SOURCE_ID.eq(SOURCES.SOURCE_ID))
 				.where(OUTBREAKS.OUTBREAK_ID.eq(id))
 				.fetchOne();
 
