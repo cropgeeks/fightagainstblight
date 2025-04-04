@@ -2,7 +2,6 @@ package jhi.fab;
 
 import java.sql.*;
 
-import jakarta.ws.rs.core.*;
 import java.time.*;
 
 import org.jooq.*;
@@ -16,7 +15,6 @@ class User
 {
 	private static int OK = 200;
 	private static int UNAUTHORIZED = 401;
-	private static int FORBIDDEN = 403;
 	private int status = UNAUTHORIZED;
 
 	private int userID = -1;
@@ -71,6 +69,7 @@ class User
 						if (user != null)
 						{
 							System.out.println("Token linked to " + user.getEmail());
+							userID = user.getUserId();
 
 							// Are they an admin?
 							isAdmin = user.getIsAdmin() != 0;
@@ -90,15 +89,5 @@ class User
 
 	boolean isOK() {
 		return status == OK;
-	}
-
-	Response returnResponse()
-	{
-		if (status == UNAUTHORIZED)
-			return Response.status(Response.Status.UNAUTHORIZED).build();
-		else if (status == FORBIDDEN)
-			return Response.status(Response.Status.FORBIDDEN).build();
-
-		return Response.status(Response.Status.OK).build();
 	}
 }
