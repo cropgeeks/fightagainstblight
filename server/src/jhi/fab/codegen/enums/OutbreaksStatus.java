@@ -15,6 +15,8 @@ import org.jooq.Schema;
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public enum OutbreaksStatus implements EnumType {
 
+    pending("pending"),
+
     confirmed("confirmed"),
 
     negative("negative"),
