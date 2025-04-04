@@ -1,17 +1,18 @@
 package jhi.fab;
 
 import java.sql.*;
+import java.time.*;
 import java.util.*;
+import java.util.stream.*;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.*;
-import java.util.stream.*;
-import jhi.fab.codegen.enums.*;
 
 import org.jooq.*;
 import org.jooq.impl.*;
 
+import jhi.fab.codegen.enums.*;
 import jhi.fab.dto.*;
 import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Severities.SEVERITIES;
@@ -104,6 +105,57 @@ public class OutbreaksResource
 
 			else
 				return Response.status(Response.Status.NOT_FOUND).build();
+		}
+	}
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response postOutbreaks(@HeaderParam("Authorization") String authHeader,
+								  @QueryParam("latitude") Double latitude,
+								  @QueryParam("longitude") Double longitude,
+								  @QueryParam("source") Integer source,
+								  @QueryParam("sourceOther") String sourceOther,
+								  @QueryParam("severity") Integer severity,
+								  @QueryParam("severityOther") String severityOther,
+								  @QueryParam("comments") String comments,
+								  @QueryParam("additionalInfo") String additionalInfo,
+								  @QueryParam("variety") Integer variety)
+		throws SQLException
+	{
+		User user = new User(authHeader);
+
+		// Must be logged in to create a new outbreak
+		if (user.isOK() == false)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+
+		System.out.println("UserID is " + user.getUserID());
+
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+
+			context.insertInto(OUTBREAKS)
+				.set(OUTBREAKS.OUTBREAK_CODE, "FAB-NEW")
+				.set(OUTBREAKS.USER_ID, user.getUserID())
+				.set(OUTBREAKS.REALLATITUDE, latitude)
+				.set(OUTBREAKS.REALLONGITUDE, longitude)
+				.set(OUTBREAKS.DATESUBMITTED, LocalDate.now())
+				.set(OUTBREAKS.STATUS, OutbreaksStatus.lookupLiteral("pending"))
+				.set(OUTBREAKS.SOURCE_ID, source)
+				.set(OUTBREAKS.SOURCEOTHER, sourceOther)
+				.set(OUTBREAKS.SEVERITY_ID, severity)
+				.set(OUTBREAKS.SEVERITYOTHER, severityOther)
+				.set(OUTBREAKS.COMMENTS, comments)
+				.set(OUTBREAKS.ADDITIONALINFO, additionalInfo)
+				.execute();
+
+			// TODO: Work out outbreak code as an increment from the last entry
+			// TODO: Create viewLat/Long
+			// TODO: Create associated subsamples entries at the same time?
+
+			// TODO: Probably want to wrap the outbreak ID up for return so the
+			// UI can then jump to the new page for it
+			return Response.ok().build();
 		}
 	}
 
