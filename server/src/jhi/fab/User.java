@@ -1,7 +1,6 @@
 package jhi.fab;
 
 import java.sql.*;
-
 import java.time.*;
 
 import org.jooq.*;

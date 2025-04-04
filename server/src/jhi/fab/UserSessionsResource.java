@@ -1,12 +1,12 @@
 package jhi.fab;
 
 import java.sql.*;
+import java.time.*;
 import java.util.*;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.*;
-import java.time.*;
 
 import org.jooq.*;
 import org.jooq.impl.*;

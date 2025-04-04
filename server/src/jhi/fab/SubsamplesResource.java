@@ -2,21 +2,21 @@ package jhi.fab;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.*;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.*;
-import java.util.stream.*;
 
 import org.jooq.*;
 import org.jooq.impl.*;
 
 import jhi.fab.dto.*;
+import jhi.fab.codegen.tables.pojos.*;
 import static jhi.fab.codegen.tables.SsrGenotypes.SSR_GENOTYPES;
 import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
 import static jhi.fab.codegen.tables.Varieties.VARIETIES;
-import jhi.fab.codegen.tables.pojos.*;
 
 @Path("/subsamples")
 public class SubsamplesResource
