@@ -1,6 +1,7 @@
 package jhi.fab;
 
 import java.sql.*;
+import java.text.*;
 import java.time.*;
 import java.util.*;
 import java.util.stream.*;
@@ -25,11 +26,11 @@ public class OutbreaksResource
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getOutbreaks(@HeaderParam("Authorization") String authHeader,
-								 @QueryParam("year") Integer year,
-								 @QueryParam("status") String status,
-								 @QueryParam("source") Integer source,
-								 @QueryParam("severity") Integer severity,
-								 @QueryParam("variety") Integer variety)
+		@QueryParam("year") Integer year,
+		@QueryParam("status") String status,
+		@QueryParam("source") Integer source,
+		@QueryParam("severity") Integer severity,
+		@QueryParam("variety") Integer variety)
 		throws SQLException
 	{
 		// You don't *need* a token for this call, but if we have one (and a
@@ -119,16 +120,16 @@ public class OutbreaksResource
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response postOutbreaks(@HeaderParam("Authorization") String authHeader,
-								  @QueryParam("latitude") Double latitude,
-								  @QueryParam("longitude") Double longitude,
-								  @QueryParam("source") Integer source,
-								  @QueryParam("sourceOther") String sourceOther,
-								  @QueryParam("severity") Integer severity,
-								  @QueryParam("severityOther") String severityOther,
-								  @QueryParam("comments") String comments,
-								  @QueryParam("additionalInfo") String additionalInfo,
-								  @QueryParam("variety") Integer variety)
+	public synchronized Response postOutbreaks(@HeaderParam("Authorization") String authHeader,
+		@QueryParam("latitude") Double latitude,
+		@QueryParam("longitude") Double longitude,
+		@QueryParam("source") Integer source,
+		@QueryParam("sourceOther") String sourceOther,
+		@QueryParam("severity") Integer severity,
+		@QueryParam("severityOther") String severityOther,
+		@QueryParam("comments") String comments,
+		@QueryParam("additionalInfo") String additionalInfo,
+		@QueryParam("variety") Integer variety)
 		throws SQLException
 	{
 		User user = new User(authHeader);
@@ -143,8 +144,22 @@ public class OutbreaksResource
 		{
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
 
+			// Work out what the next ID code will be
+			int[] nextID = {0};
+			context.selectFrom(OUTBREAKS)
+				.forEach(outbreakRecord -> {
+					int code = Integer.parseInt(outbreakRecord.getOutbreakCode().substring(7));
+					nextID[0] = Math.max(code, nextID[0]);
+				});
+
+			// And format (FABYY_0000ID) where YY is 25 in the case of 2025
+			String code = "FAB"
+				+ ("" + LocalDate.now().getYear()).substring(2) + "_"
+				+ new DecimalFormat("000000").format(nextID[0]+1);
+
+
 			context.insertInto(OUTBREAKS)
-				.set(OUTBREAKS.OUTBREAK_CODE, "FAB-NEW")
+				.set(OUTBREAKS.OUTBREAK_CODE, code)
 				.set(OUTBREAKS.USER_ID, user.getUserID())
 				.set(OUTBREAKS.REAL_LATITUDE, latitude)
 				.set(OUTBREAKS.REAL_LONGITUDE, longitude)
@@ -158,7 +173,6 @@ public class OutbreaksResource
 				.set(OUTBREAKS.ADDITIONAL_INFO, additionalInfo)
 				.execute();
 
-			// TODO: Work out outbreak code as an increment from the last entry
 			// TODO: Create viewLat/Long
 			// TODO: Create associated subsamples entries at the same time?
 
