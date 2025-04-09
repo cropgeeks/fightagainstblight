@@ -21,18 +21,18 @@ public class Outbreaks implements Serializable {
     private Integer outbreakId;
     private String outbreakCode;
     private Integer userId;
-    private Double reallatitude;
-    private Double reallongitude;
-    private Double viewlatitude;
-    private Double viewlongitude;
-    private LocalDate datesubmitted;
-    private LocalDate datereceived;
+    private Double realLatitude;
+    private Double realLongitude;
+    private Double viewLatitude;
+    private Double viewLongitude;
+    private LocalDate dateSubmitted;
+    private LocalDate dateReceived;
     private Integer severityId;
     private Integer sourceId;
-    private String severityother;
-    private String sourceother;
+    private String severityOther;
+    private String sourceOther;
     private String comments;
-    private String additionalinfo;
+    private String additionalInfo;
     private OutbreaksStatus status;
 
     public Outbreaks() {}
@@ -41,18 +41,18 @@ public class Outbreaks implements Serializable {
         this.outbreakId = value.outbreakId;
         this.outbreakCode = value.outbreakCode;
         this.userId = value.userId;
-        this.reallatitude = value.reallatitude;
-        this.reallongitude = value.reallongitude;
-        this.viewlatitude = value.viewlatitude;
-        this.viewlongitude = value.viewlongitude;
-        this.datesubmitted = value.datesubmitted;
-        this.datereceived = value.datereceived;
+        this.realLatitude = value.realLatitude;
+        this.realLongitude = value.realLongitude;
+        this.viewLatitude = value.viewLatitude;
+        this.viewLongitude = value.viewLongitude;
+        this.dateSubmitted = value.dateSubmitted;
+        this.dateReceived = value.dateReceived;
         this.severityId = value.severityId;
         this.sourceId = value.sourceId;
-        this.severityother = value.severityother;
-        this.sourceother = value.sourceother;
+        this.severityOther = value.severityOther;
+        this.sourceOther = value.sourceOther;
         this.comments = value.comments;
-        this.additionalinfo = value.additionalinfo;
+        this.additionalInfo = value.additionalInfo;
         this.status = value.status;
     }
 
@@ -60,35 +60,35 @@ public class Outbreaks implements Serializable {
         Integer outbreakId,
         String outbreakCode,
         Integer userId,
-        Double reallatitude,
-        Double reallongitude,
-        Double viewlatitude,
-        Double viewlongitude,
-        LocalDate datesubmitted,
-        LocalDate datereceived,
+        Double realLatitude,
+        Double realLongitude,
+        Double viewLatitude,
+        Double viewLongitude,
+        LocalDate dateSubmitted,
+        LocalDate dateReceived,
         Integer severityId,
         Integer sourceId,
-        String severityother,
-        String sourceother,
+        String severityOther,
+        String sourceOther,
         String comments,
-        String additionalinfo,
+        String additionalInfo,
         OutbreaksStatus status
     ) {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
         this.userId = userId;
-        this.reallatitude = reallatitude;
-        this.reallongitude = reallongitude;
-        this.viewlatitude = viewlatitude;
-        this.viewlongitude = viewlongitude;
-        this.datesubmitted = datesubmitted;
-        this.datereceived = datereceived;
+        this.realLatitude = realLatitude;
+        this.realLongitude = realLongitude;
+        this.viewLatitude = viewLatitude;
+        this.viewLongitude = viewLongitude;
+        this.dateSubmitted = dateSubmitted;
+        this.dateReceived = dateReceived;
         this.severityId = severityId;
         this.sourceId = sourceId;
-        this.severityother = severityother;
-        this.sourceother = sourceother;
+        this.severityOther = severityOther;
+        this.sourceOther = sourceOther;
         this.comments = comments;
-        this.additionalinfo = additionalinfo;
+        this.additionalInfo = additionalInfo;
         this.status = status;
     }
 
@@ -135,87 +135,87 @@ public class Outbreaks implements Serializable {
     }
 
     /**
-     * Getter for <code>fab.outbreaks.realLatitude</code>.
+     * Getter for <code>fab.outbreaks.real_latitude</code>.
      */
-    public Double getReallatitude() {
-        return this.reallatitude;
+    public Double getRealLatitude() {
+        return this.realLatitude;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.realLatitude</code>.
+     * Setter for <code>fab.outbreaks.real_latitude</code>.
      */
-    public void setReallatitude(Double reallatitude) {
-        this.reallatitude = reallatitude;
+    public void setRealLatitude(Double realLatitude) {
+        this.realLatitude = realLatitude;
     }
 
     /**
-     * Getter for <code>fab.outbreaks.realLongitude</code>.
+     * Getter for <code>fab.outbreaks.real_longitude</code>.
      */
-    public Double getReallongitude() {
-        return this.reallongitude;
+    public Double getRealLongitude() {
+        return this.realLongitude;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.realLongitude</code>.
+     * Setter for <code>fab.outbreaks.real_longitude</code>.
      */
-    public void setReallongitude(Double reallongitude) {
-        this.reallongitude = reallongitude;
+    public void setRealLongitude(Double realLongitude) {
+        this.realLongitude = realLongitude;
     }
 
     /**
-     * Getter for <code>fab.outbreaks.viewLatitude</code>.
+     * Getter for <code>fab.outbreaks.view_latitude</code>.
      */
-    public Double getViewlatitude() {
-        return this.viewlatitude;
+    public Double getViewLatitude() {
+        return this.viewLatitude;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.viewLatitude</code>.
+     * Setter for <code>fab.outbreaks.view_latitude</code>.
      */
-    public void setViewlatitude(Double viewlatitude) {
-        this.viewlatitude = viewlatitude;
+    public void setViewLatitude(Double viewLatitude) {
+        this.viewLatitude = viewLatitude;
     }
 
     /**
-     * Getter for <code>fab.outbreaks.viewLongitude</code>.
+     * Getter for <code>fab.outbreaks.view_longitude</code>.
      */
-    public Double getViewlongitude() {
-        return this.viewlongitude;
+    public Double getViewLongitude() {
+        return this.viewLongitude;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.viewLongitude</code>.
+     * Setter for <code>fab.outbreaks.view_longitude</code>.
      */
-    public void setViewlongitude(Double viewlongitude) {
-        this.viewlongitude = viewlongitude;
+    public void setViewLongitude(Double viewLongitude) {
+        this.viewLongitude = viewLongitude;
     }
 
     /**
-     * Getter for <code>fab.outbreaks.dateSubmitted</code>.
+     * Getter for <code>fab.outbreaks.date_submitted</code>.
      */
-    public LocalDate getDatesubmitted() {
-        return this.datesubmitted;
+    public LocalDate getDateSubmitted() {
+        return this.dateSubmitted;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.dateSubmitted</code>.
+     * Setter for <code>fab.outbreaks.date_submitted</code>.
      */
-    public void setDatesubmitted(LocalDate datesubmitted) {
-        this.datesubmitted = datesubmitted;
+    public void setDateSubmitted(LocalDate dateSubmitted) {
+        this.dateSubmitted = dateSubmitted;
     }
 
     /**
-     * Getter for <code>fab.outbreaks.dateReceived</code>.
+     * Getter for <code>fab.outbreaks.date_received</code>.
      */
-    public LocalDate getDatereceived() {
-        return this.datereceived;
+    public LocalDate getDateReceived() {
+        return this.dateReceived;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.dateReceived</code>.
+     * Setter for <code>fab.outbreaks.date_received</code>.
      */
-    public void setDatereceived(LocalDate datereceived) {
-        this.datereceived = datereceived;
+    public void setDateReceived(LocalDate dateReceived) {
+        this.dateReceived = dateReceived;
     }
 
     /**
@@ -247,31 +247,31 @@ public class Outbreaks implements Serializable {
     }
 
     /**
-     * Getter for <code>fab.outbreaks.severityOther</code>.
+     * Getter for <code>fab.outbreaks.severity_other</code>.
      */
-    public String getSeverityother() {
-        return this.severityother;
+    public String getSeverityOther() {
+        return this.severityOther;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.severityOther</code>.
+     * Setter for <code>fab.outbreaks.severity_other</code>.
      */
-    public void setSeverityother(String severityother) {
-        this.severityother = severityother;
+    public void setSeverityOther(String severityOther) {
+        this.severityOther = severityOther;
     }
 
     /**
-     * Getter for <code>fab.outbreaks.sourceOther</code>.
+     * Getter for <code>fab.outbreaks.source_other</code>.
      */
-    public String getSourceother() {
-        return this.sourceother;
+    public String getSourceOther() {
+        return this.sourceOther;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.sourceOther</code>.
+     * Setter for <code>fab.outbreaks.source_other</code>.
      */
-    public void setSourceother(String sourceother) {
-        this.sourceother = sourceother;
+    public void setSourceOther(String sourceOther) {
+        this.sourceOther = sourceOther;
     }
 
     /**
@@ -289,17 +289,17 @@ public class Outbreaks implements Serializable {
     }
 
     /**
-     * Getter for <code>fab.outbreaks.additionalInfo</code>.
+     * Getter for <code>fab.outbreaks.additional_info</code>.
      */
-    public String getAdditionalinfo() {
-        return this.additionalinfo;
+    public String getAdditionalInfo() {
+        return this.additionalInfo;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.additionalInfo</code>.
+     * Setter for <code>fab.outbreaks.additional_info</code>.
      */
-    public void setAdditionalinfo(String additionalinfo) {
-        this.additionalinfo = additionalinfo;
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
     }
 
     /**
@@ -343,41 +343,41 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.userId.equals(other.userId))
             return false;
-        if (this.reallatitude == null) {
-            if (other.reallatitude != null)
+        if (this.realLatitude == null) {
+            if (other.realLatitude != null)
                 return false;
         }
-        else if (!this.reallatitude.equals(other.reallatitude))
+        else if (!this.realLatitude.equals(other.realLatitude))
             return false;
-        if (this.reallongitude == null) {
-            if (other.reallongitude != null)
+        if (this.realLongitude == null) {
+            if (other.realLongitude != null)
                 return false;
         }
-        else if (!this.reallongitude.equals(other.reallongitude))
+        else if (!this.realLongitude.equals(other.realLongitude))
             return false;
-        if (this.viewlatitude == null) {
-            if (other.viewlatitude != null)
+        if (this.viewLatitude == null) {
+            if (other.viewLatitude != null)
                 return false;
         }
-        else if (!this.viewlatitude.equals(other.viewlatitude))
+        else if (!this.viewLatitude.equals(other.viewLatitude))
             return false;
-        if (this.viewlongitude == null) {
-            if (other.viewlongitude != null)
+        if (this.viewLongitude == null) {
+            if (other.viewLongitude != null)
                 return false;
         }
-        else if (!this.viewlongitude.equals(other.viewlongitude))
+        else if (!this.viewLongitude.equals(other.viewLongitude))
             return false;
-        if (this.datesubmitted == null) {
-            if (other.datesubmitted != null)
+        if (this.dateSubmitted == null) {
+            if (other.dateSubmitted != null)
                 return false;
         }
-        else if (!this.datesubmitted.equals(other.datesubmitted))
+        else if (!this.dateSubmitted.equals(other.dateSubmitted))
             return false;
-        if (this.datereceived == null) {
-            if (other.datereceived != null)
+        if (this.dateReceived == null) {
+            if (other.dateReceived != null)
                 return false;
         }
-        else if (!this.datereceived.equals(other.datereceived))
+        else if (!this.dateReceived.equals(other.dateReceived))
             return false;
         if (this.severityId == null) {
             if (other.severityId != null)
@@ -391,17 +391,17 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.sourceId.equals(other.sourceId))
             return false;
-        if (this.severityother == null) {
-            if (other.severityother != null)
+        if (this.severityOther == null) {
+            if (other.severityOther != null)
                 return false;
         }
-        else if (!this.severityother.equals(other.severityother))
+        else if (!this.severityOther.equals(other.severityOther))
             return false;
-        if (this.sourceother == null) {
-            if (other.sourceother != null)
+        if (this.sourceOther == null) {
+            if (other.sourceOther != null)
                 return false;
         }
-        else if (!this.sourceother.equals(other.sourceother))
+        else if (!this.sourceOther.equals(other.sourceOther))
             return false;
         if (this.comments == null) {
             if (other.comments != null)
@@ -409,11 +409,11 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.comments.equals(other.comments))
             return false;
-        if (this.additionalinfo == null) {
-            if (other.additionalinfo != null)
+        if (this.additionalInfo == null) {
+            if (other.additionalInfo != null)
                 return false;
         }
-        else if (!this.additionalinfo.equals(other.additionalinfo))
+        else if (!this.additionalInfo.equals(other.additionalInfo))
             return false;
         if (this.status == null) {
             if (other.status != null)
@@ -431,18 +431,18 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.outbreakId == null) ? 0 : this.outbreakId.hashCode());
         result = prime * result + ((this.outbreakCode == null) ? 0 : this.outbreakCode.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
-        result = prime * result + ((this.reallatitude == null) ? 0 : this.reallatitude.hashCode());
-        result = prime * result + ((this.reallongitude == null) ? 0 : this.reallongitude.hashCode());
-        result = prime * result + ((this.viewlatitude == null) ? 0 : this.viewlatitude.hashCode());
-        result = prime * result + ((this.viewlongitude == null) ? 0 : this.viewlongitude.hashCode());
-        result = prime * result + ((this.datesubmitted == null) ? 0 : this.datesubmitted.hashCode());
-        result = prime * result + ((this.datereceived == null) ? 0 : this.datereceived.hashCode());
+        result = prime * result + ((this.realLatitude == null) ? 0 : this.realLatitude.hashCode());
+        result = prime * result + ((this.realLongitude == null) ? 0 : this.realLongitude.hashCode());
+        result = prime * result + ((this.viewLatitude == null) ? 0 : this.viewLatitude.hashCode());
+        result = prime * result + ((this.viewLongitude == null) ? 0 : this.viewLongitude.hashCode());
+        result = prime * result + ((this.dateSubmitted == null) ? 0 : this.dateSubmitted.hashCode());
+        result = prime * result + ((this.dateReceived == null) ? 0 : this.dateReceived.hashCode());
         result = prime * result + ((this.severityId == null) ? 0 : this.severityId.hashCode());
         result = prime * result + ((this.sourceId == null) ? 0 : this.sourceId.hashCode());
-        result = prime * result + ((this.severityother == null) ? 0 : this.severityother.hashCode());
-        result = prime * result + ((this.sourceother == null) ? 0 : this.sourceother.hashCode());
+        result = prime * result + ((this.severityOther == null) ? 0 : this.severityOther.hashCode());
+        result = prime * result + ((this.sourceOther == null) ? 0 : this.sourceOther.hashCode());
         result = prime * result + ((this.comments == null) ? 0 : this.comments.hashCode());
-        result = prime * result + ((this.additionalinfo == null) ? 0 : this.additionalinfo.hashCode());
+        result = prime * result + ((this.additionalInfo == null) ? 0 : this.additionalInfo.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         return result;
     }
@@ -454,18 +454,18 @@ public class Outbreaks implements Serializable {
         sb.append(outbreakId);
         sb.append(", ").append(outbreakCode);
         sb.append(", ").append(userId);
-        sb.append(", ").append(reallatitude);
-        sb.append(", ").append(reallongitude);
-        sb.append(", ").append(viewlatitude);
-        sb.append(", ").append(viewlongitude);
-        sb.append(", ").append(datesubmitted);
-        sb.append(", ").append(datereceived);
+        sb.append(", ").append(realLatitude);
+        sb.append(", ").append(realLongitude);
+        sb.append(", ").append(viewLatitude);
+        sb.append(", ").append(viewLongitude);
+        sb.append(", ").append(dateSubmitted);
+        sb.append(", ").append(dateReceived);
         sb.append(", ").append(severityId);
         sb.append(", ").append(sourceId);
-        sb.append(", ").append(severityother);
-        sb.append(", ").append(sourceother);
+        sb.append(", ").append(severityOther);
+        sb.append(", ").append(sourceOther);
         sb.append(", ").append(comments);
-        sb.append(", ").append(additionalinfo);
+        sb.append(", ").append(additionalInfo);
         sb.append(", ").append(status);
 
         sb.append(")");

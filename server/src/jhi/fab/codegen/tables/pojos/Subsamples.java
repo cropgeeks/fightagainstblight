@@ -22,7 +22,7 @@ public class Subsamples implements Serializable {
     private Integer genotypeId;
     private Integer varietyId;
     private String material;
-    private LocalDate dategenotyped;
+    private LocalDate dateGenotyped;
     private String comments;
 
     public Subsamples() {}
@@ -34,7 +34,7 @@ public class Subsamples implements Serializable {
         this.genotypeId = value.genotypeId;
         this.varietyId = value.varietyId;
         this.material = value.material;
-        this.dategenotyped = value.dategenotyped;
+        this.dateGenotyped = value.dateGenotyped;
         this.comments = value.comments;
     }
 
@@ -45,7 +45,7 @@ public class Subsamples implements Serializable {
         Integer genotypeId,
         Integer varietyId,
         String material,
-        LocalDate dategenotyped,
+        LocalDate dateGenotyped,
         String comments
     ) {
         this.subsampleId = subsampleId;
@@ -54,7 +54,7 @@ public class Subsamples implements Serializable {
         this.genotypeId = genotypeId;
         this.varietyId = varietyId;
         this.material = material;
-        this.dategenotyped = dategenotyped;
+        this.dateGenotyped = dateGenotyped;
         this.comments = comments;
     }
 
@@ -143,17 +143,17 @@ public class Subsamples implements Serializable {
     }
 
     /**
-     * Getter for <code>fab.subsamples.dateGenotyped</code>.
+     * Getter for <code>fab.subsamples.date_genotyped</code>.
      */
-    public LocalDate getDategenotyped() {
-        return this.dategenotyped;
+    public LocalDate getDateGenotyped() {
+        return this.dateGenotyped;
     }
 
     /**
-     * Setter for <code>fab.subsamples.dateGenotyped</code>.
+     * Setter for <code>fab.subsamples.date_genotyped</code>.
      */
-    public void setDategenotyped(LocalDate dategenotyped) {
-        this.dategenotyped = dategenotyped;
+    public void setDateGenotyped(LocalDate dateGenotyped) {
+        this.dateGenotyped = dateGenotyped;
     }
 
     /**
@@ -215,11 +215,11 @@ public class Subsamples implements Serializable {
         }
         else if (!this.material.equals(other.material))
             return false;
-        if (this.dategenotyped == null) {
-            if (other.dategenotyped != null)
+        if (this.dateGenotyped == null) {
+            if (other.dateGenotyped != null)
                 return false;
         }
-        else if (!this.dategenotyped.equals(other.dategenotyped))
+        else if (!this.dateGenotyped.equals(other.dateGenotyped))
             return false;
         if (this.comments == null) {
             if (other.comments != null)
@@ -240,7 +240,7 @@ public class Subsamples implements Serializable {
         result = prime * result + ((this.genotypeId == null) ? 0 : this.genotypeId.hashCode());
         result = prime * result + ((this.varietyId == null) ? 0 : this.varietyId.hashCode());
         result = prime * result + ((this.material == null) ? 0 : this.material.hashCode());
-        result = prime * result + ((this.dategenotyped == null) ? 0 : this.dategenotyped.hashCode());
+        result = prime * result + ((this.dateGenotyped == null) ? 0 : this.dateGenotyped.hashCode());
         result = prime * result + ((this.comments == null) ? 0 : this.comments.hashCode());
         return result;
     }
@@ -255,7 +255,7 @@ public class Subsamples implements Serializable {
         sb.append(", ").append(genotypeId);
         sb.append(", ").append(varietyId);
         sb.append(", ").append(material);
-        sb.append(", ").append(dategenotyped);
+        sb.append(", ").append(dateGenotyped);
         sb.append(", ").append(comments);
 
         sb.append(")");

@@ -42,8 +42,8 @@ public class SubsamplesResource
 
 			var query =context.select()
 				.from(SUBSAMPLES)
-				.join(VARIETIES).on(SUBSAMPLES.VARIETY_ID.eq(VARIETIES.VARIETY_ID))
-				.join(SSR_GENOTYPES).on(SUBSAMPLES.GENOTYPE_ID.eq(SSR_GENOTYPES.GENOTYPE_ID))
+				.leftJoin(VARIETIES).on(SUBSAMPLES.VARIETY_ID.eq(VARIETIES.VARIETY_ID))
+				.leftJoin(SSR_GENOTYPES).on(SUBSAMPLES.GENOTYPE_ID.eq(SSR_GENOTYPES.GENOTYPE_ID))
 				.where(SUBSAMPLES.OUTBREAK_ID.eq(outbreakID));
 
 			List<SubsamplesDTO> results = query.fetch()
@@ -69,7 +69,7 @@ public class SubsamplesResource
 		dto.setVarietyId(record.get(SUBSAMPLES.VARIETY_ID));
 		dto.setVarietyName(record.get(VARIETIES.VARIETY_NAME));
 		dto.setMaterial(record.get(SUBSAMPLES.MATERIAL));
-		dto.setDategenotyped(record.get(SUBSAMPLES.DATEGENOTYPED));
+		dto.setDateGenotyped(record.get(SUBSAMPLES.DATE_GENOTYPED));
 
 		// Fields that require either the owner of the associated outbreak or an admin
 		if (user.getUserID() == ownerID || user.isAdmin())

@@ -78,34 +78,34 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     public final TableField<OutbreaksRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
-     * The column <code>fab.outbreaks.realLatitude</code>.
+     * The column <code>fab.outbreaks.real_latitude</code>.
      */
-    public final TableField<OutbreaksRecord, Double> REALLATITUDE = createField(DSL.name("realLatitude"), SQLDataType.FLOAT, this, "");
+    public final TableField<OutbreaksRecord, Double> REAL_LATITUDE = createField(DSL.name("real_latitude"), SQLDataType.FLOAT, this, "");
 
     /**
-     * The column <code>fab.outbreaks.realLongitude</code>.
+     * The column <code>fab.outbreaks.real_longitude</code>.
      */
-    public final TableField<OutbreaksRecord, Double> REALLONGITUDE = createField(DSL.name("realLongitude"), SQLDataType.FLOAT, this, "");
+    public final TableField<OutbreaksRecord, Double> REAL_LONGITUDE = createField(DSL.name("real_longitude"), SQLDataType.FLOAT, this, "");
 
     /**
-     * The column <code>fab.outbreaks.viewLatitude</code>.
+     * The column <code>fab.outbreaks.view_latitude</code>.
      */
-    public final TableField<OutbreaksRecord, Double> VIEWLATITUDE = createField(DSL.name("viewLatitude"), SQLDataType.FLOAT, this, "");
+    public final TableField<OutbreaksRecord, Double> VIEW_LATITUDE = createField(DSL.name("view_latitude"), SQLDataType.FLOAT, this, "");
 
     /**
-     * The column <code>fab.outbreaks.viewLongitude</code>.
+     * The column <code>fab.outbreaks.view_longitude</code>.
      */
-    public final TableField<OutbreaksRecord, Double> VIEWLONGITUDE = createField(DSL.name("viewLongitude"), SQLDataType.FLOAT, this, "");
+    public final TableField<OutbreaksRecord, Double> VIEW_LONGITUDE = createField(DSL.name("view_longitude"), SQLDataType.FLOAT, this, "");
 
     /**
-     * The column <code>fab.outbreaks.dateSubmitted</code>.
+     * The column <code>fab.outbreaks.date_submitted</code>.
      */
-    public final TableField<OutbreaksRecord, LocalDate> DATESUBMITTED = createField(DSL.name("dateSubmitted"), SQLDataType.LOCALDATE, this, "");
+    public final TableField<OutbreaksRecord, LocalDate> DATE_SUBMITTED = createField(DSL.name("date_submitted"), SQLDataType.LOCALDATE, this, "");
 
     /**
-     * The column <code>fab.outbreaks.dateReceived</code>.
+     * The column <code>fab.outbreaks.date_received</code>.
      */
-    public final TableField<OutbreaksRecord, LocalDate> DATERECEIVED = createField(DSL.name("dateReceived"), SQLDataType.LOCALDATE, this, "");
+    public final TableField<OutbreaksRecord, LocalDate> DATE_RECEIVED = createField(DSL.name("date_received"), SQLDataType.LOCALDATE, this, "");
 
     /**
      * The column <code>fab.outbreaks.severity_id</code>.
@@ -118,14 +118,14 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     public final TableField<OutbreaksRecord, Integer> SOURCE_ID = createField(DSL.name("source_id"), SQLDataType.INTEGER, this, "");
 
     /**
-     * The column <code>fab.outbreaks.severityOther</code>.
+     * The column <code>fab.outbreaks.severity_other</code>.
      */
-    public final TableField<OutbreaksRecord, String> SEVERITYOTHER = createField(DSL.name("severityOther"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<OutbreaksRecord, String> SEVERITY_OTHER = createField(DSL.name("severity_other"), SQLDataType.VARCHAR(255), this, "");
 
     /**
-     * The column <code>fab.outbreaks.sourceOther</code>.
+     * The column <code>fab.outbreaks.source_other</code>.
      */
-    public final TableField<OutbreaksRecord, String> SOURCEOTHER = createField(DSL.name("sourceOther"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<OutbreaksRecord, String> SOURCE_OTHER = createField(DSL.name("source_other"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>fab.outbreaks.comments</code>.
@@ -133,9 +133,9 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     public final TableField<OutbreaksRecord, String> COMMENTS = createField(DSL.name("comments"), SQLDataType.VARCHAR(255), this, "");
 
     /**
-     * The column <code>fab.outbreaks.additionalInfo</code>.
+     * The column <code>fab.outbreaks.additional_info</code>.
      */
-    public final TableField<OutbreaksRecord, String> ADDITIONALINFO = createField(DSL.name("additionalInfo"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<OutbreaksRecord, String> ADDITIONAL_INFO = createField(DSL.name("additional_info"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>fab.outbreaks.status</code>.

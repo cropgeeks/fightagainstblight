@@ -91,9 +91,9 @@ public class Subsamples extends TableImpl<SubsamplesRecord> {
     public final TableField<SubsamplesRecord, String> MATERIAL = createField(DSL.name("material"), SQLDataType.VARCHAR(255), this, "");
 
     /**
-     * The column <code>fab.subsamples.dateGenotyped</code>.
+     * The column <code>fab.subsamples.date_genotyped</code>.
      */
-    public final TableField<SubsamplesRecord, LocalDate> DATEGENOTYPED = createField(DSL.name("dateGenotyped"), SQLDataType.LOCALDATE, this, "");
+    public final TableField<SubsamplesRecord, LocalDate> DATE_GENOTYPED = createField(DSL.name("date_genotyped"), SQLDataType.LOCALDATE, this, "");
 
     /**
      * The column <code>fab.subsamples.comments</code>.

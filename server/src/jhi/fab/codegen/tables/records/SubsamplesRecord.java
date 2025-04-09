@@ -105,16 +105,16 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
     }
 
     /**
-     * Setter for <code>fab.subsamples.dateGenotyped</code>.
+     * Setter for <code>fab.subsamples.date_genotyped</code>.
      */
-    public void setDategenotyped(LocalDate value) {
+    public void setDateGenotyped(LocalDate value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>fab.subsamples.dateGenotyped</code>.
+     * Getter for <code>fab.subsamples.date_genotyped</code>.
      */
-    public LocalDate getDategenotyped() {
+    public LocalDate getDateGenotyped() {
         return (LocalDate) get(6);
     }
 
@@ -155,7 +155,7 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
     /**
      * Create a detached, initialised SubsamplesRecord
      */
-    public SubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, Integer varietyId, String material, LocalDate dategenotyped, String comments) {
+    public SubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, Integer varietyId, String material, LocalDate dateGenotyped, String comments) {
         super(Subsamples.SUBSAMPLES);
 
         setSubsampleId(subsampleId);
@@ -164,7 +164,7 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
         setGenotypeId(genotypeId);
         setVarietyId(varietyId);
         setMaterial(material);
-        setDategenotyped(dategenotyped);
+        setDateGenotyped(dateGenotyped);
         setComments(comments);
         resetTouchedOnNotNull();
     }
@@ -182,7 +182,7 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
             setGenotypeId(value.getGenotypeId());
             setVarietyId(value.getVarietyId());
             setMaterial(value.getMaterial());
-            setDategenotyped(value.getDategenotyped());
+            setDateGenotyped(value.getDateGenotyped());
             setComments(value.getComments());
             resetTouchedOnNotNull();
         }

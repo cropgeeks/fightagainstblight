@@ -46,12 +46,12 @@ public class OutbreaksResource
 				.select(SEVERITIES.fields())
 				.select(SOURCES.fields())
 				.from(OUTBREAKS)
-				.join(SUBSAMPLES).on(SUBSAMPLES.OUTBREAK_ID.eq(OUTBREAKS.OUTBREAK_ID))
-				.join(SEVERITIES).on(OUTBREAKS.SEVERITY_ID.eq(SEVERITIES.SEVERITY_ID))
-				.join(SOURCES).on(OUTBREAKS.SOURCE_ID.eq(SOURCES.SOURCE_ID));
+				.leftJoin(SUBSAMPLES).on(SUBSAMPLES.OUTBREAK_ID.eq(OUTBREAKS.OUTBREAK_ID))
+				.leftJoin(SEVERITIES).on(OUTBREAKS.SEVERITY_ID.eq(SEVERITIES.SEVERITY_ID))
+				.leftJoin(SOURCES).on(OUTBREAKS.SOURCE_ID.eq(SOURCES.SOURCE_ID));
 
 			if (year != null)
-				query.where(DSL.year(OUTBREAKS.DATESUBMITTED).eq(year));
+				query.where(DSL.year(OUTBREAKS.DATE_SUBMITTED).eq(year));
 			if (status != null)
 				query.where(OUTBREAKS.STATUS.eq(OutbreaksStatus.lookupLiteral(status)));
 			if (source != null)
@@ -95,8 +95,8 @@ public class OutbreaksResource
 
 			org.jooq.Record record = context.select()
 				.from(OUTBREAKS)
-				.innerJoin(SEVERITIES).on(OUTBREAKS.SEVERITY_ID.eq(SEVERITIES.SEVERITY_ID))
-				.innerJoin(SOURCES).on(OUTBREAKS.SOURCE_ID.eq(SOURCES.SOURCE_ID))
+				.leftJoin(SEVERITIES).on(OUTBREAKS.SEVERITY_ID.eq(SEVERITIES.SEVERITY_ID))
+				.leftJoin(SOURCES).on(OUTBREAKS.SOURCE_ID.eq(SOURCES.SOURCE_ID))
 				.where(OUTBREAKS.OUTBREAK_ID.eq(id))
 				.fetchOne();
 
@@ -137,16 +137,16 @@ public class OutbreaksResource
 			context.insertInto(OUTBREAKS)
 				.set(OUTBREAKS.OUTBREAK_CODE, "FAB-NEW")
 				.set(OUTBREAKS.USER_ID, user.getUserID())
-				.set(OUTBREAKS.REALLATITUDE, latitude)
-				.set(OUTBREAKS.REALLONGITUDE, longitude)
-				.set(OUTBREAKS.DATESUBMITTED, LocalDate.now())
+				.set(OUTBREAKS.REAL_LATITUDE, latitude)
+				.set(OUTBREAKS.REAL_LONGITUDE, longitude)
+				.set(OUTBREAKS.DATE_SUBMITTED, LocalDate.now())
 				.set(OUTBREAKS.STATUS, OutbreaksStatus.lookupLiteral("pending"))
 				.set(OUTBREAKS.SOURCE_ID, source)
-				.set(OUTBREAKS.SOURCEOTHER, sourceOther)
+				.set(OUTBREAKS.SOURCE_OTHER, sourceOther)
 				.set(OUTBREAKS.SEVERITY_ID, severity)
-				.set(OUTBREAKS.SEVERITYOTHER, severityOther)
+				.set(OUTBREAKS.SEVERITY_OTHER, severityOther)
 				.set(OUTBREAKS.COMMENTS, comments)
-				.set(OUTBREAKS.ADDITIONALINFO, additionalInfo)
+				.set(OUTBREAKS.ADDITIONAL_INFO, additionalInfo)
 				.execute();
 
 			// TODO: Work out outbreak code as an increment from the last entry
@@ -164,30 +164,30 @@ public class OutbreaksResource
 		OutbreaksDTO dto = new OutbreaksDTO();
 		dto.setOutbreakId(record.get(OUTBREAKS.OUTBREAK_ID));
 		dto.setOutbreakCode(record.get(OUTBREAKS.OUTBREAK_CODE));
-		dto.setViewlongitude(record.get(OUTBREAKS.VIEWLATITUDE));
-		dto.setViewlatitude(record.get(OUTBREAKS.VIEWLONGITUDE));
-		dto.setDatesubmitted(record.get(OUTBREAKS.DATESUBMITTED));
-		dto.setDatereceived(record.get(OUTBREAKS.DATERECEIVED));
+		dto.setViewLongitude(record.get(OUTBREAKS.VIEW_LATITUDE));
+		dto.setViewLatitude(record.get(OUTBREAKS.VIEW_LONGITUDE));
+		dto.setDateSubmitted(record.get(OUTBREAKS.DATE_SUBMITTED));
+		dto.setDateReceived(record.get(OUTBREAKS.DATE_RECEIVED));
 		dto.setSeverityId(record.get(SEVERITIES.SEVERITY_ID));
 		dto.setSeverityName(record.get(SEVERITIES.SEVERITY_NAME));
 		dto.setSourceId(record.get(SOURCES.SOURCE_ID));
 		dto.setSourceName(record.get(SOURCES.SOURCE_NAME));
-		dto.setSeverityother(record.get(OUTBREAKS.SEVERITYOTHER));
-		dto.setSourceother(record.get(OUTBREAKS.SOURCEOTHER));
+		dto.setSeverityOther(record.get(OUTBREAKS.SEVERITY_OTHER));
+		dto.setSourceOther(record.get(OUTBREAKS.SOURCE_OTHER));
 		dto.setComments(record.get(OUTBREAKS.COMMENTS));
-		dto.setAdditionalinfo(record.get(OUTBREAKS.ADDITIONALINFO));
+		dto.setAdditionalInfo(record.get(OUTBREAKS.ADDITIONAL_INFO));
 		dto.setStatus(record.get(OUTBREAKS.STATUS));
 
 		// Fields that require either the owner of this record or an admin
 		if (user.getUserID() == record.get(OUTBREAKS.USER_ID) || user.isAdmin())
 		{
 			dto.setUserId(record.get(OUTBREAKS.USER_ID));
-			dto.setReallatitude(record.get(OUTBREAKS.REALLATITUDE));
-			dto.setReallongitude(record.get(OUTBREAKS.REALLONGITUDE));
+			dto.setRealLatitude(record.get(OUTBREAKS.REAL_LATITUDE));
+			dto.setRealLongitude(record.get(OUTBREAKS.REAL_LONGITUDE));
 
 			// Overwrite the "view" coordinates with the real position
-			dto.setViewlatitude(record.get(OUTBREAKS.REALLATITUDE));
-			dto.setViewlongitude(record.get(OUTBREAKS.REALLONGITUDE));
+			dto.setViewLatitude(record.get(OUTBREAKS.REAL_LATITUDE));
+			dto.setViewLongitude(record.get(OUTBREAKS.REAL_LONGITUDE));
 		}
 
 		return dto;
