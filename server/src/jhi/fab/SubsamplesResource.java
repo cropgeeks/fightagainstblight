@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.stream.*;
 
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.*;
 
 import org.jooq.*;
@@ -18,13 +17,10 @@ import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
 import static jhi.fab.codegen.tables.Varieties.VARIETIES;
 
-@Path("/subsamples")
 public class SubsamplesResource
 {
-	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getOutbreaks(@HeaderParam("Authorization") String authHeader,
-								 @QueryParam("outbreak") Integer outbreakID)
+	public static Response getSubsamples(String authHeader, Integer outbreakID)
 		throws SQLException
 	{
 		User user = new User(authHeader);
@@ -59,7 +55,7 @@ public class SubsamplesResource
 		}
 	}
 
-	private SubsamplesDTO mapDTO(org.jooq.Record record, User user, int ownerID)
+	private static SubsamplesDTO mapDTO(org.jooq.Record record, User user, int ownerID)
 	{
 		SubsamplesDTO dto = new SubsamplesDTO();
 

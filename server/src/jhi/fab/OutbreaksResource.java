@@ -108,6 +108,15 @@ public class OutbreaksResource
 		}
 	}
 
+	@GET
+	@Path("/{id}/subsamples")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSubsamples(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id)
+		throws SQLException
+	{
+		return SubsamplesResource.getSubsamples(authHeader, id);
+	}
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response postOutbreaks(@HeaderParam("Authorization") String authHeader,
