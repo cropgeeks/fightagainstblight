@@ -19,6 +19,13 @@
             <inputSchema>fab</inputSchema>
             <includes>.*</includes>
             <excludes></excludes>
+			<forcedTypes>
+				<forcedType>
+                    <expression>.*</expression>
+                    <name>BOOLEAN</name>
+                    <types>.*tinyint.*</types>
+                </forcedType>
+            </forcedTypes>
         </database>
 
         <target>
