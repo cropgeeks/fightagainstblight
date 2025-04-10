@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.*;
 
 import org.jooq.*;
 import org.jooq.impl.*;
+import static org.jooq.impl.DSL.field;
 
 import jhi.fab.codegen.enums.*;
 import jhi.fab.codegen.tables.pojos.ViewOutbreaks;
@@ -105,6 +106,27 @@ public class OutbreaksResource
 		throws SQLException
 	{
 		return SubsamplesResource.getSubsamples(authHeader, id);
+	}
+
+	@GET
+	@Path("/years")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSubsamples(@HeaderParam("Authorization") String authHeader)
+		throws SQLException
+	{
+		User user = new User(authHeader);
+
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+
+			List<Integer> list = context.selectDistinct(field("EXTRACT(YEAR FROM date_submitted)"))
+				.from(OUTBREAKS)
+				.groupBy(field("EXTRACT(YEAR FROM date_submitted)"))
+				.fetchInto(Integer.class);
+
+			return Response.ok(list).build();
+		}
 	}
 
 	@POST
