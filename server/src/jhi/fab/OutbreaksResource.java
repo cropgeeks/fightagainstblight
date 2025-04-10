@@ -45,7 +45,7 @@ public class OutbreaksResource
 
 			if (variety != null) {
 				// Something something give me any outbreak where any of its subsamples have this variety
-				query.where(DSL.exists(DSL.selectOne().from(SUBSAMPLES).where(SUBSAMPLES.OUTBREAK_ID.eq(VIEW_OUTBREAKS.OUTBREAK_ID)).and(VARIETIES.VARIETY_ID.eq(variety))));
+				query.where(DSL.exists(DSL.selectOne().from(SUBSAMPLES).where(SUBSAMPLES.OUTBREAK_ID.eq(VIEW_OUTBREAKS.OUTBREAK_ID)).and(SUBSAMPLES.VARIETY_ID.eq(variety))));
 			}
 			if (year != null)
 				query.where(DSL.year(VIEW_OUTBREAKS.DATE_SUBMITTED).eq(year));
