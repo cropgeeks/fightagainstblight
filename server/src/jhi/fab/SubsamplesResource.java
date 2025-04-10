@@ -25,6 +25,10 @@ public class SubsamplesResource
 	{
 		User user = new User(authHeader);
 
+		// You must be at least logged in to try this method
+		if (user.isOK() == false)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
@@ -35,6 +39,10 @@ public class SubsamplesResource
 				.where(OUTBREAKS.OUTBREAK_ID.eq(outbreakID))
 				.fetchOneInto(Outbreaks.class);
 			int ownerID = outbreak.getUserId();
+
+			// If you're not an admin, or not the owner, then it's forbidden
+			if (user.isAdmin() == false || user.getUserID() != ownerID)
+				return Response.status(Response.Status.FORBIDDEN).build();
 
 			var query =context.select()
 				.from(SUBSAMPLES)
