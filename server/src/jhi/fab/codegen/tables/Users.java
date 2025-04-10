@@ -74,7 +74,7 @@ public class Users extends TableImpl<UsersRecord> {
     /**
      * The column <code>fab.users.is_admin</code>.
      */
-    public final TableField<UsersRecord, Byte> IS_ADMIN = createField(DSL.name("is_admin"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.inline("0", SQLDataType.TINYINT)), this, "");
+    public final TableField<UsersRecord, Boolean> IS_ADMIN = createField(DSL.name("is_admin"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
 
     private Users(Name alias, Table<UsersRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

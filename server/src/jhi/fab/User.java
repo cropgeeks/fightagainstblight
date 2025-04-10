@@ -71,7 +71,7 @@ class User
 							userID = user.getUserId();
 
 							// Are they an admin?
-							isAdmin = user.getIsAdmin() != 0;
+							isAdmin = user.getIsAdmin();
 
 							context.update(USER_SESSIONS)
 								.set(USER_SESSIONS.CREATED_ON, LocalDateTime.now())

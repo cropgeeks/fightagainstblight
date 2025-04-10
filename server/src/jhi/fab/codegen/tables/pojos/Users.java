@@ -18,7 +18,7 @@ public class Users implements Serializable {
     private Integer userId;
     private String userName;
     private String email;
-    private Byte isAdmin;
+    private Boolean isAdmin;
 
     public Users() {}
 
@@ -33,7 +33,7 @@ public class Users implements Serializable {
         Integer userId,
         String userName,
         String email,
-        Byte isAdmin
+        Boolean isAdmin
     ) {
         this.userId = userId;
         this.userName = userName;
@@ -86,14 +86,14 @@ public class Users implements Serializable {
     /**
      * Getter for <code>fab.users.is_admin</code>.
      */
-    public Byte getIsAdmin() {
+    public Boolean getIsAdmin() {
         return this.isAdmin;
     }
 
     /**
      * Setter for <code>fab.users.is_admin</code>.
      */
-    public void setIsAdmin(Byte isAdmin) {
+    public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
 

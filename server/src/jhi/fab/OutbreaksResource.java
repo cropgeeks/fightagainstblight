@@ -4,7 +4,6 @@ import java.sql.*;
 import java.text.*;
 import java.time.*;
 import java.util.*;
-import java.util.stream.*;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.Path;
@@ -14,11 +13,11 @@ import org.jooq.*;
 import org.jooq.impl.*;
 
 import jhi.fab.codegen.enums.*;
-import jhi.fab.dto.*;
+import jhi.fab.codegen.tables.pojos.ViewOutbreaks;
 import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
-import static jhi.fab.codegen.tables.Severities.SEVERITIES;
-import static jhi.fab.codegen.tables.Sources.SOURCES;
 import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
+import static jhi.fab.codegen.tables.Varieties.VARIETIES;
+import static jhi.fab.codegen.tables.ViewOutbreaks.VIEW_OUTBREAKS;
 
 @Path("/outbreaks")
 public class OutbreaksResource
@@ -40,36 +39,29 @@ public class OutbreaksResource
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
-//			List<Outbreaks> list = context.selectFrom(OUTBREAKS)
-//				.fetchInto(Outbreaks.class);
 
-			var query = context.selectDistinct(OUTBREAKS.fields())
-				.select(SEVERITIES.fields())
-				.select(SOURCES.fields())
-				.from(OUTBREAKS)
-				.leftJoin(SUBSAMPLES).on(SUBSAMPLES.OUTBREAK_ID.eq(OUTBREAKS.OUTBREAK_ID))
-				.leftJoin(SEVERITIES).on(OUTBREAKS.SEVERITY_ID.eq(SEVERITIES.SEVERITY_ID))
-				.leftJoin(SOURCES).on(OUTBREAKS.SOURCE_ID.eq(SOURCES.SOURCE_ID));
+			var query = context.selectFrom(VIEW_OUTBREAKS);
 
+			if (variety != null) {
+				// Something something give me any outbreak where any of its subsamples have this variety
+				query.where(DSL.exists(DSL.selectOne().from(SUBSAMPLES).where(SUBSAMPLES.OUTBREAK_ID.eq(VIEW_OUTBREAKS.OUTBREAK_ID)).and(VARIETIES.VARIETY_ID.eq(variety))));
+			}
 			if (year != null)
-				query.where(DSL.year(OUTBREAKS.DATE_SUBMITTED).eq(year));
+				query.where(DSL.year(VIEW_OUTBREAKS.DATE_SUBMITTED).eq(year));
 			if (status != null)
-				query.where(OUTBREAKS.STATUS.eq(OutbreaksStatus.lookupLiteral(status)));
+			{
+				try { query.where(VIEW_OUTBREAKS.STATUS.eq(ViewOutbreaksStatus.lookupLiteral(status))); }
+				catch (Exception e) { return Response.status(Response.Status.BAD_REQUEST).build(); }
+			}
 			if (source != null)
-				query.where(OUTBREAKS.SOURCE_ID.eq(source));
+				query.where(VIEW_OUTBREAKS.SOURCE_ID.eq(source));
 			if (severity != null)
-				query.where(OUTBREAKS.SEVERITY_ID.eq(severity));
-			if (variety != null)
-				query.where(SUBSAMPLES.VARIETY_ID.eq(variety));
+				query.where(VIEW_OUTBREAKS.SEVERITY_ID.eq(severity));
 
-			query.groupBy(OUTBREAKS.OUTBREAK_ID);
 
-			List<OutbreaksDTO> results = query.fetch()
-				.stream()
-				.map(record -> {
-					return mapDTO(record, user);
-				})
-				.collect(Collectors.toList());
+			List<ViewOutbreaks> results = query.fetchInto(ViewOutbreaks.class);
+			for (ViewOutbreaks outbreak: results)
+				map(outbreak, user);
 
 			System.out.println("Returning " + results.size() + " results");
 
@@ -90,19 +82,16 @@ public class OutbreaksResource
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
-//			Outbreaks outbreak = context.selectFrom(OUTBREAKS)
-//				.where(OUTBREAKS.OUTBREAK_ID.eq(id))
-//				.fetchOneInto(Outbreaks.class);
 
-			org.jooq.Record record = context.select()
-				.from(OUTBREAKS)
-				.leftJoin(SEVERITIES).on(OUTBREAKS.SEVERITY_ID.eq(SEVERITIES.SEVERITY_ID))
-				.leftJoin(SOURCES).on(OUTBREAKS.SOURCE_ID.eq(SOURCES.SOURCE_ID))
-				.where(OUTBREAKS.OUTBREAK_ID.eq(id))
-				.fetchOne();
+			ViewOutbreaks result = context.selectFrom(VIEW_OUTBREAKS)
+				.where(VIEW_OUTBREAKS.OUTBREAK_ID.eq(id))
+				.fetchOneInto(ViewOutbreaks.class);
 
-			if (record != null)
-				return Response.ok(mapDTO(record, user)).build();
+			if (result != null)
+			{
+				map(result, user);
+				return Response.ok(result).build();
+			}
 
 			else
 				return Response.status(Response.Status.NOT_FOUND).build();
@@ -182,37 +171,20 @@ public class OutbreaksResource
 		}
 	}
 
-	OutbreaksDTO mapDTO(org.jooq.Record record, User user)
+	private void map(ViewOutbreaks outbreak, User user)
 	{
-		OutbreaksDTO dto = new OutbreaksDTO();
-		dto.setOutbreakId(record.get(OUTBREAKS.OUTBREAK_ID));
-		dto.setOutbreakCode(record.get(OUTBREAKS.OUTBREAK_CODE));
-		dto.setViewLongitude(record.get(OUTBREAKS.VIEW_LATITUDE));
-		dto.setViewLatitude(record.get(OUTBREAKS.VIEW_LONGITUDE));
-		dto.setDateSubmitted(record.get(OUTBREAKS.DATE_SUBMITTED));
-		dto.setDateReceived(record.get(OUTBREAKS.DATE_RECEIVED));
-		dto.setSeverityId(record.get(SEVERITIES.SEVERITY_ID));
-		dto.setSeverityName(record.get(SEVERITIES.SEVERITY_NAME));
-		dto.setSourceId(record.get(SOURCES.SOURCE_ID));
-		dto.setSourceName(record.get(SOURCES.SOURCE_NAME));
-		dto.setSeverityOther(record.get(OUTBREAKS.SEVERITY_OTHER));
-		dto.setSourceOther(record.get(OUTBREAKS.SOURCE_OTHER));
-		dto.setComments(record.get(OUTBREAKS.COMMENTS));
-		dto.setAdditionalInfo(record.get(OUTBREAKS.ADDITIONAL_INFO));
-		dto.setStatus(record.get(OUTBREAKS.STATUS));
+		if (user.isAdmin())
+			return;
 
-		// Fields that require either the owner of this record or an admin
-		if (user.getUserID() == record.get(OUTBREAKS.USER_ID) || user.isAdmin())
+		outbreak.setIsAdmin(null);
+
+		if (outbreak.getUserId() != user.getUserID())
 		{
-			dto.setUserId(record.get(OUTBREAKS.USER_ID));
-			dto.setRealLatitude(record.get(OUTBREAKS.REAL_LATITUDE));
-			dto.setRealLongitude(record.get(OUTBREAKS.REAL_LONGITUDE));
-
-			// Overwrite the "view" coordinates with the real position
-			dto.setViewLatitude(record.get(OUTBREAKS.REAL_LATITUDE));
-			dto.setViewLongitude(record.get(OUTBREAKS.REAL_LONGITUDE));
+			outbreak.setUserId(null);
+			outbreak.setRealLatitude(outbreak.getViewLatitude());
+			outbreak.setRealLongitude(outbreak.getViewLongitude());
+			outbreak.setUserEmail(null);
+			outbreak.setUserName(null);
 		}
-
-		return dto;
 	}
 }

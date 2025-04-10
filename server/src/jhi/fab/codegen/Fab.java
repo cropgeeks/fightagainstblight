@@ -15,6 +15,7 @@ import jhi.fab.codegen.tables.Subsamples;
 import jhi.fab.codegen.tables.UserSessions;
 import jhi.fab.codegen.tables.Users;
 import jhi.fab.codegen.tables.Varieties;
+import jhi.fab.codegen.tables.ViewOutbreaks;
 
 import org.jooq.Catalog;
 import org.jooq.Table;
@@ -76,6 +77,11 @@ public class Fab extends SchemaImpl {
     public final Varieties VARIETIES = Varieties.VARIETIES;
 
     /**
+     * The table <code>fab.view_outbreaks</code>.
+     */
+    public final ViewOutbreaks VIEW_OUTBREAKS = ViewOutbreaks.VIEW_OUTBREAKS;
+
+    /**
      * No further instances allowed
      */
     private Fab() {
@@ -98,7 +104,8 @@ public class Fab extends SchemaImpl {
             Subsamples.SUBSAMPLES,
             UserSessions.USER_SESSIONS,
             Users.USERS,
-            Varieties.VARIETIES
+            Varieties.VARIETIES,
+            ViewOutbreaks.VIEW_OUTBREAKS
         );
     }
 }

@@ -63,15 +63,15 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> {
     /**
      * Setter for <code>fab.users.is_admin</code>.
      */
-    public void setIsAdmin(Byte value) {
+    public void setIsAdmin(Boolean value) {
         set(3, value);
     }
 
     /**
      * Getter for <code>fab.users.is_admin</code>.
      */
-    public Byte getIsAdmin() {
-        return (Byte) get(3);
+    public Boolean getIsAdmin() {
+        return (Boolean) get(3);
     }
 
     // -------------------------------------------------------------------------
@@ -97,7 +97,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> {
     /**
      * Create a detached, initialised UsersRecord
      */
-    public UsersRecord(Integer userId, String userName, String email, Byte isAdmin) {
+    public UsersRecord(Integer userId, String userName, String email, Boolean isAdmin) {
         super(Users.USERS);
 
         setUserId(userId);

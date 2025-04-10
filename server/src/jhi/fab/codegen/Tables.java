@@ -12,6 +12,7 @@ import jhi.fab.codegen.tables.Subsamples;
 import jhi.fab.codegen.tables.UserSessions;
 import jhi.fab.codegen.tables.Users;
 import jhi.fab.codegen.tables.Varieties;
+import jhi.fab.codegen.tables.ViewOutbreaks;
 
 
 /**
@@ -59,4 +60,9 @@ public class Tables {
      * The table <code>fab.varieties</code>.
      */
     public static final Varieties VARIETIES = Varieties.VARIETIES;
+
+    /**
+     * The table <code>fab.view_outbreaks</code>.
+     */
+    public static final ViewOutbreaks VIEW_OUTBREAKS = ViewOutbreaks.VIEW_OUTBREAKS;
 }
