@@ -26,8 +26,8 @@ public class SeveritiesResource
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
-			List<Varieties> list = context.selectFrom(SEVERITIES)
-				.fetchInto(Varieties.class);
+			List<Severities> list = context.selectFrom(SEVERITIES)
+				.fetchInto(Severities.class);
 
 			return Response.ok(list).build();
 		}
