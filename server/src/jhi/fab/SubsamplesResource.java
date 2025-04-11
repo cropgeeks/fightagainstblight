@@ -80,7 +80,7 @@ public class SubsamplesResource
 		{
 			dto.setGenotypeId(record.get(SUBSAMPLES.GENOTYPE_ID));
 			dto.setGenotypeName(record.get(SSR_GENOTYPES.GENOTYPE_NAME));
-			dto.setComments(record.get(SUBSAMPLES.COMMENTS));
+			dto.setUserComments(record.get(SUBSAMPLES.USER_COMMENTS));
 		}
 
 		return dto;

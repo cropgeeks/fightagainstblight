@@ -20,12 +20,15 @@ public class ViewOutbreaks implements Serializable {
 
     private Integer outbreakId;
     private String outbreakCode;
+    private String postcode;
     private LocalDate dateReceived;
     private LocalDate dateSubmitted;
     private Double realLatitude;
     private Double realLongitude;
     private Double viewLatitude;
     private Double viewLongitude;
+    private String userComments;
+    private String adminComments;
     private ViewOutbreaksStatus status;
     private Integer severityId;
     private String severityName;
@@ -41,12 +44,15 @@ public class ViewOutbreaks implements Serializable {
     public ViewOutbreaks(ViewOutbreaks value) {
         this.outbreakId = value.outbreakId;
         this.outbreakCode = value.outbreakCode;
+        this.postcode = value.postcode;
         this.dateReceived = value.dateReceived;
         this.dateSubmitted = value.dateSubmitted;
         this.realLatitude = value.realLatitude;
         this.realLongitude = value.realLongitude;
         this.viewLatitude = value.viewLatitude;
         this.viewLongitude = value.viewLongitude;
+        this.userComments = value.userComments;
+        this.adminComments = value.adminComments;
         this.status = value.status;
         this.severityId = value.severityId;
         this.severityName = value.severityName;
@@ -61,12 +67,15 @@ public class ViewOutbreaks implements Serializable {
     public ViewOutbreaks(
         Integer outbreakId,
         String outbreakCode,
+        String postcode,
         LocalDate dateReceived,
         LocalDate dateSubmitted,
         Double realLatitude,
         Double realLongitude,
         Double viewLatitude,
         Double viewLongitude,
+        String userComments,
+        String adminComments,
         ViewOutbreaksStatus status,
         Integer severityId,
         String severityName,
@@ -79,12 +88,15 @@ public class ViewOutbreaks implements Serializable {
     ) {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
+        this.postcode = postcode;
         this.dateReceived = dateReceived;
         this.dateSubmitted = dateSubmitted;
         this.realLatitude = realLatitude;
         this.realLongitude = realLongitude;
         this.viewLatitude = viewLatitude;
         this.viewLongitude = viewLongitude;
+        this.userComments = userComments;
+        this.adminComments = adminComments;
         this.status = status;
         this.severityId = severityId;
         this.severityName = severityName;
@@ -122,6 +134,20 @@ public class ViewOutbreaks implements Serializable {
      */
     public void setOutbreakCode(String outbreakCode) {
         this.outbreakCode = outbreakCode;
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.postcode</code>.
+     */
+    public String getPostcode() {
+        return this.postcode;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.postcode</code>.
+     */
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
 
     /**
@@ -206,6 +232,34 @@ public class ViewOutbreaks implements Serializable {
      */
     public void setViewLongitude(Double viewLongitude) {
         this.viewLongitude = viewLongitude;
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.user_comments</code>.
+     */
+    public String getUserComments() {
+        return this.userComments;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.user_comments</code>.
+     */
+    public void setUserComments(String userComments) {
+        this.userComments = userComments;
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.admin_comments</code>.
+     */
+    public String getAdminComments() {
+        return this.adminComments;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.admin_comments</code>.
+     */
+    public void setAdminComments(String adminComments) {
+        this.adminComments = adminComments;
     }
 
     /**
@@ -355,6 +409,12 @@ public class ViewOutbreaks implements Serializable {
         }
         else if (!this.outbreakCode.equals(other.outbreakCode))
             return false;
+        if (this.postcode == null) {
+            if (other.postcode != null)
+                return false;
+        }
+        else if (!this.postcode.equals(other.postcode))
+            return false;
         if (this.dateReceived == null) {
             if (other.dateReceived != null)
                 return false;
@@ -390,6 +450,18 @@ public class ViewOutbreaks implements Serializable {
                 return false;
         }
         else if (!this.viewLongitude.equals(other.viewLongitude))
+            return false;
+        if (this.userComments == null) {
+            if (other.userComments != null)
+                return false;
+        }
+        else if (!this.userComments.equals(other.userComments))
+            return false;
+        if (this.adminComments == null) {
+            if (other.adminComments != null)
+                return false;
+        }
+        else if (!this.adminComments.equals(other.adminComments))
             return false;
         if (this.status == null) {
             if (other.status != null)
@@ -454,12 +526,15 @@ public class ViewOutbreaks implements Serializable {
         int result = 1;
         result = prime * result + ((this.outbreakId == null) ? 0 : this.outbreakId.hashCode());
         result = prime * result + ((this.outbreakCode == null) ? 0 : this.outbreakCode.hashCode());
+        result = prime * result + ((this.postcode == null) ? 0 : this.postcode.hashCode());
         result = prime * result + ((this.dateReceived == null) ? 0 : this.dateReceived.hashCode());
         result = prime * result + ((this.dateSubmitted == null) ? 0 : this.dateSubmitted.hashCode());
         result = prime * result + ((this.realLatitude == null) ? 0 : this.realLatitude.hashCode());
         result = prime * result + ((this.realLongitude == null) ? 0 : this.realLongitude.hashCode());
         result = prime * result + ((this.viewLatitude == null) ? 0 : this.viewLatitude.hashCode());
         result = prime * result + ((this.viewLongitude == null) ? 0 : this.viewLongitude.hashCode());
+        result = prime * result + ((this.userComments == null) ? 0 : this.userComments.hashCode());
+        result = prime * result + ((this.adminComments == null) ? 0 : this.adminComments.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.severityId == null) ? 0 : this.severityId.hashCode());
         result = prime * result + ((this.severityName == null) ? 0 : this.severityName.hashCode());
@@ -478,12 +553,15 @@ public class ViewOutbreaks implements Serializable {
 
         sb.append(outbreakId);
         sb.append(", ").append(outbreakCode);
+        sb.append(", ").append(postcode);
         sb.append(", ").append(dateReceived);
         sb.append(", ").append(dateSubmitted);
         sb.append(", ").append(realLatitude);
         sb.append(", ").append(realLongitude);
         sb.append(", ").append(viewLatitude);
         sb.append(", ").append(viewLongitude);
+        sb.append(", ").append(userComments);
+        sb.append(", ").append(adminComments);
         sb.append(", ").append(status);
         sb.append(", ").append(severityId);
         sb.append(", ").append(severityName);

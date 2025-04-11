@@ -23,7 +23,8 @@ public class Subsamples implements Serializable {
     private Integer varietyId;
     private String material;
     private LocalDate dateGenotyped;
-    private String comments;
+    private String userComments;
+    private String adminComments;
 
     public Subsamples() {}
 
@@ -35,7 +36,8 @@ public class Subsamples implements Serializable {
         this.varietyId = value.varietyId;
         this.material = value.material;
         this.dateGenotyped = value.dateGenotyped;
-        this.comments = value.comments;
+        this.userComments = value.userComments;
+        this.adminComments = value.adminComments;
     }
 
     public Subsamples(
@@ -46,7 +48,8 @@ public class Subsamples implements Serializable {
         Integer varietyId,
         String material,
         LocalDate dateGenotyped,
-        String comments
+        String userComments,
+        String adminComments
     ) {
         this.subsampleId = subsampleId;
         this.subsampleCode = subsampleCode;
@@ -55,7 +58,8 @@ public class Subsamples implements Serializable {
         this.varietyId = varietyId;
         this.material = material;
         this.dateGenotyped = dateGenotyped;
-        this.comments = comments;
+        this.userComments = userComments;
+        this.adminComments = adminComments;
     }
 
     /**
@@ -157,17 +161,31 @@ public class Subsamples implements Serializable {
     }
 
     /**
-     * Getter for <code>fab.subsamples.comments</code>.
+     * Getter for <code>fab.subsamples.user_comments</code>.
      */
-    public String getComments() {
-        return this.comments;
+    public String getUserComments() {
+        return this.userComments;
     }
 
     /**
-     * Setter for <code>fab.subsamples.comments</code>.
+     * Setter for <code>fab.subsamples.user_comments</code>.
      */
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setUserComments(String userComments) {
+        this.userComments = userComments;
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.admin_comments</code>.
+     */
+    public String getAdminComments() {
+        return this.adminComments;
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.admin_comments</code>.
+     */
+    public void setAdminComments(String adminComments) {
+        this.adminComments = adminComments;
     }
 
     @Override
@@ -221,11 +239,17 @@ public class Subsamples implements Serializable {
         }
         else if (!this.dateGenotyped.equals(other.dateGenotyped))
             return false;
-        if (this.comments == null) {
-            if (other.comments != null)
+        if (this.userComments == null) {
+            if (other.userComments != null)
                 return false;
         }
-        else if (!this.comments.equals(other.comments))
+        else if (!this.userComments.equals(other.userComments))
+            return false;
+        if (this.adminComments == null) {
+            if (other.adminComments != null)
+                return false;
+        }
+        else if (!this.adminComments.equals(other.adminComments))
             return false;
         return true;
     }
@@ -241,7 +265,8 @@ public class Subsamples implements Serializable {
         result = prime * result + ((this.varietyId == null) ? 0 : this.varietyId.hashCode());
         result = prime * result + ((this.material == null) ? 0 : this.material.hashCode());
         result = prime * result + ((this.dateGenotyped == null) ? 0 : this.dateGenotyped.hashCode());
-        result = prime * result + ((this.comments == null) ? 0 : this.comments.hashCode());
+        result = prime * result + ((this.userComments == null) ? 0 : this.userComments.hashCode());
+        result = prime * result + ((this.adminComments == null) ? 0 : this.adminComments.hashCode());
         return result;
     }
 
@@ -256,7 +281,8 @@ public class Subsamples implements Serializable {
         sb.append(", ").append(varietyId);
         sb.append(", ").append(material);
         sb.append(", ").append(dateGenotyped);
-        sb.append(", ").append(comments);
+        sb.append(", ").append(userComments);
+        sb.append(", ").append(adminComments);
 
         sb.append(")");
         return sb.toString();

@@ -21,6 +21,7 @@ public class Outbreaks implements Serializable {
     private Integer outbreakId;
     private String outbreakCode;
     private Integer userId;
+    private String postcode;
     private Double realLatitude;
     private Double realLongitude;
     private Double viewLatitude;
@@ -31,8 +32,8 @@ public class Outbreaks implements Serializable {
     private Integer sourceId;
     private String severityOther;
     private String sourceOther;
-    private String comments;
-    private String additionalInfo;
+    private String userComments;
+    private String adminComments;
     private OutbreaksStatus status;
 
     public Outbreaks() {}
@@ -41,6 +42,7 @@ public class Outbreaks implements Serializable {
         this.outbreakId = value.outbreakId;
         this.outbreakCode = value.outbreakCode;
         this.userId = value.userId;
+        this.postcode = value.postcode;
         this.realLatitude = value.realLatitude;
         this.realLongitude = value.realLongitude;
         this.viewLatitude = value.viewLatitude;
@@ -51,8 +53,8 @@ public class Outbreaks implements Serializable {
         this.sourceId = value.sourceId;
         this.severityOther = value.severityOther;
         this.sourceOther = value.sourceOther;
-        this.comments = value.comments;
-        this.additionalInfo = value.additionalInfo;
+        this.userComments = value.userComments;
+        this.adminComments = value.adminComments;
         this.status = value.status;
     }
 
@@ -60,6 +62,7 @@ public class Outbreaks implements Serializable {
         Integer outbreakId,
         String outbreakCode,
         Integer userId,
+        String postcode,
         Double realLatitude,
         Double realLongitude,
         Double viewLatitude,
@@ -70,13 +73,14 @@ public class Outbreaks implements Serializable {
         Integer sourceId,
         String severityOther,
         String sourceOther,
-        String comments,
-        String additionalInfo,
+        String userComments,
+        String adminComments,
         OutbreaksStatus status
     ) {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
         this.userId = userId;
+        this.postcode = postcode;
         this.realLatitude = realLatitude;
         this.realLongitude = realLongitude;
         this.viewLatitude = viewLatitude;
@@ -87,8 +91,8 @@ public class Outbreaks implements Serializable {
         this.sourceId = sourceId;
         this.severityOther = severityOther;
         this.sourceOther = sourceOther;
-        this.comments = comments;
-        this.additionalInfo = additionalInfo;
+        this.userComments = userComments;
+        this.adminComments = adminComments;
         this.status = status;
     }
 
@@ -132,6 +136,20 @@ public class Outbreaks implements Serializable {
      */
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.postcode</code>.
+     */
+    public String getPostcode() {
+        return this.postcode;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.postcode</code>.
+     */
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
     }
 
     /**
@@ -275,31 +293,31 @@ public class Outbreaks implements Serializable {
     }
 
     /**
-     * Getter for <code>fab.outbreaks.comments</code>.
+     * Getter for <code>fab.outbreaks.user_comments</code>.
      */
-    public String getComments() {
-        return this.comments;
+    public String getUserComments() {
+        return this.userComments;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.comments</code>.
+     * Setter for <code>fab.outbreaks.user_comments</code>.
      */
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setUserComments(String userComments) {
+        this.userComments = userComments;
     }
 
     /**
-     * Getter for <code>fab.outbreaks.additional_info</code>.
+     * Getter for <code>fab.outbreaks.admin_comments</code>.
      */
-    public String getAdditionalInfo() {
-        return this.additionalInfo;
+    public String getAdminComments() {
+        return this.adminComments;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.additional_info</code>.
+     * Setter for <code>fab.outbreaks.admin_comments</code>.
      */
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
+    public void setAdminComments(String adminComments) {
+        this.adminComments = adminComments;
     }
 
     /**
@@ -342,6 +360,12 @@ public class Outbreaks implements Serializable {
                 return false;
         }
         else if (!this.userId.equals(other.userId))
+            return false;
+        if (this.postcode == null) {
+            if (other.postcode != null)
+                return false;
+        }
+        else if (!this.postcode.equals(other.postcode))
             return false;
         if (this.realLatitude == null) {
             if (other.realLatitude != null)
@@ -403,17 +427,17 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.sourceOther.equals(other.sourceOther))
             return false;
-        if (this.comments == null) {
-            if (other.comments != null)
+        if (this.userComments == null) {
+            if (other.userComments != null)
                 return false;
         }
-        else if (!this.comments.equals(other.comments))
+        else if (!this.userComments.equals(other.userComments))
             return false;
-        if (this.additionalInfo == null) {
-            if (other.additionalInfo != null)
+        if (this.adminComments == null) {
+            if (other.adminComments != null)
                 return false;
         }
-        else if (!this.additionalInfo.equals(other.additionalInfo))
+        else if (!this.adminComments.equals(other.adminComments))
             return false;
         if (this.status == null) {
             if (other.status != null)
@@ -431,6 +455,7 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.outbreakId == null) ? 0 : this.outbreakId.hashCode());
         result = prime * result + ((this.outbreakCode == null) ? 0 : this.outbreakCode.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
+        result = prime * result + ((this.postcode == null) ? 0 : this.postcode.hashCode());
         result = prime * result + ((this.realLatitude == null) ? 0 : this.realLatitude.hashCode());
         result = prime * result + ((this.realLongitude == null) ? 0 : this.realLongitude.hashCode());
         result = prime * result + ((this.viewLatitude == null) ? 0 : this.viewLatitude.hashCode());
@@ -441,8 +466,8 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.sourceId == null) ? 0 : this.sourceId.hashCode());
         result = prime * result + ((this.severityOther == null) ? 0 : this.severityOther.hashCode());
         result = prime * result + ((this.sourceOther == null) ? 0 : this.sourceOther.hashCode());
-        result = prime * result + ((this.comments == null) ? 0 : this.comments.hashCode());
-        result = prime * result + ((this.additionalInfo == null) ? 0 : this.additionalInfo.hashCode());
+        result = prime * result + ((this.userComments == null) ? 0 : this.userComments.hashCode());
+        result = prime * result + ((this.adminComments == null) ? 0 : this.adminComments.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         return result;
     }
@@ -454,6 +479,7 @@ public class Outbreaks implements Serializable {
         sb.append(outbreakId);
         sb.append(", ").append(outbreakCode);
         sb.append(", ").append(userId);
+        sb.append(", ").append(postcode);
         sb.append(", ").append(realLatitude);
         sb.append(", ").append(realLongitude);
         sb.append(", ").append(viewLatitude);
@@ -464,8 +490,8 @@ public class Outbreaks implements Serializable {
         sb.append(", ").append(sourceId);
         sb.append(", ").append(severityOther);
         sb.append(", ").append(sourceOther);
-        sb.append(", ").append(comments);
-        sb.append(", ").append(additionalInfo);
+        sb.append(", ").append(userComments);
+        sb.append(", ").append(adminComments);
         sb.append(", ").append(status);
 
         sb.append(")");

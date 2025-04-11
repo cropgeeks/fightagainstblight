@@ -78,6 +78,11 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     public final TableField<OutbreaksRecord, Integer> USER_ID = createField(DSL.name("user_id"), SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
+     * The column <code>fab.outbreaks.postcode</code>.
+     */
+    public final TableField<OutbreaksRecord, String> POSTCODE = createField(DSL.name("postcode"), SQLDataType.VARCHAR(10), this, "");
+
+    /**
      * The column <code>fab.outbreaks.real_latitude</code>.
      */
     public final TableField<OutbreaksRecord, Double> REAL_LATITUDE = createField(DSL.name("real_latitude"), SQLDataType.FLOAT, this, "");
@@ -128,14 +133,14 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     public final TableField<OutbreaksRecord, String> SOURCE_OTHER = createField(DSL.name("source_other"), SQLDataType.VARCHAR(255), this, "");
 
     /**
-     * The column <code>fab.outbreaks.comments</code>.
+     * The column <code>fab.outbreaks.user_comments</code>.
      */
-    public final TableField<OutbreaksRecord, String> COMMENTS = createField(DSL.name("comments"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<OutbreaksRecord, String> USER_COMMENTS = createField(DSL.name("user_comments"), SQLDataType.VARCHAR(255), this, "");
 
     /**
-     * The column <code>fab.outbreaks.additional_info</code>.
+     * The column <code>fab.outbreaks.admin_comments</code>.
      */
-    public final TableField<OutbreaksRecord, String> ADDITIONAL_INFO = createField(DSL.name("additional_info"), SQLDataType.VARCHAR(255), this, "");
+    public final TableField<OutbreaksRecord, String> ADMIN_COMMENTS = createField(DSL.name("admin_comments"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>fab.outbreaks.status</code>.

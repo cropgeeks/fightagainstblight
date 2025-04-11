@@ -49,213 +49,255 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
     }
 
     /**
+     * Setter for <code>fab.view_outbreaks.postcode</code>.
+     */
+    public void setPostcode(String value) {
+        set(2, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.postcode</code>.
+     */
+    public String getPostcode() {
+        return (String) get(2);
+    }
+
+    /**
      * Setter for <code>fab.view_outbreaks.date_received</code>.
      */
     public void setDateReceived(LocalDate value) {
-        set(2, value);
+        set(3, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.date_received</code>.
      */
     public LocalDate getDateReceived() {
-        return (LocalDate) get(2);
+        return (LocalDate) get(3);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.date_submitted</code>.
      */
     public void setDateSubmitted(LocalDate value) {
-        set(3, value);
+        set(4, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.date_submitted</code>.
      */
     public LocalDate getDateSubmitted() {
-        return (LocalDate) get(3);
+        return (LocalDate) get(4);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.real_latitude</code>.
      */
     public void setRealLatitude(Double value) {
-        set(4, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.real_latitude</code>.
      */
     public Double getRealLatitude() {
-        return (Double) get(4);
+        return (Double) get(5);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.real_longitude</code>.
      */
     public void setRealLongitude(Double value) {
-        set(5, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.real_longitude</code>.
      */
     public Double getRealLongitude() {
-        return (Double) get(5);
+        return (Double) get(6);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.view_latitude</code>.
      */
     public void setViewLatitude(Double value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.view_latitude</code>.
      */
     public Double getViewLatitude() {
-        return (Double) get(6);
+        return (Double) get(7);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.view_longitude</code>.
      */
     public void setViewLongitude(Double value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.view_longitude</code>.
      */
     public Double getViewLongitude() {
-        return (Double) get(7);
+        return (Double) get(8);
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.user_comments</code>.
+     */
+    public void setUserComments(String value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.user_comments</code>.
+     */
+    public String getUserComments() {
+        return (String) get(9);
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.admin_comments</code>.
+     */
+    public void setAdminComments(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.admin_comments</code>.
+     */
+    public String getAdminComments() {
+        return (String) get(10);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.status</code>.
      */
     public void setStatus(ViewOutbreaksStatus value) {
-        set(8, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.status</code>.
      */
     public ViewOutbreaksStatus getStatus() {
-        return (ViewOutbreaksStatus) get(8);
+        return (ViewOutbreaksStatus) get(11);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.severity_id</code>.
      */
     public void setSeverityId(Integer value) {
-        set(9, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.severity_id</code>.
      */
     public Integer getSeverityId() {
-        return (Integer) get(9);
+        return (Integer) get(12);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.severity_name</code>.
      */
     public void setSeverityName(String value) {
-        set(10, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.severity_name</code>.
      */
     public String getSeverityName() {
-        return (String) get(10);
+        return (String) get(13);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.source_id</code>.
      */
     public void setSourceId(Integer value) {
-        set(11, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.source_id</code>.
      */
     public Integer getSourceId() {
-        return (Integer) get(11);
+        return (Integer) get(14);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.source_name</code>.
      */
     public void setSourceName(String value) {
-        set(12, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.source_name</code>.
      */
     public String getSourceName() {
-        return (String) get(12);
+        return (String) get(15);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.user_id</code>.
      */
     public void setUserId(Integer value) {
-        set(13, value);
+        set(16, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.user_id</code>.
      */
     public Integer getUserId() {
-        return (Integer) get(13);
+        return (Integer) get(16);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.is_admin</code>.
      */
     public void setIsAdmin(Boolean value) {
-        set(14, value);
+        set(17, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.is_admin</code>.
      */
     public Boolean getIsAdmin() {
-        return (Boolean) get(14);
+        return (Boolean) get(17);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.user_email</code>.
      */
     public void setUserEmail(String value) {
-        set(15, value);
+        set(18, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.user_email</code>.
      */
     public String getUserEmail() {
-        return (String) get(15);
+        return (String) get(18);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.user_name</code>.
      */
     public void setUserName(String value) {
-        set(16, value);
+        set(19, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.user_name</code>.
      */
     public String getUserName() {
-        return (String) get(16);
+        return (String) get(19);
     }
 
     // -------------------------------------------------------------------------
@@ -272,17 +314,20 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
     /**
      * Create a detached, initialised ViewOutbreaksRecord
      */
-    public ViewOutbreaksRecord(Integer outbreakId, String outbreakCode, LocalDate dateReceived, LocalDate dateSubmitted, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, ViewOutbreaksStatus status, Integer severityId, String severityName, Integer sourceId, String sourceName, Integer userId, Boolean isAdmin, String userEmail, String userName) {
+    public ViewOutbreaksRecord(Integer outbreakId, String outbreakCode, String postcode, LocalDate dateReceived, LocalDate dateSubmitted, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, String userComments, String adminComments, ViewOutbreaksStatus status, Integer severityId, String severityName, Integer sourceId, String sourceName, Integer userId, Boolean isAdmin, String userEmail, String userName) {
         super(ViewOutbreaks.VIEW_OUTBREAKS);
 
         setOutbreakId(outbreakId);
         setOutbreakCode(outbreakCode);
+        setPostcode(postcode);
         setDateReceived(dateReceived);
         setDateSubmitted(dateSubmitted);
         setRealLatitude(realLatitude);
         setRealLongitude(realLongitude);
         setViewLatitude(viewLatitude);
         setViewLongitude(viewLongitude);
+        setUserComments(userComments);
+        setAdminComments(adminComments);
         setStatus(status);
         setSeverityId(severityId);
         setSeverityName(severityName);
@@ -304,12 +349,15 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
         if (value != null) {
             setOutbreakId(value.getOutbreakId());
             setOutbreakCode(value.getOutbreakCode());
+            setPostcode(value.getPostcode());
             setDateReceived(value.getDateReceived());
             setDateSubmitted(value.getDateSubmitted());
             setRealLatitude(value.getRealLatitude());
             setRealLongitude(value.getRealLongitude());
             setViewLatitude(value.getViewLatitude());
             setViewLongitude(value.getViewLongitude());
+            setUserComments(value.getUserComments());
+            setAdminComments(value.getAdminComments());
             setStatus(value.getStatus());
             setSeverityId(value.getSeverityId());
             setSeverityName(value.getSeverityName());

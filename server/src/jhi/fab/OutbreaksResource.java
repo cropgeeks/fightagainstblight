@@ -17,7 +17,6 @@ import jhi.fab.codegen.enums.*;
 import jhi.fab.codegen.tables.pojos.ViewOutbreaks;
 import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
-import static jhi.fab.codegen.tables.Varieties.VARIETIES;
 import static jhi.fab.codegen.tables.ViewOutbreaks.VIEW_OUTBREAKS;
 
 @Path("/outbreaks")
@@ -138,8 +137,7 @@ public class OutbreaksResource
 		@QueryParam("sourceOther") String sourceOther,
 		@QueryParam("severity") Integer severity,
 		@QueryParam("severityOther") String severityOther,
-		@QueryParam("comments") String comments,
-		@QueryParam("additionalInfo") String additionalInfo,
+		@QueryParam("userComments") String userComments,
 		@QueryParam("variety") Integer variety)
 		throws SQLException
 	{
@@ -180,8 +178,7 @@ public class OutbreaksResource
 				.set(OUTBREAKS.SOURCE_OTHER, sourceOther)
 				.set(OUTBREAKS.SEVERITY_ID, severity)
 				.set(OUTBREAKS.SEVERITY_OTHER, severityOther)
-				.set(OUTBREAKS.COMMENTS, comments)
-				.set(OUTBREAKS.ADDITIONAL_INFO, additionalInfo)
+				.set(OUTBREAKS.USER_COMMENTS, userComments)
 				.execute();
 
 			// TODO: Create viewLat/Long
@@ -198,8 +195,11 @@ public class OutbreaksResource
 		if (user.isAdmin())
 			return;
 
+		// Owner doesn't get to see...
 		outbreak.setIsAdmin(null);
+		outbreak.setAdminComments(null);
 
+		// And a normal user also doesn't get to see...
 		if (outbreak.getUserId() != user.getUserID())
 		{
 			outbreak.setUserId(null);
@@ -207,6 +207,12 @@ public class OutbreaksResource
 			outbreak.setRealLongitude(outbreak.getViewLongitude());
 			outbreak.setUserEmail(null);
 			outbreak.setUserName(null);
+			outbreak.setUserComments(null);
+
+			// Hide the last part of the postcode
+			if (outbreak.getPostcode() != null)
+				outbreak.setPostcode(outbreak.getPostcode()
+					.substring(0, outbreak.getPostcode().length()-3));
 		}
 	}
 }

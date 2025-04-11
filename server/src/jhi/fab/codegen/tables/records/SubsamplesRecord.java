@@ -119,17 +119,31 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
     }
 
     /**
-     * Setter for <code>fab.subsamples.comments</code>.
+     * Setter for <code>fab.subsamples.user_comments</code>.
      */
-    public void setComments(String value) {
+    public void setUserComments(String value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>fab.subsamples.comments</code>.
+     * Getter for <code>fab.subsamples.user_comments</code>.
      */
-    public String getComments() {
+    public String getUserComments() {
         return (String) get(7);
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.admin_comments</code>.
+     */
+    public void setAdminComments(String value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.admin_comments</code>.
+     */
+    public String getAdminComments() {
+        return (String) get(8);
     }
 
     // -------------------------------------------------------------------------
@@ -155,7 +169,7 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
     /**
      * Create a detached, initialised SubsamplesRecord
      */
-    public SubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, Integer varietyId, String material, LocalDate dateGenotyped, String comments) {
+    public SubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, Integer varietyId, String material, LocalDate dateGenotyped, String userComments, String adminComments) {
         super(Subsamples.SUBSAMPLES);
 
         setSubsampleId(subsampleId);
@@ -165,7 +179,8 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
         setVarietyId(varietyId);
         setMaterial(material);
         setDateGenotyped(dateGenotyped);
-        setComments(comments);
+        setUserComments(userComments);
+        setAdminComments(adminComments);
         resetTouchedOnNotNull();
     }
 
@@ -183,7 +198,8 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
             setVarietyId(value.getVarietyId());
             setMaterial(value.getMaterial());
             setDateGenotyped(value.getDateGenotyped());
-            setComments(value.getComments());
+            setUserComments(value.getUserComments());
+            setAdminComments(value.getAdminComments());
             resetTouchedOnNotNull();
         }
     }
