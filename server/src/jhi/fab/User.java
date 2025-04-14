@@ -54,7 +54,7 @@ class User
 
 					// Has the token expired?
 					// TODO: How and when will we clean up expired tokens?
-					if (tokenMilli < (now-(30*60*1000)))
+					if (tokenMilli < (now-(24*60*60*1000)))
 						System.out.println("Token has expired");
 
 					else
