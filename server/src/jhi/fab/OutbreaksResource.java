@@ -26,6 +26,7 @@ public class OutbreaksResource
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getOutbreaks(@HeaderParam("Authorization") String authHeader,
 		@QueryParam("year") Integer year,
+		@QueryParam("outbreakCode") String outbreakCode,
 		@QueryParam("status") String status,
 		@QueryParam("source") Integer source,
 		@QueryParam("severity") Integer severity,
@@ -48,6 +49,8 @@ public class OutbreaksResource
 			}
 			if (year != null)
 				query.where(DSL.year(VIEW_OUTBREAKS.DATE_SUBMITTED).eq(year));
+			if (outbreakCode != null)
+				query.where(VIEW_OUTBREAKS.OUTBREAK_CODE.eq(outbreakCode));
 			if (status != null)
 			{
 				try { query.where(VIEW_OUTBREAKS.STATUS.eq(ViewOutbreaksStatus.lookupLiteral(status))); }
