@@ -122,7 +122,7 @@ public class OutbreaksResource
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public synchronized Response postOutbreaks(@HeaderParam("Authorization") String authHeader, Outbreaks newOutbreak)
-		throws SQLException
+		throws SQLException, Exception
 	{
 		User user = new User(authHeader);
 
@@ -168,6 +168,14 @@ public class OutbreaksResource
 				.set(OUTBREAKS.USER_COMMENTS, newOutbreak.getUserComments())
 				.returning(OUTBREAKS.fields())
 				.fetchOneInto(Outbreaks.class);
+
+			// TODO: Format a proper email
+			// Now email...
+			String host = System.getenv("FAB_URL");
+			String message = "<p>A new outbreak has just been reported. You can view it here:</p>"
+				+ "<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + host + "#/outbreak/" + outbreak.getOutbreakId() + "'></a></p>";
+
+			FAB.emailAdmins("FlightAgainstBlight: New Outbreak Reported", message);
 
 			return Response.ok(outbreak).build();
 		}

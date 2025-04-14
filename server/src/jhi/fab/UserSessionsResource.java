@@ -32,13 +32,19 @@ public class UserSessionsResource
 		if (user.isAdmin() == false)
 			return Response.status(Response.Status.FORBIDDEN).build();
 
+		return Response.ok(getAllUsers()).build();
+	}
+
+	List<Users> getAllUsers()
+		throws SQLException
+	{
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
 			List<Users> results = context.selectFrom(USERS)
 				.fetchInto(Users.class);
 
-			return Response.ok(results).build();
+			return results;
 		}
 	}
 

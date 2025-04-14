@@ -1,7 +1,6 @@
 package jhi.fab;
 
 import java.util.*;
-
 import javax.mail.*;
 import javax.mail.internet.*;
 
@@ -11,6 +10,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 
 import org.glassfish.jersey.server.ResourceConfig;
+
+import jhi.fab.codegen.tables.pojos.*;
 
 @ApplicationPath("/api/")
 @Path("/")
@@ -62,7 +63,14 @@ public class FAB extends ResourceConfig implements ServletContextListener
 		message.setSubject(subject);
 		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(address));
 
-
 		Transport.send(message);
+	}
+
+	public static void emailAdmins(String subject, String htmlMessage)
+		throws Exception
+	{
+		for (Users user: new UserSessionsResource().getAllUsers())
+			if (user.getIsAdmin())
+				email(user.getEmail(), subject, htmlMessage);
 	}
 }
