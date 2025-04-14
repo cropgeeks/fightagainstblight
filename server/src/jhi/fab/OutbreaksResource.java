@@ -14,8 +14,7 @@ import org.jooq.impl.*;
 import static org.jooq.impl.DSL.field;
 
 import jhi.fab.codegen.enums.*;
-import jhi.fab.codegen.tables.pojos.Outbreaks;
-import jhi.fab.codegen.tables.pojos.ViewOutbreaks;
+import jhi.fab.codegen.tables.pojos.*;
 import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
 import static jhi.fab.codegen.tables.ViewOutbreaks.VIEW_OUTBREAKS;
@@ -100,15 +99,6 @@ public class OutbreaksResource
 	}
 
 	@GET
-	@Path("/{id}/subsamples")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSubsamples(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id)
-		throws SQLException
-	{
-		return SubsamplesResource.getSubsamples(authHeader, id);
-	}
-
-	@GET
 	@Path("/years")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getSubsamples(@HeaderParam("Authorization") String authHeader)
@@ -131,7 +121,7 @@ public class OutbreaksResource
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public synchronized Response postOutbreaks(@HeaderParam("Authorization") String authHeader, ViewOutbreaks newOutbreak)
+	public synchronized Response postOutbreaks(@HeaderParam("Authorization") String authHeader, Outbreaks newOutbreak)
 		throws SQLException
 	{
 		User user = new User(authHeader);
@@ -181,6 +171,24 @@ public class OutbreaksResource
 
 			return Response.ok(outbreak).build();
 		}
+	}
+
+	@GET
+	@Path("/{id}/subsamples")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getSubsamples(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id)
+		throws SQLException
+	{
+		return SubsamplesResource.getSubsamples(authHeader, id);
+	}
+
+	@POST
+	@Path("/{id}/subsamples")
+	@Produces(MediaType.APPLICATION_JSON)
+	public synchronized Response postSubsamples(@HeaderParam("Authorization") String authHeader, List<Subsamples> subsamples)
+		throws SQLException
+	{
+		return SubsamplesResource.postSubsamples(authHeader, subsamples);
 	}
 
 	private void map(ViewOutbreaks outbreak, User user)
