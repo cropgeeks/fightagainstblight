@@ -14,6 +14,7 @@ import org.jooq.impl.*;
 import static org.jooq.impl.DSL.field;
 
 import jhi.fab.codegen.enums.*;
+import jhi.fab.codegen.tables.*;
 import jhi.fab.codegen.tables.pojos.ViewOutbreaks;
 import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
@@ -130,15 +131,7 @@ public class OutbreaksResource
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public synchronized Response postOutbreaks(@HeaderParam("Authorization") String authHeader,
-		@QueryParam("latitude") Double latitude,
-		@QueryParam("longitude") Double longitude,
-		@QueryParam("source") Integer source,
-		@QueryParam("sourceOther") String sourceOther,
-		@QueryParam("severity") Integer severity,
-		@QueryParam("severityOther") String severityOther,
-		@QueryParam("userComments") String userComments,
-		@QueryParam("variety") Integer variety)
+	public synchronized Response postOutbreaks(@HeaderParam("Authorization") String authHeader, ViewOutbreaks newOutbreak)
 		throws SQLException
 	{
 		User user = new User(authHeader);
@@ -146,6 +139,8 @@ public class OutbreaksResource
 		// Must be logged in to create a new outbreak
 		if (user.isOK() == false)
 			return Response.status(Response.Status.UNAUTHORIZED).build();
+		if (newOutbreak == null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		System.out.println("UserID is " + user.getUserID());
 
@@ -166,27 +161,25 @@ public class OutbreaksResource
 				+ ("" + LocalDate.now().getYear()).substring(2) + "_"
 				+ new DecimalFormat("000000").format(nextID[0]+1);
 
-
-			context.insertInto(OUTBREAKS)
+			Outbreaks outbreak = context.insertInto(OUTBREAKS)
 				.set(OUTBREAKS.OUTBREAK_CODE, code)
 				.set(OUTBREAKS.USER_ID, user.getUserID())
-				.set(OUTBREAKS.REAL_LATITUDE, latitude)
-				.set(OUTBREAKS.REAL_LONGITUDE, longitude)
+				.set(OUTBREAKS.POSTCODE, newOutbreak.getPostcode())
+				.set(OUTBREAKS.REAL_LATITUDE, newOutbreak.getRealLatitude())
+				.set(OUTBREAKS.REAL_LONGITUDE, newOutbreak.getRealLongitude())
+				.set(OUTBREAKS.VIEW_LATITUDE, newOutbreak.getViewLatitude())
+				.set(OUTBREAKS.VIEW_LONGITUDE, newOutbreak.getViewLongitude())
 				.set(OUTBREAKS.DATE_SUBMITTED, LocalDate.now())
 				.set(OUTBREAKS.STATUS, OutbreaksStatus.lookupLiteral("pending"))
-				.set(OUTBREAKS.SOURCE_ID, source)
-				.set(OUTBREAKS.SOURCE_OTHER, sourceOther)
-				.set(OUTBREAKS.SEVERITY_ID, severity)
-				.set(OUTBREAKS.SEVERITY_OTHER, severityOther)
-				.set(OUTBREAKS.USER_COMMENTS, userComments)
-				.execute();
+				.set(OUTBREAKS.SOURCE_ID, newOutbreak.getSourceId())
+				.set(OUTBREAKS.SOURCE_OTHER, newOutbreak.getSourceOther())
+				.set(OUTBREAKS.SEVERITY_ID, newOutbreak.getSeverityId())
+				.set(OUTBREAKS.SEVERITY_OTHER, newOutbreak.getSeverityOther())
+				.set(OUTBREAKS.USER_COMMENTS, newOutbreak.getUserComments())
+				.returning(OUTBREAKS.OUTBREAK_ID)
+				.fetchOneInto(Outbreaks.class);
 
-			// TODO: Create viewLat/Long
-			// TODO: Create associated subsamples entries at the same time?
-
-			// TODO: Probably want to wrap the outbreak ID up for return so the
-			// UI can then jump to the new page for it
-			return Response.ok().build();
+			return Response.ok(outbreak).build();
 		}
 	}
 
