@@ -14,7 +14,7 @@ import org.jooq.impl.*;
 import static org.jooq.impl.DSL.field;
 
 import jhi.fab.codegen.enums.*;
-import jhi.fab.codegen.tables.*;
+import jhi.fab.codegen.tables.pojos.Outbreaks;
 import jhi.fab.codegen.tables.pojos.ViewOutbreaks;
 import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
@@ -176,7 +176,7 @@ public class OutbreaksResource
 				.set(OUTBREAKS.SEVERITY_ID, newOutbreak.getSeverityId())
 				.set(OUTBREAKS.SEVERITY_OTHER, newOutbreak.getSeverityOther())
 				.set(OUTBREAKS.USER_COMMENTS, newOutbreak.getUserComments())
-				.returning(OUTBREAKS.OUTBREAK_ID)
+				.returning(OUTBREAKS.fields())
 				.fetchOneInto(Outbreaks.class);
 
 			return Response.ok(outbreak).build();
