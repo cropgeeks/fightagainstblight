@@ -217,87 +217,115 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
     }
 
     /**
+     * Setter for <code>fab.view_outbreaks.severity_other</code>.
+     */
+    public void setSeverityOther(String value) {
+        set(14, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.severity_other</code>.
+     */
+    public String getSeverityOther() {
+        return (String) get(14);
+    }
+
+    /**
      * Setter for <code>fab.view_outbreaks.source_id</code>.
      */
     public void setSourceId(Integer value) {
-        set(14, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.source_id</code>.
      */
     public Integer getSourceId() {
-        return (Integer) get(14);
+        return (Integer) get(15);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.source_name</code>.
      */
     public void setSourceName(String value) {
-        set(15, value);
+        set(16, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.source_name</code>.
      */
     public String getSourceName() {
-        return (String) get(15);
+        return (String) get(16);
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.source_other</code>.
+     */
+    public void setSourceOther(String value) {
+        set(17, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.source_other</code>.
+     */
+    public String getSourceOther() {
+        return (String) get(17);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.user_id</code>.
      */
     public void setUserId(Integer value) {
-        set(16, value);
+        set(18, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.user_id</code>.
      */
     public Integer getUserId() {
-        return (Integer) get(16);
+        return (Integer) get(18);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.is_admin</code>.
      */
     public void setIsAdmin(Boolean value) {
-        set(17, value);
+        set(19, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.is_admin</code>.
      */
     public Boolean getIsAdmin() {
-        return (Boolean) get(17);
+        return (Boolean) get(19);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.user_email</code>.
      */
     public void setUserEmail(String value) {
-        set(18, value);
+        set(20, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.user_email</code>.
      */
     public String getUserEmail() {
-        return (String) get(18);
+        return (String) get(20);
     }
 
     /**
      * Setter for <code>fab.view_outbreaks.user_name</code>.
      */
     public void setUserName(String value) {
-        set(19, value);
+        set(21, value);
     }
 
     /**
      * Getter for <code>fab.view_outbreaks.user_name</code>.
      */
     public String getUserName() {
-        return (String) get(19);
+        return (String) get(21);
     }
 
     // -------------------------------------------------------------------------
@@ -314,7 +342,7 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
     /**
      * Create a detached, initialised ViewOutbreaksRecord
      */
-    public ViewOutbreaksRecord(Integer outbreakId, String outbreakCode, String postcode, LocalDate dateReceived, LocalDate dateSubmitted, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, String userComments, String adminComments, ViewOutbreaksStatus status, Integer severityId, String severityName, Integer sourceId, String sourceName, Integer userId, Boolean isAdmin, String userEmail, String userName) {
+    public ViewOutbreaksRecord(Integer outbreakId, String outbreakCode, String postcode, LocalDate dateReceived, LocalDate dateSubmitted, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, String userComments, String adminComments, ViewOutbreaksStatus status, Integer severityId, String severityName, String severityOther, Integer sourceId, String sourceName, String sourceOther, Integer userId, Boolean isAdmin, String userEmail, String userName) {
         super(ViewOutbreaks.VIEW_OUTBREAKS);
 
         setOutbreakId(outbreakId);
@@ -331,8 +359,10 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
         setStatus(status);
         setSeverityId(severityId);
         setSeverityName(severityName);
+        setSeverityOther(severityOther);
         setSourceId(sourceId);
         setSourceName(sourceName);
+        setSourceOther(sourceOther);
         setUserId(userId);
         setIsAdmin(isAdmin);
         setUserEmail(userEmail);
@@ -361,8 +391,10 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
             setStatus(value.getStatus());
             setSeverityId(value.getSeverityId());
             setSeverityName(value.getSeverityName());
+            setSeverityOther(value.getSeverityOther());
             setSourceId(value.getSourceId());
             setSourceName(value.getSourceName());
+            setSourceOther(value.getSourceOther());
             setUserId(value.getUserId());
             setIsAdmin(value.getIsAdmin());
             setUserEmail(value.getUserEmail());

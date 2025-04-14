@@ -120,6 +120,11 @@ public class ViewOutbreaks extends TableImpl<ViewOutbreaksRecord> {
     public final TableField<ViewOutbreaksRecord, String> SEVERITY_NAME = createField(DSL.name("severity_name"), SQLDataType.VARCHAR(255), this, "");
 
     /**
+     * The column <code>fab.view_outbreaks.severity_other</code>.
+     */
+    public final TableField<ViewOutbreaksRecord, String> SEVERITY_OTHER = createField(DSL.name("severity_other"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
      * The column <code>fab.view_outbreaks.source_id</code>.
      */
     public final TableField<ViewOutbreaksRecord, Integer> SOURCE_ID = createField(DSL.name("source_id"), SQLDataType.INTEGER.defaultValue(DSL.inline("0", SQLDataType.INTEGER)), this, "");
@@ -128,6 +133,11 @@ public class ViewOutbreaks extends TableImpl<ViewOutbreaksRecord> {
      * The column <code>fab.view_outbreaks.source_name</code>.
      */
     public final TableField<ViewOutbreaksRecord, String> SOURCE_NAME = createField(DSL.name("source_name"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>fab.view_outbreaks.source_other</code>.
+     */
+    public final TableField<ViewOutbreaksRecord, String> SOURCE_OTHER = createField(DSL.name("source_other"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>fab.view_outbreaks.user_id</code>.
@@ -154,7 +164,7 @@ public class ViewOutbreaks extends TableImpl<ViewOutbreaksRecord> {
     }
 
     private ViewOutbreaks(Name alias, Table<ViewOutbreaksRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `view_outbreaks` as select `fab`.`outbreaks`.`outbreak_id` AS `outbreak_id`,`fab`.`outbreaks`.`outbreak_code` AS `outbreak_code`,`fab`.`outbreaks`.`postcode` AS `postcode`,`fab`.`outbreaks`.`date_received` AS `date_received`,`fab`.`outbreaks`.`date_submitted` AS `date_submitted`,`fab`.`outbreaks`.`real_latitude` AS `real_latitude`,`fab`.`outbreaks`.`real_longitude` AS `real_longitude`,`fab`.`outbreaks`.`view_latitude` AS `view_latitude`,`fab`.`outbreaks`.`view_longitude` AS `view_longitude`,`fab`.`outbreaks`.`user_comments` AS `user_comments`,`fab`.`outbreaks`.`admin_comments` AS `admin_comments`,`fab`.`outbreaks`.`status` AS `status`,`fab`.`severities`.`severity_id` AS `severity_id`,`fab`.`severities`.`severity_name` AS `severity_name`,`fab`.`sources`.`source_id` AS `source_id`,`fab`.`sources`.`source_name` AS `source_name`,`fab`.`users`.`user_id` AS `user_id`,`fab`.`users`.`is_admin` AS `is_admin`,`fab`.`users`.`email` AS `user_email`,`fab`.`users`.`user_name` AS `user_name` from (((`fab`.`outbreaks` left join `fab`.`users` on((`fab`.`users`.`user_id` = `fab`.`outbreaks`.`user_id`))) left join `fab`.`severities` on((`fab`.`severities`.`severity_id` = `fab`.`outbreaks`.`severity_id`))) left join `fab`.`sources` on((`fab`.`sources`.`source_id` = `fab`.`outbreaks`.`source_id`)))"), where);
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `view_outbreaks` as select `fab`.`outbreaks`.`outbreak_id` AS `outbreak_id`,`fab`.`outbreaks`.`outbreak_code` AS `outbreak_code`,`fab`.`outbreaks`.`postcode` AS `postcode`,`fab`.`outbreaks`.`date_received` AS `date_received`,`fab`.`outbreaks`.`date_submitted` AS `date_submitted`,`fab`.`outbreaks`.`real_latitude` AS `real_latitude`,`fab`.`outbreaks`.`real_longitude` AS `real_longitude`,`fab`.`outbreaks`.`view_latitude` AS `view_latitude`,`fab`.`outbreaks`.`view_longitude` AS `view_longitude`,`fab`.`outbreaks`.`user_comments` AS `user_comments`,`fab`.`outbreaks`.`admin_comments` AS `admin_comments`,`fab`.`outbreaks`.`status` AS `status`,`fab`.`severities`.`severity_id` AS `severity_id`,`fab`.`severities`.`severity_name` AS `severity_name`,`fab`.`outbreaks`.`severity_other` AS `severity_other`,`fab`.`sources`.`source_id` AS `source_id`,`fab`.`sources`.`source_name` AS `source_name`,`fab`.`outbreaks`.`source_other` AS `source_other`,`fab`.`users`.`user_id` AS `user_id`,`fab`.`users`.`is_admin` AS `is_admin`,`fab`.`users`.`email` AS `user_email`,`fab`.`users`.`user_name` AS `user_name` from (((`fab`.`outbreaks` left join `fab`.`users` on((`fab`.`users`.`user_id` = `fab`.`outbreaks`.`user_id`))) left join `fab`.`severities` on((`fab`.`severities`.`severity_id` = `fab`.`outbreaks`.`severity_id`))) left join `fab`.`sources` on((`fab`.`sources`.`source_id` = `fab`.`outbreaks`.`source_id`)))"), where);
     }
 
     /**

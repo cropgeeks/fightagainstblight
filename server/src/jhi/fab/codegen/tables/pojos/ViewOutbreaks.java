@@ -32,8 +32,10 @@ public class ViewOutbreaks implements Serializable {
     private ViewOutbreaksStatus status;
     private Integer severityId;
     private String severityName;
+    private String severityOther;
     private Integer sourceId;
     private String sourceName;
+    private String sourceOther;
     private Integer userId;
     private Boolean isAdmin;
     private String userEmail;
@@ -56,8 +58,10 @@ public class ViewOutbreaks implements Serializable {
         this.status = value.status;
         this.severityId = value.severityId;
         this.severityName = value.severityName;
+        this.severityOther = value.severityOther;
         this.sourceId = value.sourceId;
         this.sourceName = value.sourceName;
+        this.sourceOther = value.sourceOther;
         this.userId = value.userId;
         this.isAdmin = value.isAdmin;
         this.userEmail = value.userEmail;
@@ -79,8 +83,10 @@ public class ViewOutbreaks implements Serializable {
         ViewOutbreaksStatus status,
         Integer severityId,
         String severityName,
+        String severityOther,
         Integer sourceId,
         String sourceName,
+        String sourceOther,
         Integer userId,
         Boolean isAdmin,
         String userEmail,
@@ -100,8 +106,10 @@ public class ViewOutbreaks implements Serializable {
         this.status = status;
         this.severityId = severityId;
         this.severityName = severityName;
+        this.severityOther = severityOther;
         this.sourceId = sourceId;
         this.sourceName = sourceName;
+        this.sourceOther = sourceOther;
         this.userId = userId;
         this.isAdmin = isAdmin;
         this.userEmail = userEmail;
@@ -305,6 +313,20 @@ public class ViewOutbreaks implements Serializable {
     }
 
     /**
+     * Getter for <code>fab.view_outbreaks.severity_other</code>.
+     */
+    public String getSeverityOther() {
+        return this.severityOther;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.severity_other</code>.
+     */
+    public void setSeverityOther(String severityOther) {
+        this.severityOther = severityOther;
+    }
+
+    /**
      * Getter for <code>fab.view_outbreaks.source_id</code>.
      */
     public Integer getSourceId() {
@@ -330,6 +352,20 @@ public class ViewOutbreaks implements Serializable {
      */
     public void setSourceName(String sourceName) {
         this.sourceName = sourceName;
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.source_other</code>.
+     */
+    public String getSourceOther() {
+        return this.sourceOther;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.source_other</code>.
+     */
+    public void setSourceOther(String sourceOther) {
+        this.sourceOther = sourceOther;
     }
 
     /**
@@ -481,6 +517,12 @@ public class ViewOutbreaks implements Serializable {
         }
         else if (!this.severityName.equals(other.severityName))
             return false;
+        if (this.severityOther == null) {
+            if (other.severityOther != null)
+                return false;
+        }
+        else if (!this.severityOther.equals(other.severityOther))
+            return false;
         if (this.sourceId == null) {
             if (other.sourceId != null)
                 return false;
@@ -492,6 +534,12 @@ public class ViewOutbreaks implements Serializable {
                 return false;
         }
         else if (!this.sourceName.equals(other.sourceName))
+            return false;
+        if (this.sourceOther == null) {
+            if (other.sourceOther != null)
+                return false;
+        }
+        else if (!this.sourceOther.equals(other.sourceOther))
             return false;
         if (this.userId == null) {
             if (other.userId != null)
@@ -538,8 +586,10 @@ public class ViewOutbreaks implements Serializable {
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.severityId == null) ? 0 : this.severityId.hashCode());
         result = prime * result + ((this.severityName == null) ? 0 : this.severityName.hashCode());
+        result = prime * result + ((this.severityOther == null) ? 0 : this.severityOther.hashCode());
         result = prime * result + ((this.sourceId == null) ? 0 : this.sourceId.hashCode());
         result = prime * result + ((this.sourceName == null) ? 0 : this.sourceName.hashCode());
+        result = prime * result + ((this.sourceOther == null) ? 0 : this.sourceOther.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.isAdmin == null) ? 0 : this.isAdmin.hashCode());
         result = prime * result + ((this.userEmail == null) ? 0 : this.userEmail.hashCode());
@@ -565,8 +615,10 @@ public class ViewOutbreaks implements Serializable {
         sb.append(", ").append(status);
         sb.append(", ").append(severityId);
         sb.append(", ").append(severityName);
+        sb.append(", ").append(severityOther);
         sb.append(", ").append(sourceId);
         sb.append(", ").append(sourceName);
+        sb.append(", ").append(sourceOther);
         sb.append(", ").append(userId);
         sb.append(", ").append(isAdmin);
         sb.append(", ").append(userEmail);
