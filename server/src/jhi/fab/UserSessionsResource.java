@@ -18,6 +18,55 @@ import static jhi.fab.codegen.tables.Users.USERS;
 @Path("/users")
 public class UserSessionsResource
 {
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUsers(@HeaderParam("Authorization") String authHeader)
+		throws SQLException
+	{
+		User user = new User(authHeader);
+
+		// You must be at least logged in use this method
+		if (user.isOK() == false)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		// And you must be an admin
+		if (user.isAdmin() == false)
+			return Response.status(Response.Status.FORBIDDEN).build();
+
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+			List<Users> results = context.selectFrom(USERS)
+				.fetchInto(Users.class);
+
+			return Response.ok(results).build();
+		}
+	}
+
+	@GET
+	@Path("/status")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOutbreaks(@HeaderParam("Authorization") String authHeader)
+		throws SQLException
+	{
+		User user = new User(authHeader);
+
+		if (user.isOK() == false)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+			Users dbUser = context.selectFrom(USERS)
+				.where(USERS.USER_ID.eq(user.getUserID()))
+				.fetchOneInto(Users.class);
+
+			if (dbUser != null)
+				return Response.ok(dbUser).build();
+			else
+				return Response.status(Response.Status.NOT_FOUND).build();
+		}
+	}
+
 	@POST
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -55,31 +104,6 @@ public class UserSessionsResource
 			// should just be informing the user that *if* their address was
 			// found, they'll be receiving an email
 			return Response.ok().build();
-		}
-	}
-
-	@GET
-	@Path("/status")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getOutbreaks(@HeaderParam("Authorization") String authHeader)
-		throws SQLException
-	{
-		User user = new User(authHeader);
-
-		if (user.isOK() == false)
-			return Response.status(Response.Status.UNAUTHORIZED).build();
-
-		try (Connection conn = DatabaseUtils.getConnection())
-		{
-			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
-			Users dbUser = context.selectFrom(USERS)
-				.where(USERS.USER_ID.eq(user.getUserID()))
-				.fetchOneInto(Users.class);
-
-			if (dbUser != null)
-				return Response.ok(dbUser).build();
-			else
-				return Response.status(Response.Status.NOT_FOUND).build();
 		}
 	}
 }
