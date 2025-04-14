@@ -42,7 +42,7 @@ public class SubsamplesResource
 			if (user.getUserID() == outbreak.getUserId() || user.isAdmin())
 			{
 				List<ViewSubsamples> results = context.selectFrom(VIEW_SUBSAMPLES)
-					.where(VIEW_SUBSAMPLES.OUTBREAK_ID.eq(outbreak.getUserId()))
+					.where(VIEW_SUBSAMPLES.OUTBREAK_ID.eq(outbreak.getOutbreakId()))
 					.fetchInto(ViewSubsamples.class);
 
 				return Response.ok(results).build();
