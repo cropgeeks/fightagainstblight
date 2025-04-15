@@ -40,8 +40,8 @@ public class ViewOutbreaks implements Serializable {
     private Boolean isAdmin;
     private String userEmail;
     private String userName;
-    private Integer varietyId;
-    private String varietyName;
+    private Integer reportedVarietyId;
+    private String reportedVarietyName;
 
     public ViewOutbreaks() {}
 
@@ -68,8 +68,8 @@ public class ViewOutbreaks implements Serializable {
         this.isAdmin = value.isAdmin;
         this.userEmail = value.userEmail;
         this.userName = value.userName;
-        this.varietyId = value.varietyId;
-        this.varietyName = value.varietyName;
+        this.reportedVarietyId = value.reportedVarietyId;
+        this.reportedVarietyName = value.reportedVarietyName;
     }
 
     public ViewOutbreaks(
@@ -95,8 +95,8 @@ public class ViewOutbreaks implements Serializable {
         Boolean isAdmin,
         String userEmail,
         String userName,
-        Integer varietyId,
-        String varietyName
+        Integer reportedVarietyId,
+        String reportedVarietyName
     ) {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
@@ -120,8 +120,8 @@ public class ViewOutbreaks implements Serializable {
         this.isAdmin = isAdmin;
         this.userEmail = userEmail;
         this.userName = userName;
-        this.varietyId = varietyId;
-        this.varietyName = varietyName;
+        this.reportedVarietyId = reportedVarietyId;
+        this.reportedVarietyName = reportedVarietyName;
     }
 
     /**
@@ -433,31 +433,31 @@ public class ViewOutbreaks implements Serializable {
     }
 
     /**
-     * Getter for <code>fab.view_outbreaks.variety_id</code>.
+     * Getter for <code>fab.view_outbreaks.reported_variety_id</code>.
      */
-    public Integer getVarietyId() {
-        return this.varietyId;
+    public Integer getReportedVarietyId() {
+        return this.reportedVarietyId;
     }
 
     /**
-     * Setter for <code>fab.view_outbreaks.variety_id</code>.
+     * Setter for <code>fab.view_outbreaks.reported_variety_id</code>.
      */
-    public void setVarietyId(Integer varietyId) {
-        this.varietyId = varietyId;
+    public void setReportedVarietyId(Integer reportedVarietyId) {
+        this.reportedVarietyId = reportedVarietyId;
     }
 
     /**
-     * Getter for <code>fab.view_outbreaks.variety_name</code>.
+     * Getter for <code>fab.view_outbreaks.reported_variety_name</code>.
      */
-    public String getVarietyName() {
-        return this.varietyName;
+    public String getReportedVarietyName() {
+        return this.reportedVarietyName;
     }
 
     /**
-     * Setter for <code>fab.view_outbreaks.variety_name</code>.
+     * Setter for <code>fab.view_outbreaks.reported_variety_name</code>.
      */
-    public void setVarietyName(String varietyName) {
-        this.varietyName = varietyName;
+    public void setReportedVarietyName(String reportedVarietyName) {
+        this.reportedVarietyName = reportedVarietyName;
     }
 
     @Override
@@ -601,17 +601,17 @@ public class ViewOutbreaks implements Serializable {
         }
         else if (!this.userName.equals(other.userName))
             return false;
-        if (this.varietyId == null) {
-            if (other.varietyId != null)
+        if (this.reportedVarietyId == null) {
+            if (other.reportedVarietyId != null)
                 return false;
         }
-        else if (!this.varietyId.equals(other.varietyId))
+        else if (!this.reportedVarietyId.equals(other.reportedVarietyId))
             return false;
-        if (this.varietyName == null) {
-            if (other.varietyName != null)
+        if (this.reportedVarietyName == null) {
+            if (other.reportedVarietyName != null)
                 return false;
         }
-        else if (!this.varietyName.equals(other.varietyName))
+        else if (!this.reportedVarietyName.equals(other.reportedVarietyName))
             return false;
         return true;
     }
@@ -642,8 +642,8 @@ public class ViewOutbreaks implements Serializable {
         result = prime * result + ((this.isAdmin == null) ? 0 : this.isAdmin.hashCode());
         result = prime * result + ((this.userEmail == null) ? 0 : this.userEmail.hashCode());
         result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
-        result = prime * result + ((this.varietyId == null) ? 0 : this.varietyId.hashCode());
-        result = prime * result + ((this.varietyName == null) ? 0 : this.varietyName.hashCode());
+        result = prime * result + ((this.reportedVarietyId == null) ? 0 : this.reportedVarietyId.hashCode());
+        result = prime * result + ((this.reportedVarietyName == null) ? 0 : this.reportedVarietyName.hashCode());
         return result;
     }
 
@@ -673,8 +673,8 @@ public class ViewOutbreaks implements Serializable {
         sb.append(", ").append(isAdmin);
         sb.append(", ").append(userEmail);
         sb.append(", ").append(userName);
-        sb.append(", ").append(varietyId);
-        sb.append(", ").append(varietyName);
+        sb.append(", ").append(reportedVarietyId);
+        sb.append(", ").append(reportedVarietyName);
 
         sb.append(")");
         return sb.toString();
