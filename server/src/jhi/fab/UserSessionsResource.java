@@ -76,9 +76,11 @@ public class UserSessionsResource
 	@POST
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(@QueryParam("email") String email)
+	public Response login(String email)
 		throws Exception, SQLException
 	{
+		System.out.println("Searching for: " + email);
+
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
@@ -100,11 +102,22 @@ public class UserSessionsResource
 
 				// Now email...
 				String host = System.getenv("FAB_URL");
-				String message = "<p>To log in to Flight Against Blight, please click the link below:</p>"
-					+ "<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + host + "?token=" + uuid.toString() + "'>Login</a></p>";
+				String message = "<p>Hi " + user.getUserName() + ",</p>"
+					+ "<p>You're receiving this message as part of the login "
+					+ "procedure to the James Hutton Institute's Fight Against "
+					+ "Blight service. If you didn't request this, please "
+					+ "contact us at fab@hutton.ac.uk.</p>"
+					+ "<p>To access Flight Against Blight, you can follow the "
+					+ "link below, which is valid for three months:<br>"
+					+ "<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + host + "?token="
+					+ uuid.toString() + "'>Login to Fight Against Blight</a></p>"
+					+ "<p>Thanks for using Flight Against Blight and helping with "
+					+ "research into blight populations around the UK.</p>";
 
-				FAB.email(user.getEmail(), "Login to FlightAgainstBlight", message);
+				FAB.email(user.getEmail(), "Login to Flight Against Blight", message);
 			}
+			else
+				System.out.println("User not found");
 
 			// We'll always return OK, even when the user isn't found as the UI
 			// should just be informing the user that *if* their address was
