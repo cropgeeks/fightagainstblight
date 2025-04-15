@@ -52,6 +52,7 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<OutbreaksRecord, VarietiesRecord> REPORTED_VARIETY = Internal.createForeignKey(Outbreaks.OUTBREAKS, DSL.name("reported_variety"), new TableField[] { Outbreaks.OUTBREAKS.REPORTED_VARIETY_ID }, Keys.KEY_VARIETIES_PRIMARY, new TableField[] { Varieties.VARIETIES.VARIETY_ID }, true, ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE);
     public static final ForeignKey<OutbreaksRecord, SeveritiesRecord> SEVERITY = Internal.createForeignKey(Outbreaks.OUTBREAKS, DSL.name("severity"), new TableField[] { Outbreaks.OUTBREAKS.SEVERITY_ID }, Keys.KEY_SEVERITIES_PRIMARY, new TableField[] { Severities.SEVERITIES.SEVERITY_ID }, true, ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE);
     public static final ForeignKey<OutbreaksRecord, SourcesRecord> SOURCE = Internal.createForeignKey(Outbreaks.OUTBREAKS, DSL.name("source"), new TableField[] { Outbreaks.OUTBREAKS.SOURCE_ID }, Keys.KEY_SOURCES_PRIMARY, new TableField[] { Sources.SOURCES.SOURCE_ID }, true, ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE);
     public static final ForeignKey<OutbreaksRecord, UsersRecord> USER = Internal.createForeignKey(Outbreaks.OUTBREAKS, DSL.name("user"), new TableField[] { Outbreaks.OUTBREAKS.USER_ID }, Keys.KEY_USERS_PRIMARY, new TableField[] { Users.USERS.USER_ID }, true, ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE);

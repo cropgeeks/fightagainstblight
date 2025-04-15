@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import jhi.fab.codegen.Fab;
 import jhi.fab.codegen.Keys;
+import jhi.fab.codegen.tables.Outbreaks.OutbreaksPath;
 import jhi.fab.codegen.tables.Subsamples.SubsamplesPath;
 import jhi.fab.codegen.tables.records.VarietiesRecord;
 
@@ -134,6 +135,19 @@ public class Varieties extends TableImpl<VarietiesRecord> {
     @Override
     public UniqueKey<VarietiesRecord> getPrimaryKey() {
         return Keys.KEY_VARIETIES_PRIMARY;
+    }
+
+    private transient OutbreaksPath _outbreaks;
+
+    /**
+     * Get the implicit to-many join path to the <code>fab.outbreaks</code>
+     * table
+     */
+    public OutbreaksPath outbreaks() {
+        if (_outbreaks == null)
+            _outbreaks = new OutbreaksPath(this, null, Keys.REPORTED_VARIETY.getInverseKey());
+
+        return _outbreaks;
     }
 
     private transient SubsamplesPath _subsamples;

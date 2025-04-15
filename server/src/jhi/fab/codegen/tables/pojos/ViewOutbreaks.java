@@ -40,6 +40,8 @@ public class ViewOutbreaks implements Serializable {
     private Boolean isAdmin;
     private String userEmail;
     private String userName;
+    private Integer varietyId;
+    private String varietyName;
 
     public ViewOutbreaks() {}
 
@@ -66,6 +68,8 @@ public class ViewOutbreaks implements Serializable {
         this.isAdmin = value.isAdmin;
         this.userEmail = value.userEmail;
         this.userName = value.userName;
+        this.varietyId = value.varietyId;
+        this.varietyName = value.varietyName;
     }
 
     public ViewOutbreaks(
@@ -90,7 +94,9 @@ public class ViewOutbreaks implements Serializable {
         Integer userId,
         Boolean isAdmin,
         String userEmail,
-        String userName
+        String userName,
+        Integer varietyId,
+        String varietyName
     ) {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
@@ -114,6 +120,8 @@ public class ViewOutbreaks implements Serializable {
         this.isAdmin = isAdmin;
         this.userEmail = userEmail;
         this.userName = userName;
+        this.varietyId = varietyId;
+        this.varietyName = varietyName;
     }
 
     /**
@@ -424,6 +432,34 @@ public class ViewOutbreaks implements Serializable {
         this.userName = userName;
     }
 
+    /**
+     * Getter for <code>fab.view_outbreaks.variety_id</code>.
+     */
+    public Integer getVarietyId() {
+        return this.varietyId;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.variety_id</code>.
+     */
+    public void setVarietyId(Integer varietyId) {
+        this.varietyId = varietyId;
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.variety_name</code>.
+     */
+    public String getVarietyName() {
+        return this.varietyName;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.variety_name</code>.
+     */
+    public void setVarietyName(String varietyName) {
+        this.varietyName = varietyName;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -565,6 +601,18 @@ public class ViewOutbreaks implements Serializable {
         }
         else if (!this.userName.equals(other.userName))
             return false;
+        if (this.varietyId == null) {
+            if (other.varietyId != null)
+                return false;
+        }
+        else if (!this.varietyId.equals(other.varietyId))
+            return false;
+        if (this.varietyName == null) {
+            if (other.varietyName != null)
+                return false;
+        }
+        else if (!this.varietyName.equals(other.varietyName))
+            return false;
         return true;
     }
 
@@ -594,6 +642,8 @@ public class ViewOutbreaks implements Serializable {
         result = prime * result + ((this.isAdmin == null) ? 0 : this.isAdmin.hashCode());
         result = prime * result + ((this.userEmail == null) ? 0 : this.userEmail.hashCode());
         result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
+        result = prime * result + ((this.varietyId == null) ? 0 : this.varietyId.hashCode());
+        result = prime * result + ((this.varietyName == null) ? 0 : this.varietyName.hashCode());
         return result;
     }
 
@@ -623,6 +673,8 @@ public class ViewOutbreaks implements Serializable {
         sb.append(", ").append(isAdmin);
         sb.append(", ").append(userEmail);
         sb.append(", ").append(userName);
+        sb.append(", ").append(varietyId);
+        sb.append(", ").append(varietyName);
 
         sb.append(")");
         return sb.toString();

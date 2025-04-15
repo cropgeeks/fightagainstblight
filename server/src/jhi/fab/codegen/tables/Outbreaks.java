@@ -16,6 +16,7 @@ import jhi.fab.codegen.tables.Severities.SeveritiesPath;
 import jhi.fab.codegen.tables.Sources.SourcesPath;
 import jhi.fab.codegen.tables.Subsamples.SubsamplesPath;
 import jhi.fab.codegen.tables.Users.UsersPath;
+import jhi.fab.codegen.tables.Varieties.VarietiesPath;
 import jhi.fab.codegen.tables.records.OutbreaksRecord;
 
 import org.jooq.Condition;
@@ -111,6 +112,11 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
      * The column <code>fab.outbreaks.date_received</code>.
      */
     public final TableField<OutbreaksRecord, LocalDate> DATE_RECEIVED = createField(DSL.name("date_received"), SQLDataType.LOCALDATE, this, "");
+
+    /**
+     * The column <code>fab.outbreaks.reported_variety_id</code>.
+     */
+    public final TableField<OutbreaksRecord, Integer> REPORTED_VARIETY_ID = createField(DSL.name("reported_variety_id"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>fab.outbreaks.severity_id</code>.
@@ -226,7 +232,19 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
 
     @Override
     public List<ForeignKey<OutbreaksRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.SEVERITY, Keys.SOURCE, Keys.USER);
+        return Arrays.asList(Keys.REPORTED_VARIETY, Keys.SEVERITY, Keys.SOURCE, Keys.USER);
+    }
+
+    private transient VarietiesPath _varieties;
+
+    /**
+     * Get the implicit join path to the <code>fab.varieties</code> table.
+     */
+    public VarietiesPath varieties() {
+        if (_varieties == null)
+            _varieties = new VarietiesPath(this, Keys.REPORTED_VARIETY, null);
+
+        return _varieties;
     }
 
     private transient SeveritiesPath _severities;

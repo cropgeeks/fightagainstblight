@@ -328,6 +328,34 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
         return (String) get(21);
     }
 
+    /**
+     * Setter for <code>fab.view_outbreaks.variety_id</code>.
+     */
+    public void setVarietyId(Integer value) {
+        set(22, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.variety_id</code>.
+     */
+    public Integer getVarietyId() {
+        return (Integer) get(22);
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.variety_name</code>.
+     */
+    public void setVarietyName(String value) {
+        set(23, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.variety_name</code>.
+     */
+    public String getVarietyName() {
+        return (String) get(23);
+    }
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -342,7 +370,7 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
     /**
      * Create a detached, initialised ViewOutbreaksRecord
      */
-    public ViewOutbreaksRecord(Integer outbreakId, String outbreakCode, String postcode, LocalDate dateReceived, LocalDate dateSubmitted, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, String userComments, String adminComments, ViewOutbreaksStatus status, Integer severityId, String severityName, String severityOther, Integer sourceId, String sourceName, String sourceOther, Integer userId, Boolean isAdmin, String userEmail, String userName) {
+    public ViewOutbreaksRecord(Integer outbreakId, String outbreakCode, String postcode, LocalDate dateReceived, LocalDate dateSubmitted, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, String userComments, String adminComments, ViewOutbreaksStatus status, Integer severityId, String severityName, String severityOther, Integer sourceId, String sourceName, String sourceOther, Integer userId, Boolean isAdmin, String userEmail, String userName, Integer varietyId, String varietyName) {
         super(ViewOutbreaks.VIEW_OUTBREAKS);
 
         setOutbreakId(outbreakId);
@@ -367,6 +395,8 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
         setIsAdmin(isAdmin);
         setUserEmail(userEmail);
         setUserName(userName);
+        setVarietyId(varietyId);
+        setVarietyName(varietyName);
         resetTouchedOnNotNull();
     }
 
@@ -399,6 +429,8 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
             setIsAdmin(value.getIsAdmin());
             setUserEmail(value.getUserEmail());
             setUserName(value.getUserName());
+            setVarietyId(value.getVarietyId());
+            setVarietyName(value.getVarietyName());
             resetTouchedOnNotNull();
         }
     }

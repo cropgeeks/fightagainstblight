@@ -28,6 +28,7 @@ public class Outbreaks implements Serializable {
     private Double viewLongitude;
     private LocalDate dateSubmitted;
     private LocalDate dateReceived;
+    private Integer reportedVarietyId;
     private Integer severityId;
     private Integer sourceId;
     private String severityOther;
@@ -49,6 +50,7 @@ public class Outbreaks implements Serializable {
         this.viewLongitude = value.viewLongitude;
         this.dateSubmitted = value.dateSubmitted;
         this.dateReceived = value.dateReceived;
+        this.reportedVarietyId = value.reportedVarietyId;
         this.severityId = value.severityId;
         this.sourceId = value.sourceId;
         this.severityOther = value.severityOther;
@@ -69,6 +71,7 @@ public class Outbreaks implements Serializable {
         Double viewLongitude,
         LocalDate dateSubmitted,
         LocalDate dateReceived,
+        Integer reportedVarietyId,
         Integer severityId,
         Integer sourceId,
         String severityOther,
@@ -87,6 +90,7 @@ public class Outbreaks implements Serializable {
         this.viewLongitude = viewLongitude;
         this.dateSubmitted = dateSubmitted;
         this.dateReceived = dateReceived;
+        this.reportedVarietyId = reportedVarietyId;
         this.severityId = severityId;
         this.sourceId = sourceId;
         this.severityOther = severityOther;
@@ -234,6 +238,20 @@ public class Outbreaks implements Serializable {
      */
     public void setDateReceived(LocalDate dateReceived) {
         this.dateReceived = dateReceived;
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.reported_variety_id</code>.
+     */
+    public Integer getReportedVarietyId() {
+        return this.reportedVarietyId;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.reported_variety_id</code>.
+     */
+    public void setReportedVarietyId(Integer reportedVarietyId) {
+        this.reportedVarietyId = reportedVarietyId;
     }
 
     /**
@@ -403,6 +421,12 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.dateReceived.equals(other.dateReceived))
             return false;
+        if (this.reportedVarietyId == null) {
+            if (other.reportedVarietyId != null)
+                return false;
+        }
+        else if (!this.reportedVarietyId.equals(other.reportedVarietyId))
+            return false;
         if (this.severityId == null) {
             if (other.severityId != null)
                 return false;
@@ -462,6 +486,7 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.viewLongitude == null) ? 0 : this.viewLongitude.hashCode());
         result = prime * result + ((this.dateSubmitted == null) ? 0 : this.dateSubmitted.hashCode());
         result = prime * result + ((this.dateReceived == null) ? 0 : this.dateReceived.hashCode());
+        result = prime * result + ((this.reportedVarietyId == null) ? 0 : this.reportedVarietyId.hashCode());
         result = prime * result + ((this.severityId == null) ? 0 : this.severityId.hashCode());
         result = prime * result + ((this.sourceId == null) ? 0 : this.sourceId.hashCode());
         result = prime * result + ((this.severityOther == null) ? 0 : this.severityOther.hashCode());
@@ -486,6 +511,7 @@ public class Outbreaks implements Serializable {
         sb.append(", ").append(viewLongitude);
         sb.append(", ").append(dateSubmitted);
         sb.append(", ").append(dateReceived);
+        sb.append(", ").append(reportedVarietyId);
         sb.append(", ").append(severityId);
         sb.append(", ").append(sourceId);
         sb.append(", ").append(severityOther);
