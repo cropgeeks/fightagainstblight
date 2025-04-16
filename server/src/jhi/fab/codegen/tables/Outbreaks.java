@@ -12,6 +12,7 @@ import java.util.List;
 import jhi.fab.codegen.Fab;
 import jhi.fab.codegen.Keys;
 import jhi.fab.codegen.enums.OutbreaksStatus;
+import jhi.fab.codegen.tables.Nuts.NutsPath;
 import jhi.fab.codegen.tables.Severities.SeveritiesPath;
 import jhi.fab.codegen.tables.Sources.SourcesPath;
 import jhi.fab.codegen.tables.Subsamples.SubsamplesPath;
@@ -82,6 +83,11 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
      * The column <code>fab.outbreaks.postcode</code>.
      */
     public final TableField<OutbreaksRecord, String> POSTCODE = createField(DSL.name("postcode"), SQLDataType.VARCHAR(10), this, "");
+
+    /**
+     * The column <code>fab.outbreaks.nuts_id</code>.
+     */
+    public final TableField<OutbreaksRecord, Integer> NUTS_ID = createField(DSL.name("nuts_id"), SQLDataType.INTEGER, this, "");
 
     /**
      * The column <code>fab.outbreaks.real_latitude</code>.
@@ -232,7 +238,19 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
 
     @Override
     public List<ForeignKey<OutbreaksRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.REPORTED_VARIETY, Keys.SEVERITY, Keys.SOURCE, Keys.USER);
+        return Arrays.asList(Keys.NUTS, Keys.REPORTED_VARIETY, Keys.SEVERITY, Keys.SOURCE, Keys.USER);
+    }
+
+    private transient NutsPath _nuts;
+
+    /**
+     * Get the implicit join path to the <code>fab.nuts</code> table.
+     */
+    public NutsPath nuts() {
+        if (_nuts == null)
+            _nuts = new NutsPath(this, Keys.NUTS, null);
+
+        return _nuts;
     }
 
     private transient VarietiesPath _varieties;

@@ -4,6 +4,8 @@
 package jhi.fab.codegen;
 
 
+import jhi.fab.codegen.tables.Countries;
+import jhi.fab.codegen.tables.Nuts;
 import jhi.fab.codegen.tables.Outbreaks;
 import jhi.fab.codegen.tables.Severities;
 import jhi.fab.codegen.tables.Sources;
@@ -21,6 +23,16 @@ import jhi.fab.codegen.tables.ViewSubsamples;
  */
 @SuppressWarnings({ "all", "unchecked", "rawtypes", "this-escape" })
 public class Tables {
+
+    /**
+     * The table <code>fab.countries</code>.
+     */
+    public static final Countries COUNTRIES = Countries.COUNTRIES;
+
+    /**
+     * The table <code>fab.nuts</code>.
+     */
+    public static final Nuts NUTS = Nuts.NUTS;
 
     /**
      * The table <code>fab.outbreaks</code>.

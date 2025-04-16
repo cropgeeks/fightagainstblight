@@ -42,6 +42,10 @@ public class ViewOutbreaks implements Serializable {
     private String userName;
     private Integer reportedVarietyId;
     private String reportedVarietyName;
+    private Integer nutsId;
+    private String nutsName;
+    private Integer countriesId;
+    private String countriesName;
 
     public ViewOutbreaks() {}
 
@@ -70,6 +74,10 @@ public class ViewOutbreaks implements Serializable {
         this.userName = value.userName;
         this.reportedVarietyId = value.reportedVarietyId;
         this.reportedVarietyName = value.reportedVarietyName;
+        this.nutsId = value.nutsId;
+        this.nutsName = value.nutsName;
+        this.countriesId = value.countriesId;
+        this.countriesName = value.countriesName;
     }
 
     public ViewOutbreaks(
@@ -96,7 +104,11 @@ public class ViewOutbreaks implements Serializable {
         String userEmail,
         String userName,
         Integer reportedVarietyId,
-        String reportedVarietyName
+        String reportedVarietyName,
+        Integer nutsId,
+        String nutsName,
+        Integer countriesId,
+        String countriesName
     ) {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
@@ -122,6 +134,10 @@ public class ViewOutbreaks implements Serializable {
         this.userName = userName;
         this.reportedVarietyId = reportedVarietyId;
         this.reportedVarietyName = reportedVarietyName;
+        this.nutsId = nutsId;
+        this.nutsName = nutsName;
+        this.countriesId = countriesId;
+        this.countriesName = countriesName;
     }
 
     /**
@@ -460,6 +476,62 @@ public class ViewOutbreaks implements Serializable {
         this.reportedVarietyName = reportedVarietyName;
     }
 
+    /**
+     * Getter for <code>fab.view_outbreaks.nuts_id</code>.
+     */
+    public Integer getNutsId() {
+        return this.nutsId;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.nuts_id</code>.
+     */
+    public void setNutsId(Integer nutsId) {
+        this.nutsId = nutsId;
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.nuts_name</code>.
+     */
+    public String getNutsName() {
+        return this.nutsName;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.nuts_name</code>.
+     */
+    public void setNutsName(String nutsName) {
+        this.nutsName = nutsName;
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.countries_id</code>.
+     */
+    public Integer getCountriesId() {
+        return this.countriesId;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.countries_id</code>.
+     */
+    public void setCountriesId(Integer countriesId) {
+        this.countriesId = countriesId;
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.countries_name</code>.
+     */
+    public String getCountriesName() {
+        return this.countriesName;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.countries_name</code>.
+     */
+    public void setCountriesName(String countriesName) {
+        this.countriesName = countriesName;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -613,6 +685,30 @@ public class ViewOutbreaks implements Serializable {
         }
         else if (!this.reportedVarietyName.equals(other.reportedVarietyName))
             return false;
+        if (this.nutsId == null) {
+            if (other.nutsId != null)
+                return false;
+        }
+        else if (!this.nutsId.equals(other.nutsId))
+            return false;
+        if (this.nutsName == null) {
+            if (other.nutsName != null)
+                return false;
+        }
+        else if (!this.nutsName.equals(other.nutsName))
+            return false;
+        if (this.countriesId == null) {
+            if (other.countriesId != null)
+                return false;
+        }
+        else if (!this.countriesId.equals(other.countriesId))
+            return false;
+        if (this.countriesName == null) {
+            if (other.countriesName != null)
+                return false;
+        }
+        else if (!this.countriesName.equals(other.countriesName))
+            return false;
         return true;
     }
 
@@ -644,6 +740,10 @@ public class ViewOutbreaks implements Serializable {
         result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
         result = prime * result + ((this.reportedVarietyId == null) ? 0 : this.reportedVarietyId.hashCode());
         result = prime * result + ((this.reportedVarietyName == null) ? 0 : this.reportedVarietyName.hashCode());
+        result = prime * result + ((this.nutsId == null) ? 0 : this.nutsId.hashCode());
+        result = prime * result + ((this.nutsName == null) ? 0 : this.nutsName.hashCode());
+        result = prime * result + ((this.countriesId == null) ? 0 : this.countriesId.hashCode());
+        result = prime * result + ((this.countriesName == null) ? 0 : this.countriesName.hashCode());
         return result;
     }
 
@@ -675,6 +775,10 @@ public class ViewOutbreaks implements Serializable {
         sb.append(", ").append(userName);
         sb.append(", ").append(reportedVarietyId);
         sb.append(", ").append(reportedVarietyName);
+        sb.append(", ").append(nutsId);
+        sb.append(", ").append(nutsName);
+        sb.append(", ").append(countriesId);
+        sb.append(", ").append(countriesName);
 
         sb.append(")");
         return sb.toString();

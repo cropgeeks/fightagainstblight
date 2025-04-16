@@ -22,6 +22,7 @@ public class Outbreaks implements Serializable {
     private String outbreakCode;
     private Integer userId;
     private String postcode;
+    private Integer nutsId;
     private Double realLatitude;
     private Double realLongitude;
     private Double viewLatitude;
@@ -44,6 +45,7 @@ public class Outbreaks implements Serializable {
         this.outbreakCode = value.outbreakCode;
         this.userId = value.userId;
         this.postcode = value.postcode;
+        this.nutsId = value.nutsId;
         this.realLatitude = value.realLatitude;
         this.realLongitude = value.realLongitude;
         this.viewLatitude = value.viewLatitude;
@@ -65,6 +67,7 @@ public class Outbreaks implements Serializable {
         String outbreakCode,
         Integer userId,
         String postcode,
+        Integer nutsId,
         Double realLatitude,
         Double realLongitude,
         Double viewLatitude,
@@ -84,6 +87,7 @@ public class Outbreaks implements Serializable {
         this.outbreakCode = outbreakCode;
         this.userId = userId;
         this.postcode = postcode;
+        this.nutsId = nutsId;
         this.realLatitude = realLatitude;
         this.realLongitude = realLongitude;
         this.viewLatitude = viewLatitude;
@@ -154,6 +158,20 @@ public class Outbreaks implements Serializable {
      */
     public void setPostcode(String postcode) {
         this.postcode = postcode;
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.nuts_id</code>.
+     */
+    public Integer getNutsId() {
+        return this.nutsId;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.nuts_id</code>.
+     */
+    public void setNutsId(Integer nutsId) {
+        this.nutsId = nutsId;
     }
 
     /**
@@ -385,6 +403,12 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.postcode.equals(other.postcode))
             return false;
+        if (this.nutsId == null) {
+            if (other.nutsId != null)
+                return false;
+        }
+        else if (!this.nutsId.equals(other.nutsId))
+            return false;
         if (this.realLatitude == null) {
             if (other.realLatitude != null)
                 return false;
@@ -480,6 +504,7 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.outbreakCode == null) ? 0 : this.outbreakCode.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.postcode == null) ? 0 : this.postcode.hashCode());
+        result = prime * result + ((this.nutsId == null) ? 0 : this.nutsId.hashCode());
         result = prime * result + ((this.realLatitude == null) ? 0 : this.realLatitude.hashCode());
         result = prime * result + ((this.realLongitude == null) ? 0 : this.realLongitude.hashCode());
         result = prime * result + ((this.viewLatitude == null) ? 0 : this.viewLatitude.hashCode());
@@ -505,6 +530,7 @@ public class Outbreaks implements Serializable {
         sb.append(", ").append(outbreakCode);
         sb.append(", ").append(userId);
         sb.append(", ").append(postcode);
+        sb.append(", ").append(nutsId);
         sb.append(", ").append(realLatitude);
         sb.append(", ").append(realLongitude);
         sb.append(", ").append(viewLatitude);

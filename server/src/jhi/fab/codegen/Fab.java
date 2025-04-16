@@ -7,6 +7,8 @@ package jhi.fab.codegen;
 import java.util.Arrays;
 import java.util.List;
 
+import jhi.fab.codegen.tables.Countries;
+import jhi.fab.codegen.tables.Nuts;
 import jhi.fab.codegen.tables.Outbreaks;
 import jhi.fab.codegen.tables.Severities;
 import jhi.fab.codegen.tables.Sources;
@@ -36,6 +38,16 @@ public class Fab extends SchemaImpl {
      * The reference instance of <code>fab</code>
      */
     public static final Fab FAB = new Fab();
+
+    /**
+     * The table <code>fab.countries</code>.
+     */
+    public final Countries COUNTRIES = Countries.COUNTRIES;
+
+    /**
+     * The table <code>fab.nuts</code>.
+     */
+    public final Nuts NUTS = Nuts.NUTS;
 
     /**
      * The table <code>fab.outbreaks</code>.
@@ -103,6 +115,8 @@ public class Fab extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
+            Countries.COUNTRIES,
+            Nuts.NUTS,
             Outbreaks.OUTBREAKS,
             Severities.SEVERITIES,
             Sources.SOURCES,

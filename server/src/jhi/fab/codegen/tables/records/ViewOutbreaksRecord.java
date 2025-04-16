@@ -356,6 +356,62 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
         return (String) get(23);
     }
 
+    /**
+     * Setter for <code>fab.view_outbreaks.nuts_id</code>.
+     */
+    public void setNutsId(Integer value) {
+        set(24, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.nuts_id</code>.
+     */
+    public Integer getNutsId() {
+        return (Integer) get(24);
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.nuts_name</code>.
+     */
+    public void setNutsName(String value) {
+        set(25, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.nuts_name</code>.
+     */
+    public String getNutsName() {
+        return (String) get(25);
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.countries_id</code>.
+     */
+    public void setCountriesId(Integer value) {
+        set(26, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.countries_id</code>.
+     */
+    public Integer getCountriesId() {
+        return (Integer) get(26);
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.countries_name</code>.
+     */
+    public void setCountriesName(String value) {
+        set(27, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.countries_name</code>.
+     */
+    public String getCountriesName() {
+        return (String) get(27);
+    }
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -370,7 +426,7 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
     /**
      * Create a detached, initialised ViewOutbreaksRecord
      */
-    public ViewOutbreaksRecord(Integer outbreakId, String outbreakCode, String postcode, LocalDate dateReceived, LocalDate dateSubmitted, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, String userComments, String adminComments, ViewOutbreaksStatus status, Integer severityId, String severityName, String severityOther, Integer sourceId, String sourceName, String sourceOther, Integer userId, Boolean isAdmin, String userEmail, String userName, Integer reportedVarietyId, String reportedVarietyName) {
+    public ViewOutbreaksRecord(Integer outbreakId, String outbreakCode, String postcode, LocalDate dateReceived, LocalDate dateSubmitted, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, String userComments, String adminComments, ViewOutbreaksStatus status, Integer severityId, String severityName, String severityOther, Integer sourceId, String sourceName, String sourceOther, Integer userId, Boolean isAdmin, String userEmail, String userName, Integer reportedVarietyId, String reportedVarietyName, Integer nutsId, String nutsName, Integer countriesId, String countriesName) {
         super(ViewOutbreaks.VIEW_OUTBREAKS);
 
         setOutbreakId(outbreakId);
@@ -397,6 +453,10 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
         setUserName(userName);
         setReportedVarietyId(reportedVarietyId);
         setReportedVarietyName(reportedVarietyName);
+        setNutsId(nutsId);
+        setNutsName(nutsName);
+        setCountriesId(countriesId);
+        setCountriesName(countriesName);
         resetTouchedOnNotNull();
     }
 
@@ -431,6 +491,10 @@ public class ViewOutbreaksRecord extends TableRecordImpl<ViewOutbreaksRecord> {
             setUserName(value.getUserName());
             setReportedVarietyId(value.getReportedVarietyId());
             setReportedVarietyName(value.getReportedVarietyName());
+            setNutsId(value.getNutsId());
+            setNutsName(value.getNutsName());
+            setCountriesId(value.getCountriesId());
+            setCountriesName(value.getCountriesName());
             resetTouchedOnNotNull();
         }
     }
