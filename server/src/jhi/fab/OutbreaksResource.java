@@ -215,10 +215,10 @@ public class OutbreaksResource
 	@POST
 	@Path("/{id}/subsamples")
 	@Produces(MediaType.APPLICATION_JSON)
-	public synchronized Response postSubsamples(@HeaderParam("Authorization") String authHeader, List<Subsamples> subsamples)
+	public synchronized Response postSubsamples(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id, List<Subsamples> subsamples)
 		throws SQLException
 	{
-		return SubsamplesResource.postSubsamples(authHeader, subsamples);
+		return SubsamplesResource.postSubsamples(authHeader, id, subsamples);
 	}
 
 	private void map(ViewOutbreaks outbreak, User user)

@@ -53,7 +53,7 @@ public class SubsamplesResource
 	}
 
 	@Produces(MediaType.APPLICATION_JSON)
-	public static Response postSubsamples(String authHeader, List<Subsamples> subsamples)
+	public static Response postSubsamples(String authHeader, int outbreakID, List<Subsamples> subsamples)
 		throws SQLException
 	{
 		User user = new User(authHeader);
@@ -75,14 +75,6 @@ public class SubsamplesResource
 			ArrayList<Integer> keys = new ArrayList<>();
 			for (Subsamples ss: subsamples)
 			{
-				Outbreaks ob = context.selectFrom(OUTBREAKS)
-					.where(OUTBREAKS.OUTBREAK_ID.eq(ss.getOutbreakId()))
-					.fetchOneInto(Outbreaks.class);
-
-				// This shouldn't be null/notfound, but just in case
-				if (ob == null)
-					return Response.status(Response.Status.BAD_REQUEST).build();
-
 				// Does the passed-in subsample already have a database ID?
 				// If so, update the record
 				if (ss.getSubsampleId() != null)
@@ -105,7 +97,7 @@ public class SubsamplesResource
 				{
 					Subsamples newSS = context.insertInto(SUBSAMPLES)
 						.set(SUBSAMPLES.SUBSAMPLE_CODE, ss.getSubsampleCode())
-						.set(SUBSAMPLES.OUTBREAK_ID, ob.getOutbreakId())
+						.set(SUBSAMPLES.OUTBREAK_ID, outbreakID)
 						.set(SUBSAMPLES.VARIETY_ID, ss.getVarietyId())
 						.set(SUBSAMPLES.MATERIAL, ss.getMaterial())
 						.set(SUBSAMPLES.DATE_GENOTYPED, ss.getDateGenotyped())
@@ -121,8 +113,32 @@ public class SubsamplesResource
 				Integer reportedVarietyID = null;
 				context.update(OUTBREAKS)
 					.set(OUTBREAKS.REPORTED_VARIETY_ID, reportedVarietyID)
-					.where(OUTBREAKS.OUTBREAK_ID.eq(ob.getOutbreakId()))
+					.where(OUTBREAKS.OUTBREAK_ID.eq(outbreakID))
 					.execute();
+			}
+
+			// Let's now get a list of all subsamples for this outbreak that are
+			// in the database, and remove any that weren't posted because that
+			// means the user has deleted them in the UI
+			List<Subsamples> allSubsamples = context.selectFrom(SUBSAMPLES)
+				.where(SUBSAMPLES.OUTBREAK_ID.eq(outbreakID))
+				.fetchInto(Subsamples.class);
+
+			// Loop over this list and DELETE the missing ones
+			for (Subsamples dbSS: allSubsamples)
+			{
+				// Match against the POSTED list
+				boolean found = false;
+				for (Subsamples ss: subsamples)
+					if (dbSS.getSubsampleId() == ss.getSubsampleId())
+						found = true;
+
+				if (found == false)
+				{
+					context.deleteFrom(SUBSAMPLES)
+						.where(SUBSAMPLES.SUBSAMPLE_ID.eq(dbSS.getSubsampleId()))
+						.execute();
+				}
 			}
 
 			return Response.ok(keys).build();
