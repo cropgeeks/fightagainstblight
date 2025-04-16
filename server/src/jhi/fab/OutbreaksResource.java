@@ -196,8 +196,8 @@ public class OutbreaksResource
 				+ "<p>You can view full details at: "
 				+ host + "/#/outbreak/" + outbreak.getOutbreakId() + ".</p>";
 
-			FAB.email(viewOB.getUserEmail(), "Flight Against Blight: New Outbreak Reported", message, null);
-			FAB.emailAdmins("Flight Against Blight: New Outbreak Reported", message);
+			FAB.email(viewOB.getUserEmail(), "Fight Against Blight: New Outbreak Reported", message, null);
+			FAB.emailAdmins("Fight Against Blight: New Outbreak Reported", message);
 
 			return Response.ok(outbreak).build();
 		}

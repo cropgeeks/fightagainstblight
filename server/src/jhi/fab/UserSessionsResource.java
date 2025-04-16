@@ -120,11 +120,11 @@ public class UserSessionsResource
 					+ host + "/#/?token=" + uuid.toString() + "</p>"
 					+ "<p>You can also scan this QR code to login on other devices:</p>"
 					+ "<p><img src='cid:imageID'/></p>"
-					+ "<p>Thanks for using Flight Against Blight and helping with "
+					+ "<p>Thanks for using Fight Against Blight and helping with "
 					+ "research into blight populations around the UK.</p>";
 
 				byte[] qrCode = generateQRCodeBase64(host + "/#/?token=" + uuid.toString());
-				FAB.email(user.getEmail(), "Login to Flight Against Blight", message, qrCode);
+				FAB.email(user.getEmail(), "Login to Fight Against Blight", message, qrCode);
 			}
 			else
 				System.out.println("User not found");
