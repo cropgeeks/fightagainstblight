@@ -83,12 +83,46 @@ public class SubsamplesResource
 				if (ob == null)
 					return Response.status(Response.Status.BAD_REQUEST).build();
 
-				Subsamples newSS = context.insertInto(SUBSAMPLES)
-					.set(SUBSAMPLES.OUTBREAK_ID, ob.getOutbreakId())
-					.returning(SUBSAMPLES.fields())
-					.fetchOneInto(Subsamples.class);
+				// Does the passed-in subsample already have a database ID?
+				// If so, update the record
+				if (ss.getSubsampleId() != null)
+				{
+					Subsamples newSS = context.update(SUBSAMPLES)
+						.set(SUBSAMPLES.SUBSAMPLE_CODE, ss.getSubsampleCode())
+						.set(SUBSAMPLES.VARIETY_ID, ss.getVarietyId())
+						.set(SUBSAMPLES.MATERIAL, ss.getMaterial())
+						.set(SUBSAMPLES.DATE_GENOTYPED, ss.getDateGenotyped())
+						.set(SUBSAMPLES.USER_COMMENTS, ss.getUserComments())
+						.set(SUBSAMPLES.ADMIN_COMMENTS, ss.getAdminComments())
+						.where(SUBSAMPLES.SUBSAMPLE_ID.eq(ss.getSubsampleId()))
+						.returning(SUBSAMPLES.fields())
+						.fetchOneInto(Subsamples.class);
 
-				keys.add(newSS.getSubsampleId());
+					keys.add(newSS.getSubsampleId());
+				}
+				// Otherwise, create a new one
+				else
+				{
+					Subsamples newSS = context.insertInto(SUBSAMPLES)
+						.set(SUBSAMPLES.SUBSAMPLE_CODE, ss.getSubsampleCode())
+						.set(SUBSAMPLES.OUTBREAK_ID, ob.getOutbreakId())
+						.set(SUBSAMPLES.VARIETY_ID, ss.getVarietyId())
+						.set(SUBSAMPLES.MATERIAL, ss.getMaterial())
+						.set(SUBSAMPLES.DATE_GENOTYPED, ss.getDateGenotyped())
+						.set(SUBSAMPLES.USER_COMMENTS, ss.getUserComments())
+						.set(SUBSAMPLES.ADMIN_COMMENTS, ss.getAdminComments())
+						.returning(SUBSAMPLES.fields())
+						.fetchOneInto(Subsamples.class);
+
+					keys.add(newSS.getSubsampleId());
+				}
+
+				// Blank any reported_variety_id at this time
+				Integer reportedVarietyID = null;
+				context.update(OUTBREAKS)
+					.set(OUTBREAKS.REPORTED_VARIETY_ID, reportedVarietyID)
+					.where(OUTBREAKS.OUTBREAK_ID.eq(ob.getOutbreakId()))
+					.execute();
 			}
 
 			return Response.ok(keys).build();
