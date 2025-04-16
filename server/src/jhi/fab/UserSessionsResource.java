@@ -111,19 +111,21 @@ public class UserSessionsResource
 				// Now email...
 				String host = System.getenv("FAB_URL");
 
+				String link = host + "/#/?token=" + uuid.toString();
 				String message = "<p>Hi " + user.getUserName() + ",</p>"
 					+ "<p>You're receiving this message as part of the login "
 					+ "procedure to the James Hutton Institute's Fight Against "
 					+ "Blight service. If you didn't request this, please "
-					+ "contact us at fab@hutton.ac.uk.</p>"
+					+ "contact us at <a href='mailto:fab@hutton.ac.uk'>"
+					+ "fab@hutton.ac.uk</a>.</p>"
 					+ "<p>You can login by following this link:<br>"
-					+ host + "/#/?token=" + uuid.toString() + "</p>"
+					+ "<a href='" + link + "'>" + link + "</a></p>"
 					+ "<p>You can also scan this QR code to login on other devices:</p>"
 					+ "<p><img src='cid:imageID'/></p>"
 					+ "<p>Thanks for using Fight Against Blight and helping with "
 					+ "research into blight populations around the UK.</p>";
 
-				byte[] qrCode = generateQRCodeBase64(host + "/#/?token=" + uuid.toString());
+				byte[] qrCode = generateQRCodeBase64(link);
 				FAB.email(user.getEmail(), "Login to Fight Against Blight", message, qrCode);
 			}
 			else
@@ -146,13 +148,11 @@ public class UserSessionsResource
 
 		// Convert it to base64 for embedding in the email
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(qrImage, "png", baos);
+		ImageIO.write(qrImage, "png", baos);
 
 		byte[] imageBytes = baos.toByteArray();
 		baos.close();
 
 		return imageBytes;
-
-//		return Base64.getEncoder().encodeToString(imageBytes);
 	}
 }

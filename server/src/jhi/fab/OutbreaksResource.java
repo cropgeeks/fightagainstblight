@@ -183,6 +183,7 @@ public class OutbreaksResource
 
 			// Now email...
 			String host = System.getenv("FAB_URL");
+			String link = host + "/#/outbreak/" + outbreak.getOutbreakId();
 			String message = "<p>A new outbreak has just been reported:</p>"
 				+ "<p><table>"
 				+ "<tr><td><b>Code: </b></td><td>" + code + "</td><tr>"
@@ -194,7 +195,7 @@ public class OutbreaksResource
 				+ "<tr><td><b>Source: </b></td><td>" + viewOB.getSourceName() + "</td><tr>"
 				+ "</table></p>"
 				+ "<p>You can view full details at: "
-				+ host + "/#/outbreak/" + outbreak.getOutbreakId() + ".</p>";
+				+ "<a href='" + link + "'>" + link + "</a>.</p>";
 
 			FAB.email(viewOB.getUserEmail(), "Fight Against Blight: New Outbreak Reported", message, null);
 			FAB.emailAdmins("Fight Against Blight: New Outbreak Reported", message);
