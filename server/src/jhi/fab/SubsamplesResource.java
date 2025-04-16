@@ -130,7 +130,7 @@ public class SubsamplesResource
 				// Match against the POSTED list
 				boolean found = false;
 				for (Subsamples ss: subsamples)
-					if (dbSS.getSubsampleId() == ss.getSubsampleId())
+					if (dbSS.getSubsampleId().intValue() == ss.getSubsampleId().intValue())
 						found = true;
 
 				if (found == false)
