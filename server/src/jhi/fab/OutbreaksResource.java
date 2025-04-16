@@ -6,8 +6,8 @@ import java.time.*;
 import java.util.*;
 
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.*;
+import jakarta.ws.rs.Path;
 
 import org.jooq.*;
 import org.jooq.impl.*;

@@ -57,7 +57,7 @@ public class FAB extends ResourceConfig implements ServletContextListener
 
 		Session session = Session.getInstance(props);
 
-		Message message = new MimeMessage(session);
+		MimeMessage message = new MimeMessage(session);
 		message.setContent(htmlMessage, "text/html; charset=utf-8");
 		message.setFrom(new InternetAddress(emailAddress, emailAlias));
 		message.setSubject(subject);
