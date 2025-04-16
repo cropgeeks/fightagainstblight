@@ -1,8 +1,11 @@
 package jhi.fab;
 
+import java.awt.image.*;
+import java.io.*;
 import java.sql.*;
 import java.time.*;
 import java.util.*;
+import javax.imageio.*;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.Path;
@@ -10,6 +13,11 @@ import jakarta.ws.rs.core.*;
 
 import org.jooq.*;
 import org.jooq.impl.*;
+
+import com.google.zxing.*;
+import com.google.zxing.client.j2se.*;
+import com.google.zxing.common.*;
+import com.google.zxing.qrcode.*;
 
 import jhi.fab.codegen.tables.pojos.*;
 import static jhi.fab.codegen.tables.UserSessions.USER_SESSIONS;
@@ -102,17 +110,21 @@ public class UserSessionsResource
 
 				// Now email...
 				String host = System.getenv("FAB_URL");
+
 				String message = "<p>Hi " + user.getUserName() + ",</p>"
 					+ "<p>You're receiving this message as part of the login "
 					+ "procedure to the James Hutton Institute's Fight Against "
 					+ "Blight service. If you didn't request this, please "
 					+ "contact us at fab@hutton.ac.uk.</p>"
-					+ "<p>You can login by following this link: "
-					+ host + "?token=" + uuid.toString() + ".</p>"
+					+ "<p>You can login by following this link:<br>"
+					+ host + "/#/?token=" + uuid.toString() + "</p>"
+					+ "<p>You can also scan this QR code to login on other devices:</p>"
+					+ "<p><img src='cid:imageID'/></p>"
 					+ "<p>Thanks for using Flight Against Blight and helping with "
 					+ "research into blight populations around the UK.</p>";
 
-				FAB.email(user.getEmail(), "Login to Flight Against Blight", message);
+				byte[] qrCode = generateQRCodeBase64(host + "/#/?token=" + uuid.toString());
+				FAB.email(user.getEmail(), "Login to Flight Against Blight", message, qrCode);
 			}
 			else
 				System.out.println("User not found");
@@ -122,5 +134,25 @@ public class UserSessionsResource
 			// found, they'll be receiving an email
 			return Response.ok().build();
 		}
+	}
+
+	private byte[] generateQRCodeBase64(String link)
+		throws Exception
+	{
+		// Gernerate a QR code
+		QRCodeWriter qrCodeWriter = new QRCodeWriter();
+		BitMatrix bitMatrix = qrCodeWriter.encode(link, BarcodeFormat.QR_CODE, 200, 200);
+		BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
+		// Convert it to base64 for embedding in the email
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(qrImage, "png", baos);
+
+		byte[] imageBytes = baos.toByteArray();
+		baos.close();
+
+		return imageBytes;
+
+//		return Base64.getEncoder().encodeToString(imageBytes);
 	}
 }

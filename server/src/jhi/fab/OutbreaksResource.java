@@ -194,9 +194,9 @@ public class OutbreaksResource
 				+ "<tr><td><b>Source: </b></td><td>" + viewOB.getSourceName() + "</td><tr>"
 				+ "</table></p>"
 				+ "<p>You can view full details at: "
-				+ host + "#/outbreak/" + outbreak.getOutbreakId() + ".</p>";
+				+ host + "/#/outbreak/" + outbreak.getOutbreakId() + ".</p>";
 
-			FAB.email(viewOB.getUserEmail(), "Flight Against Blight: New Outbreak Reported", message);
+			FAB.email(viewOB.getUserEmail(), "Flight Against Blight: New Outbreak Reported", message, null);
 			FAB.emailAdmins("Flight Against Blight: New Outbreak Reported", message);
 
 			return Response.ok(outbreak).build();

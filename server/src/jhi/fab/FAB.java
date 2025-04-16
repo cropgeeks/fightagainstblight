@@ -1,8 +1,10 @@
 package jhi.fab;
 
 import java.util.*;
+import javax.activation.*;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.mail.util.*;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
@@ -42,7 +44,7 @@ public class FAB extends ResourceConfig implements ServletContextListener
 		DatabaseUtils.close();
 	}
 
-	public static void email(String address, String subject, String htmlMessage)
+	public static void email(String address, String subject, String htmlMessage, byte[] image)
 		throws Exception
 	{
 		String emailServer = System.getenv("EMAIL_HOST");
@@ -58,11 +60,41 @@ public class FAB extends ResourceConfig implements ServletContextListener
 		Session session = Session.getInstance(props);
 
 		MimeMessage message = new MimeMessage(session);
-		message.setContent(htmlMessage, "text/html; charset=utf-8");
 		message.setFrom(new InternetAddress(emailAddress, emailAlias));
 		message.setSubject(subject);
 		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(address));
 
+		// Create a MimeMultipart
+		MimeMultipart multipart = new MimeMultipart("related");
+
+		// Create the HTML part
+		MimeBodyPart htmlPart = new MimeBodyPart();
+		htmlMessage = "<p><img src='cid:headerID'/></p>" + htmlMessage;
+		htmlPart.setContent(htmlMessage, "text/html");
+		multipart.addBodyPart(htmlPart);
+
+		// Add the header image
+		MimeBodyPart headerPart = new MimeBodyPart();
+		// TODO: Not ideal but works for now
+		DataSource fds = new FileDataSource("webapps/fab/WEB-INF/fab-logo.png");
+		headerPart.setDataHandler(new DataHandler(fds));
+		headerPart.setHeader("Content-ID", "<headerID>");
+		multipart.addBodyPart(headerPart);
+
+		// Add any addtional image
+		if (image != null)
+		{
+			MimeBodyPart imagePart = new MimeBodyPart();
+			DataSource bds = new ByteArrayDataSource(image, "image/png");
+			imagePart.setDataHandler(new DataHandler(bds));
+			imagePart.setHeader("Content-ID", "<imageID>");
+			multipart.addBodyPart(imagePart);
+		}
+
+		// Set the complete message parts
+		message.setContent(multipart);
+
+		// Send the message
 		Transport.send(message);
 	}
 
@@ -71,6 +103,6 @@ public class FAB extends ResourceConfig implements ServletContextListener
 	{
 		for (Users user: new UserSessionsResource().getAllUsers())
 			if (user.getIsAdmin())
-				email(user.getEmail(), subject, htmlMessage);
+				email(user.getEmail(), subject, htmlMessage, null);
 	}
 }
