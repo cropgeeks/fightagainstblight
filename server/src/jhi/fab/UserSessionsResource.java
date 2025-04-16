@@ -107,10 +107,8 @@ public class UserSessionsResource
 					+ "procedure to the James Hutton Institute's Fight Against "
 					+ "Blight service. If you didn't request this, please "
 					+ "contact us at fab@hutton.ac.uk.</p>"
-					+ "<p>To access Flight Against Blight, you can follow the "
-					+ "link below, which is valid for three months:<br>"
-					+ "<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + host + "?token="
-					+ uuid.toString() + "'>Login to Fight Against Blight</a></p>"
+					+ "<p>You can login by following this link: "
+					+ host + "?token=" + uuid.toString() + ".</p>"
 					+ "<p>Thanks for using Flight Against Blight and helping with "
 					+ "research into blight populations around the UK.</p>";
 

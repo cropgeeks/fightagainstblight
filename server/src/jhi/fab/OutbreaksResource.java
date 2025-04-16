@@ -161,6 +161,7 @@ public class OutbreaksResource
 				.set(OUTBREAKS.OUTBREAK_CODE, code)
 				.set(OUTBREAKS.USER_ID, user.getUserID())
 				.set(OUTBREAKS.POSTCODE, newOutbreak.getPostcode())
+				.set(OUTBREAKS.NUTS_ID, newOutbreak.getNutsId())
 				.set(OUTBREAKS.REAL_LATITUDE, newOutbreak.getRealLatitude())
 				.set(OUTBREAKS.REAL_LONGITUDE, newOutbreak.getRealLongitude())
 				.set(OUTBREAKS.VIEW_LATITUDE, newOutbreak.getViewLatitude())
@@ -175,13 +176,28 @@ public class OutbreaksResource
 				.returning(OUTBREAKS.fields())
 				.fetchOneInto(Outbreaks.class);
 
-			// TODO: Format a proper email
+			// Extra information needed to help format the email
+			ViewOutbreaks viewOB = context.selectFrom(VIEW_OUTBREAKS)
+				.where(VIEW_OUTBREAKS.OUTBREAK_ID.eq(outbreak.getOutbreakId()))
+				.fetchOneInto(ViewOutbreaks.class);
+
 			// Now email...
 			String host = System.getenv("FAB_URL");
-			String message = "<p>A new outbreak has just been reported. You can view it here:</p>"
-				+ "<p>&nbsp;&nbsp;&nbsp;&nbsp;<a href='" + host + "#/outbreak/" + outbreak.getOutbreakId() + "'></a></p>";
+			String message = "<p>A new outbreak has just been reported:</p>"
+				+ "<p><table>"
+				+ "<tr><td><b>Code: </b></td><td>" + code + "</td><tr>"
+				+ "<tr><td><b>User: </b></td><td>" + viewOB.getUserName() + "</td><tr>"
+				+ "<tr><td><b>Postcode: </b></td><td>" + viewOB.getPostcode() + "</td><tr>"
+				+ "<tr><td><b>Latitude: </b></td><td>" + viewOB.getRealLatitude() + "</td><tr>"
+				+ "<tr><td><b>Longitude: </b></td><td>" + viewOB.getRealLongitude() + "</td><tr>"
+				+ "<tr><td><b>Severity: </b></td><td>" + viewOB.getSeverityName() + "</td><tr>"
+				+ "<tr><td><b>Source: </b></td><td>" + viewOB.getSourceName() + "</td><tr>"
+				+ "</table></p>"
+				+ "<p>You can view full details at: "
+				+ host + "#/outbreak/" + outbreak.getOutbreakId() + ".</p>";
 
-			FAB.emailAdmins("FlightAgainstBlight: New Outbreak Reported", message);
+			FAB.email(viewOB.getUserEmail(), "Flight Against Blight: New Outbreak Reported", message);
+			FAB.emailAdmins("Flight Against Blight: New Outbreak Reported", message);
 
 			return Response.ok(outbreak).build();
 		}
