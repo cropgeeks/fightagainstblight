@@ -30,7 +30,8 @@ public class OutbreaksResource
 		@QueryParam("status") String status,
 		@QueryParam("source") Integer source,
 		@QueryParam("severity") Integer severity,
-		@QueryParam("variety") Integer variety)
+		@QueryParam("variety") Integer variety,
+		@QueryParam("userID") Integer userId)
 		throws SQLException
 	{
 		// You don't *need* a token for this call, but if we have one (and a
@@ -63,6 +64,8 @@ public class OutbreaksResource
 				query.where(VIEW_OUTBREAKS.SOURCE_ID.eq(source));
 			if (severity != null)
 				query.where(VIEW_OUTBREAKS.SEVERITY_ID.eq(severity));
+			if (userId != null)
+				query.where(VIEW_OUTBREAKS.USER_ID.eq(userId));
 
 
 			List<ViewOutbreaks> results = query.fetchInto(ViewOutbreaks.class);
@@ -199,6 +202,63 @@ public class OutbreaksResource
 
 			FAB.email(viewOB.getUserEmail(), "Fight Against Blight: New Outbreak Reported", message, null);
 			FAB.emailAdmins("Fight Against Blight: New Outbreak Reported", message);
+
+			return Response.ok(outbreak).build();
+		}
+	}
+
+	@PATCH
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public synchronized Response patchOutbreaks(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id, Outbreaks outbreak)
+		throws SQLException, Exception
+	{
+		User user = new User(authHeader);
+
+		// Must be logged in to update an outbreak
+		if (user.isOK() == false)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		// And an admin
+		if (user.isAdmin() == false)
+			return Response.status(Response.Status.FORBIDDEN).build();
+		if (outbreak == null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
+
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+
+			context.update(OUTBREAKS)
+				.set(OUTBREAKS.USER_ID, user.getUserID())
+				.set(OUTBREAKS.DATE_RECEIVED, outbreak.getDateReceived())
+				.set(OUTBREAKS.STATUS, outbreak.getStatus())
+				.set(OUTBREAKS.USER_COMMENTS, outbreak.getAdminComments())
+				.where(OUTBREAKS.OUTBREAK_ID.eq(outbreak.getOutbreakId()))
+				.execute();
+
+			// Extra information needed to help format the email
+			ViewOutbreaks viewOB = context.selectFrom(VIEW_OUTBREAKS)
+				.where(VIEW_OUTBREAKS.OUTBREAK_ID.eq(outbreak.getOutbreakId()))
+				.fetchOneInto(ViewOutbreaks.class);
+
+			// Now email...
+			String host = System.getenv("FAB_URL");
+			String link = host + "/#/outbreak/" + outbreak.getOutbreakId();
+			String message = "<p>An outbreak entry has been updated:</p>"
+				+ "<p><table>"
+				+ "<tr><td><b>Code: </b></td><td>" + viewOB.getOutbreakCode() + "</td><tr>"
+				+ "<tr><td><b>User: </b></td><td>" + viewOB.getUserName() + "</td><tr>"
+				+ "<tr><td><b>Postcode: </b></td><td>" + viewOB.getPostcode() + "</td><tr>"
+				+ "<tr><td><b>Latitude: </b></td><td>" + viewOB.getRealLatitude() + "</td><tr>"
+				+ "<tr><td><b>Longitude: </b></td><td>" + viewOB.getRealLongitude() + "</td><tr>"
+				+ "<tr><td><b>Severity: </b></td><td>" + viewOB.getSeverityName() + "</td><tr>"
+				+ "<tr><td><b>Source: </b></td><td>" + viewOB.getSourceName() + "</td><tr>"
+				+ "</table></p>"
+				+ "<p>You can view full details at: "
+				+ "<a href='" + link + "'>" + link + "</a>.</p>";
+
+			FAB.email(viewOB.getUserEmail(), "Fight Against Blight: Outbreak Updated", message, null);
+			FAB.emailAdmins("Fight Against Blight: Outbreak Updated", message);
 
 			return Response.ok(outbreak).build();
 		}
