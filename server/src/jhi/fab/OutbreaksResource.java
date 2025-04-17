@@ -31,7 +31,7 @@ public class OutbreaksResource
 		@QueryParam("source") Integer source,
 		@QueryParam("severity") Integer severity,
 		@QueryParam("variety") Integer variety,
-		@QueryParam("userID") Integer userId)
+		@QueryParam("userId") Integer userId)
 		throws SQLException
 	{
 		// You don't *need* a token for this call, but if we have one (and a
@@ -200,8 +200,7 @@ public class OutbreaksResource
 				+ "<p>You can view full details at: "
 				+ "<a href='" + link + "'>" + link + "</a>.</p>";
 
-			FAB.email(viewOB.getUserEmail(), "Fight Against Blight: New Outbreak Reported", message, null);
-			FAB.emailAdmins("Fight Against Blight: New Outbreak Reported", message);
+			FAB.email(viewOB.getUserEmail(), true, "Fight Against Blight: New Outbreak Reported", message, null);
 
 			return Response.ok(outbreak).build();
 		}
@@ -257,8 +256,7 @@ public class OutbreaksResource
 				+ "<p>You can view full details at: "
 				+ "<a href='" + link + "'>" + link + "</a>.</p>";
 
-			FAB.email(viewOB.getUserEmail(), "Fight Against Blight: Outbreak Updated", message, null);
-			FAB.emailAdmins("Fight Against Blight: Outbreak Updated", message);
+			FAB.email(viewOB.getUserEmail(), true, "Fight Against Blight: Outbreak Updated", message, null);
 
 			return Response.ok(outbreak).build();
 		}

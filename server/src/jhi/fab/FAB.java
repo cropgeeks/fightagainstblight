@@ -13,8 +13,6 @@ import jakarta.ws.rs.core.*;
 
 import org.glassfish.jersey.server.ResourceConfig;
 
-import jhi.fab.codegen.tables.pojos.*;
-
 @ApplicationPath("/api/")
 @Path("/")
 @WebListener
@@ -44,13 +42,13 @@ public class FAB extends ResourceConfig implements ServletContextListener
 		DatabaseUtils.close();
 	}
 
-	public static void email(String address, String subject, String htmlMessage, byte[] image)
+	public static void email(String address, boolean includeAdmins, String subject, String htmlMessage, byte[] image)
 		throws Exception
 	{
 		String emailServer = System.getenv("EMAIL_HOST");
 		String emailPort = System.getenv("EMAIL_PORT");
-		String emailAddress = System.getenv("EMAIL_ADDRESS");
-		String emailAlias = System.getenv("EMAIL_ALIAS");
+		String emailAdmin = System.getenv("FAB_ADMIN");
+		String emailAlias = System.getenv("FAB_ALIAS");
 
 		Properties props = new Properties();
 		props.put("mail.smtp.host", emailServer);
@@ -60,9 +58,11 @@ public class FAB extends ResourceConfig implements ServletContextListener
 		Session session = Session.getInstance(props);
 
 		MimeMessage message = new MimeMessage(session);
-		message.setFrom(new InternetAddress(emailAddress, emailAlias));
+		message.setFrom(new InternetAddress(emailAdmin, emailAlias));
 		message.setSubject(subject);
 		message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(address));
+		if (includeAdmins)
+			message.setRecipients(Message.RecipientType.CC, InternetAddress.parse(emailAdmin));
 
 		// Create a MimeMultipart
 		MimeMultipart multipart = new MimeMultipart("related");
@@ -96,13 +96,5 @@ public class FAB extends ResourceConfig implements ServletContextListener
 
 		// Send the message
 		Transport.send(message);
-	}
-
-	public static void emailAdmins(String subject, String htmlMessage)
-		throws Exception
-	{
-		for (Users user: new UserSessionsResource().getAllUsers())
-			if (user.getIsAdmin())
-				email(user.getEmail(), subject, htmlMessage, null);
 	}
 }
