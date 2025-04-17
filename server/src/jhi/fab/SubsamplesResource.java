@@ -5,6 +5,7 @@ import java.util.*;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import jakarta.ws.rs.Path;
 
 import org.jooq.*;
 import org.jooq.impl.*;
@@ -14,6 +15,7 @@ import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
 import static jhi.fab.codegen.tables.ViewSubsamples.VIEW_SUBSAMPLES;
 
+@Path("/subsamples")
 public class SubsamplesResource
 {
 	@Produces(MediaType.APPLICATION_JSON)
@@ -145,6 +147,25 @@ public class SubsamplesResource
 				.execute();
 
 			return Response.ok(keys).build();
+		}
+	}
+
+	@GET
+	@Path("/materials")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response varieties(@HeaderParam("Authorization") String authHeader)
+		throws SQLException
+	{
+		User user = new User(authHeader);
+
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+			List<String> list = context.selectDistinct(SUBSAMPLES.MATERIAL)
+				.from(SUBSAMPLES)
+				.fetchInto(String.class);
+
+			return Response.ok(list).build();
 		}
 	}
 }
