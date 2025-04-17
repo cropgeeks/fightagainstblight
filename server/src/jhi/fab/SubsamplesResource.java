@@ -79,7 +79,9 @@ public class SubsamplesResource
 				// If so, update the record
 				if (ss.getSubsampleId() != null)
 				{
-					Subsamples newSS = context.update(SUBSAMPLES)
+					System.out.println("Updating: " + ss.getSubsampleId());
+
+					context.update(SUBSAMPLES)
 						.set(SUBSAMPLES.SUBSAMPLE_CODE, ss.getSubsampleCode())
 						.set(SUBSAMPLES.VARIETY_ID, ss.getVarietyId())
 						.set(SUBSAMPLES.MATERIAL, ss.getMaterial())
@@ -87,14 +89,15 @@ public class SubsamplesResource
 						.set(SUBSAMPLES.USER_COMMENTS, ss.getUserComments())
 						.set(SUBSAMPLES.ADMIN_COMMENTS, ss.getAdminComments())
 						.where(SUBSAMPLES.SUBSAMPLE_ID.eq(ss.getSubsampleId()))
-						.returning(SUBSAMPLES.fields())
-						.fetchOneInto(Subsamples.class);
+						.execute();
 
-					keys.add(newSS.getSubsampleId());
+					keys.add(ss.getSubsampleId());
 				}
 				// Otherwise, create a new one
 				else
 				{
+					System.out.println("Adding new record: " + ss.getSubsampleCode());
+
 					Subsamples newSS = context.insertInto(SUBSAMPLES)
 						.set(SUBSAMPLES.SUBSAMPLE_CODE, ss.getSubsampleCode())
 						.set(SUBSAMPLES.OUTBREAK_ID, outbreakID)
@@ -108,13 +111,6 @@ public class SubsamplesResource
 
 					keys.add(newSS.getSubsampleId());
 				}
-
-				// Blank any reported_variety_id at this time
-				Integer reportedVarietyID = null;
-				context.update(OUTBREAKS)
-					.set(OUTBREAKS.REPORTED_VARIETY_ID, reportedVarietyID)
-					.where(OUTBREAKS.OUTBREAK_ID.eq(outbreakID))
-					.execute();
 			}
 
 			// Let's now get a list of all subsamples for this outbreak that are
@@ -129,13 +125,9 @@ public class SubsamplesResource
 			{
 				// Match against the POSTED list
 				boolean found = false;
-				for (Subsamples ss: subsamples)
-				{
-					// New subsample entries won't have an ID yet
-					if (ss.getSubsampleId() != null)
-						if (dbSS.getSubsampleId().intValue() == ss.getSubsampleId().intValue())
+				for (Integer key: keys)
+					if (dbSS.getSubsampleId().intValue() == key)
 							found = true;
-				}
 
 				if (found == false)
 				{
@@ -144,6 +136,13 @@ public class SubsamplesResource
 						.execute();
 				}
 			}
+
+			// And finally, blank any outbreaks.reported_variety_id at this time
+			Integer reportedVarietyID = null;
+			context.update(OUTBREAKS)
+				.set(OUTBREAKS.REPORTED_VARIETY_ID, reportedVarietyID)
+				.where(OUTBREAKS.OUTBREAK_ID.eq(outbreakID))
+				.execute();
 
 			return Response.ok(keys).build();
 		}
