@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800px"
+   height="800px"
+   viewBox="0 0 24 24"
+   fill="none"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="other.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.51574601"
+     inkscape:cx="314.1081"
+     inkscape:cy="701.89588"
+     inkscape:window-width="1718"
+     inkscape:window-height="1360"
+     inkscape:window-x="-7"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
+  <path
+     d="M 23.25,12 C 23.25,18.21325 18.21325,23.25 12,23.25 5.7868,23.25 0.75,18.21325 0.75,12 0.75,5.7868 5.7868,0.75 12,0.75 18.21325,0.75 23.25,5.7868 23.25,12 Z"
+     stroke="#000000"
+     stroke-width="1.5"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path1"
+     sodipodi:nodetypes="sssss" />
+  <circle
+     style="fill:#000000;stroke-width:3;stroke-linecap:round;stroke-miterlimit:20;stroke-dasharray:none"
+     id="circle2"
+     cx="12"
+     cy="12"
+     r="1.5" />
+  <circle
+     style="fill:#000000;stroke-width:3;stroke-linecap:round;stroke-miterlimit:20;stroke-dasharray:none"
+     id="circle3"
+     cx="17.400003"
+     cy="12"
+     r="1.5" />
+  <circle
+     style="fill:#000000;stroke-width:3;stroke-linecap:round;stroke-miterlimit:20;stroke-dasharray:none"
+     id="circle4"
+     cx="6.599998"
+     cy="12"
+     r="1.5" />
+</svg>

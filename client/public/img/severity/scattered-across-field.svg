@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   fill="#000000"
+   version="1.1"
+   id="Capa_1"
+   width="800px"
+   height="800px"
+   viewBox="0 0 89.534 89.534"
+   xml:space="preserve"
+   sodipodi:docname="scattered.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs1" /><sodipodi:namedview
+   id="namedview1"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   inkscape:zoom="1.45875"
+   inkscape:cx="400"
+   inkscape:cy="400"
+   inkscape:window-width="3424"
+   inkscape:window-height="1353"
+   inkscape:window-x="-7"
+   inkscape:window-y="0"
+   inkscape:window-maximized="0"
+   inkscape:current-layer="g1" />
+<g
+   id="g1">
+	<path
+   d="m 12.241,88.083 v -7.84 h 65.053 v 7.84 c 0,0.761 0.617,1.377 1.377,1.377 0.761,0 1.377,-0.616 1.377,-1.377 v -8.106 h 8.109 c 0.76,0 1.377,-0.617 1.377,-1.377 0,-0.762 -0.617,-1.377 -1.377,-1.377 h -8.11 V 12.314 h 8.109 c 0.76,0 1.377,-0.617 1.377,-1.377 0,-0.762 -0.617,-1.377 -1.377,-1.377 H 80.047 V 1.451 c 0,-0.761 -0.615,-1.377 -1.377,-1.377 -0.76,0 -1.377,0.616 -1.377,1.377 V 9.56 H 12.241 V 1.451 c 0,-0.761 -0.617,-1.377 -1.377,-1.377 -0.761,0 -1.377,0.616 -1.377,1.377 V 9.56 H 1.377 C 0.617,9.56 0,10.175 0,10.937 c 0,0.76 0.617,1.377 1.377,1.377 H 9.363 V 77.223 H 1.377 C 0.617,77.223 0,77.838 0,78.6 c 0,0.76 0.617,1.377 1.377,1.377 h 8.109 v 8.106 c 0,0.761 0.616,1.377 1.377,1.377 0.761,0 1.378,-0.616 1.378,-1.377 z M 12.179,33.273 V 12.314 H 33.293 V 33.273 H 12.179 Z m 22.031,0 V 12.314 H 55.262 V 33.273 H 34.21 Z m 22.032,0 V 12.314 H 77.294 V 33.273 H 56.242 Z M 12.179,55.305 V 34.191 H 33.293 V 55.305 H 12.179 Z m 22.031,0 V 34.191 H 55.262 V 55.305 H 34.21 Z m 22.032,0 V 34.191 H 77.294 V 55.305 H 56.242 Z M 12.179,77.336 V 56.223 h 21.114 v 21.113 z m 22.031,0 V 56.223 h 21.052 v 21.113 z m 22.032,0 V 56.223 H 77.294 V 77.336 Z M 36.1,75.674 V 58.342 H 53.433 V 75.674 Z M 14.16417,31.1 V 13.768 h 17.333 V 31.1 Z"
+   id="path1"
+   sodipodi:nodetypes="sccssscsssccssscsssccssscsssccssscsssccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" />
+</g>
+</svg>
