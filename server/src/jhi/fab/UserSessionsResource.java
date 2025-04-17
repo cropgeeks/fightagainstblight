@@ -126,7 +126,7 @@ public class UserSessionsResource
 					+ "research into blight populations around the UK.</p>";
 
 				byte[] qrCode = generateQRCodeBase64(link);
-				FAB.email(user.getEmail(), "Login to Fight Against Blight", message, qrCode);
+				FAB.email(user.getEmail(), false, "Login to Fight Against Blight", message, qrCode);
 			}
 			else
 				System.out.println("User not found");
