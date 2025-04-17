@@ -25,8 +25,8 @@
         <v-col :cols=12 :lg=3 :md=4>
           <v-text-field
             v-model="outbreak.dateSubmitted"
-            clearable
-            :disabled="!isAdmin"
+            :clearable="isAdmin"
+            :readonly="!isAdmin"
             persistent-placeholder
             label="Submitted on"
             type="date"
@@ -35,8 +35,8 @@
         <v-col :cols=12 :lg=3 :md=4>
           <v-text-field
             v-model="outbreak.dateReceived"
-            clearable
-            :disabled="!isAdmin"
+            :clearable="isAdmin"
+            :readonly="!isAdmin"
             persistent-placeholder
             label="Received on"
             type="date"
@@ -60,7 +60,8 @@
         <v-col :cols=12 :lg=3 :md=4>
           <v-autocomplete
             v-model="outbreak.status"
-            :disabled="!isAdmin"
+            :clearable="isAdmin"
+            :readonly="!isAdmin"
             label="Status"
             :items="statusOptions"
           />
@@ -68,6 +69,7 @@
       </v-row>
 
       <v-btn
+        v-if="isAdmin"
         class="mb-5 mx-4"
         color="primary"
         :disabled="loading"
@@ -108,9 +110,10 @@
             </v-toolbar-title>
 
             <v-autocomplete
+              v-if="isAdmin"
               v-model="allSubsampleVariety"
               class="variety-dropdown"
-              clearable
+              :readonly="!isAdmin"
               hide-details
               label="Assign variety to all subsamples"
               :items="varietyOptions"
@@ -131,6 +134,7 @@
 
         <template #footer.prepend>
           <v-btn
+            v-if="isAdmin"
             class="me-auto ms-2"
             color="primary"
             :disabled="loading"
