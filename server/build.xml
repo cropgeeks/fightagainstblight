@@ -47,10 +47,6 @@
 
 	<target name="war" depends="jar">
 		<filter filtersfile="build.properties"/>
-		<copy file="${web}/META-INF/context.xml.template"
-			tofile="${web}/META-INF/context.xml"
-			overwrite="true" filtering="true"/>
-
 		<copy todir="${tmp}" flatten="true">
 			<fileset dir="${lib}">
 				<exclude name="**/lib-devel/**"/>
@@ -60,7 +56,6 @@
 		<war destfile="${tomcat.manager.app}.war" update="false">
 			<fileset dir="${project.dist}"/>
 			<webinf dir="web/WEB-INF"/>
-			<metainf dir="web/META-INF"/>
 			<lib dir="${tmp}"/>
 		</war>
 
