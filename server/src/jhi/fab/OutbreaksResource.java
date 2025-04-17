@@ -31,7 +31,7 @@ public class OutbreaksResource
 		@QueryParam("source") Integer source,
 		@QueryParam("severity") Integer severity,
 		@QueryParam("variety") Integer variety,
-		@QueryParam("userID") Integer userId)
+		@QueryParam("userId") Integer userId)
 		throws SQLException
 	{
 		// You don't *need* a token for this call, but if we have one (and a
