@@ -164,7 +164,9 @@ public class OutbreaksResource
 				.set(OUTBREAKS.OUTBREAK_CODE, code)
 				.set(OUTBREAKS.USER_ID, user.getUserID())
 				.set(OUTBREAKS.POSTCODE, newOutbreak.getPostcode())
-				.set(OUTBREAKS.NUTS_ID, newOutbreak.getNutsId())
+				.set(OUTBREAKS.OUTCODE, newOutbreak.getOutcode())
+				.set(OUTBREAKS.COUNTRY, newOutbreak.getCountry())
+				.set(OUTBREAKS.ITL_NUTS, newOutbreak.getItlNuts())
 				.set(OUTBREAKS.REAL_LATITUDE, newOutbreak.getRealLatitude())
 				.set(OUTBREAKS.REAL_LONGITUDE, newOutbreak.getRealLongitude())
 				.set(OUTBREAKS.VIEW_LATITUDE, newOutbreak.getViewLatitude())
@@ -248,6 +250,7 @@ public class OutbreaksResource
 				+ "<tr><td><b>Code: </b></td><td>" + viewOB.getOutbreakCode() + "</td><tr>"
 				+ "<tr><td><b>User: </b></td><td>" + viewOB.getUserName() + "</td><tr>"
 				+ "<tr><td><b>Postcode: </b></td><td>" + viewOB.getPostcode() + "</td><tr>"
+				+ "<tr><td><b>Location: </b></td><td>" + viewOB.getItlNuts() + ", " + viewOB.getCountry() + "</td><tr>"
 				+ "<tr><td><b>Latitude: </b></td><td>" + viewOB.getRealLatitude() + "</td><tr>"
 				+ "<tr><td><b>Longitude: </b></td><td>" + viewOB.getRealLongitude() + "</td><tr>"
 				+ "<tr><td><b>Severity: </b></td><td>" + viewOB.getSeverityName() + "</td><tr>"
@@ -293,16 +296,14 @@ public class OutbreaksResource
 		if (outbreak.getUserId() != user.getUserID())
 		{
 			outbreak.setUserId(null);
-			outbreak.setRealLatitude(outbreak.getViewLatitude());
-			outbreak.setRealLongitude(outbreak.getViewLongitude());
 			outbreak.setUserEmail(null);
 			outbreak.setUserName(null);
 			outbreak.setUserComments(null);
 
-			// Hide the last part of the postcode
-			if (outbreak.getPostcode() != null)
-				outbreak.setPostcode(outbreak.getPostcode()
-					.substring(0, outbreak.getPostcode().length()-3));
+			// And these fields get less detailed
+			outbreak.setRealLatitude(outbreak.getViewLatitude());
+			outbreak.setRealLongitude(outbreak.getViewLongitude());
+			outbreak.setPostcode(outbreak.getOutcode());
 		}
 	}
 }

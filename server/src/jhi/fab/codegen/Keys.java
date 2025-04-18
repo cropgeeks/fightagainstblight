@@ -4,8 +4,6 @@
 package jhi.fab.codegen;
 
 
-import jhi.fab.codegen.tables.Countries;
-import jhi.fab.codegen.tables.Nuts;
 import jhi.fab.codegen.tables.Outbreaks;
 import jhi.fab.codegen.tables.Severities;
 import jhi.fab.codegen.tables.Sources;
@@ -14,8 +12,6 @@ import jhi.fab.codegen.tables.Subsamples;
 import jhi.fab.codegen.tables.UserSessions;
 import jhi.fab.codegen.tables.Users;
 import jhi.fab.codegen.tables.Varieties;
-import jhi.fab.codegen.tables.records.CountriesRecord;
-import jhi.fab.codegen.tables.records.NutsRecord;
 import jhi.fab.codegen.tables.records.OutbreaksRecord;
 import jhi.fab.codegen.tables.records.SeveritiesRecord;
 import jhi.fab.codegen.tables.records.SourcesRecord;
@@ -43,8 +39,6 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<CountriesRecord> KEY_COUNTRIES_PRIMARY = Internal.createUniqueKey(Countries.COUNTRIES, DSL.name("KEY_countries_PRIMARY"), new TableField[] { Countries.COUNTRIES.COUNTRY_ID }, true);
-    public static final UniqueKey<NutsRecord> KEY_NUTS_PRIMARY = Internal.createUniqueKey(Nuts.NUTS, DSL.name("KEY_nuts_PRIMARY"), new TableField[] { Nuts.NUTS.NUTS_ID }, true);
     public static final UniqueKey<OutbreaksRecord> KEY_OUTBREAKS_PRIMARY = Internal.createUniqueKey(Outbreaks.OUTBREAKS, DSL.name("KEY_outbreaks_PRIMARY"), new TableField[] { Outbreaks.OUTBREAKS.OUTBREAK_ID }, true);
     public static final UniqueKey<SeveritiesRecord> KEY_SEVERITIES_PRIMARY = Internal.createUniqueKey(Severities.SEVERITIES, DSL.name("KEY_severities_PRIMARY"), new TableField[] { Severities.SEVERITIES.SEVERITY_ID }, true);
     public static final UniqueKey<SourcesRecord> KEY_SOURCES_PRIMARY = Internal.createUniqueKey(Sources.SOURCES, DSL.name("KEY_sources_PRIMARY"), new TableField[] { Sources.SOURCES.SOURCE_ID }, true);
@@ -58,8 +52,6 @@ public class Keys {
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final ForeignKey<NutsRecord, CountriesRecord> COUNTRY = Internal.createForeignKey(Nuts.NUTS, DSL.name("country"), new TableField[] { Nuts.NUTS.COUNTRY_ID }, Keys.KEY_COUNTRIES_PRIMARY, new TableField[] { Countries.COUNTRIES.COUNTRY_ID }, true, ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE);
-    public static final ForeignKey<OutbreaksRecord, NutsRecord> NUTS = Internal.createForeignKey(Outbreaks.OUTBREAKS, DSL.name("nuts"), new TableField[] { Outbreaks.OUTBREAKS.NUTS_ID }, Keys.KEY_NUTS_PRIMARY, new TableField[] { Nuts.NUTS.NUTS_ID }, true, ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE);
     public static final ForeignKey<OutbreaksRecord, VarietiesRecord> REPORTED_VARIETY = Internal.createForeignKey(Outbreaks.OUTBREAKS, DSL.name("reported_variety"), new TableField[] { Outbreaks.OUTBREAKS.REPORTED_VARIETY_ID }, Keys.KEY_VARIETIES_PRIMARY, new TableField[] { Varieties.VARIETIES.VARIETY_ID }, true, ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE);
     public static final ForeignKey<OutbreaksRecord, SeveritiesRecord> SEVERITY = Internal.createForeignKey(Outbreaks.OUTBREAKS, DSL.name("severity"), new TableField[] { Outbreaks.OUTBREAKS.SEVERITY_ID }, Keys.KEY_SEVERITIES_PRIMARY, new TableField[] { Severities.SEVERITIES.SEVERITY_ID }, true, ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE);
     public static final ForeignKey<OutbreaksRecord, SourcesRecord> SOURCE = Internal.createForeignKey(Outbreaks.OUTBREAKS, DSL.name("source"), new TableField[] { Outbreaks.OUTBREAKS.SOURCE_ID }, Keys.KEY_SOURCES_PRIMARY, new TableField[] { Sources.SOURCES.SOURCE_ID }, true, ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE);
