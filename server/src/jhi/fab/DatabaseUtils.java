@@ -24,6 +24,8 @@ public class DatabaseUtils
 			ds.setPassword(password);
 			ds.setUrl(url);
 		}
+
+		new UserSessionsResource().startTokenTimer();
 	}
 
 	public static Connection getConnection()
