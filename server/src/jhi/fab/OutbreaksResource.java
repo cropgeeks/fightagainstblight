@@ -145,10 +145,13 @@ public class OutbreaksResource
 		// Must be logged in to create a new outbreak
 		if (user.isOK() == false)
 			return Response.status(Response.Status.UNAUTHORIZED).build();
-		if (newOutbreak == null)
+		if (newOutbreak == null || newOutbreak.getUserId() == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		System.out.println("UserID is " + user.getUserID());
+		// Admins can override the userId but anyone else who posts a different
+		// userId from their own isn't allowed
+		if (user.isAdmin() == false && newOutbreak.getUserId() != user.getUserID())
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
@@ -169,7 +172,7 @@ public class OutbreaksResource
 
 			Outbreaks outbreak = context.insertInto(OUTBREAKS)
 				.set(OUTBREAKS.OUTBREAK_CODE, code)
-				.set(OUTBREAKS.USER_ID, user.getUserID())
+				.set(OUTBREAKS.USER_ID, newOutbreak.getUserId())
 				.set(OUTBREAKS.POSTCODE, newOutbreak.getPostcode())
 				.set(OUTBREAKS.OUTCODE, newOutbreak.getOutcode())
 				.set(OUTBREAKS.COUNTRY, newOutbreak.getCountry())
@@ -201,6 +204,7 @@ public class OutbreaksResource
 				+ "<tr><td><b>Code: </b></td><td>" + code + "</td><tr>"
 				+ "<tr><td><b>User: </b></td><td>" + viewOB.getUserName() + "</td><tr>"
 				+ "<tr><td><b>Postcode: </b></td><td>" + viewOB.getPostcode() + "</td><tr>"
+				+ "<tr><td><b>Location: </b></td><td>" + viewOB.getItlNuts() + ", " + viewOB.getCountry() + "</td><tr>"
 				+ "<tr><td><b>Latitude: </b></td><td>" + viewOB.getRealLatitude() + "</td><tr>"
 				+ "<tr><td><b>Longitude: </b></td><td>" + viewOB.getRealLongitude() + "</td><tr>"
 				+ "<tr><td><b>Severity: </b></td><td>" + viewOB.getSeverityName() + "</td><tr>"
