@@ -146,6 +146,8 @@ public class SubsamplesResource
 				.where(OUTBREAKS.OUTBREAK_ID.eq(outbreakID))
 				.execute();
 
+			OutbreaksResource.emailOutbreak(outbreakID);
+
 			return Response.ok(keys).build();
 		}
 	}

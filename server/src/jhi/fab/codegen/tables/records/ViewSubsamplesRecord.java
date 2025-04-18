@@ -76,72 +76,72 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
     }
 
     /**
+     * Setter for <code>fab.view_subsamples.genotype_name</code>.
+     */
+    public void setGenotypeName(String value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_subsamples.genotype_name</code>.
+     */
+    public String getGenotypeName() {
+        return (String) get(4);
+    }
+
+    /**
      * Setter for <code>fab.view_subsamples.material</code>.
      */
     public void setMaterial(String value) {
-        set(4, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>fab.view_subsamples.material</code>.
      */
     public String getMaterial() {
-        return (String) get(4);
+        return (String) get(5);
     }
 
     /**
      * Setter for <code>fab.view_subsamples.date_genotyped</code>.
      */
     public void setDateGenotyped(LocalDate value) {
-        set(5, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>fab.view_subsamples.date_genotyped</code>.
      */
     public LocalDate getDateGenotyped() {
-        return (LocalDate) get(5);
+        return (LocalDate) get(6);
     }
 
     /**
      * Setter for <code>fab.view_subsamples.user_comments</code>.
      */
     public void setUserComments(String value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>fab.view_subsamples.user_comments</code>.
      */
     public String getUserComments() {
-        return (String) get(6);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>fab.view_subsamples.admin_comments</code>.
      */
     public void setAdminComments(String value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>fab.view_subsamples.admin_comments</code>.
      */
     public String getAdminComments() {
-        return (String) get(7);
-    }
-
-    /**
-     * Setter for <code>fab.view_subsamples.variety_name</code>.
-     */
-    public void setVarietyName(String value) {
-        set(8, value);
-    }
-
-    /**
-     * Getter for <code>fab.view_subsamples.variety_name</code>.
-     */
-    public String getVarietyName() {
         return (String) get(8);
     }
 
@@ -159,6 +159,20 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
         return (Integer) get(9);
     }
 
+    /**
+     * Setter for <code>fab.view_subsamples.variety_name</code>.
+     */
+    public void setVarietyName(String value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_subsamples.variety_name</code>.
+     */
+    public String getVarietyName() {
+        return (String) get(10);
+    }
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -173,19 +187,20 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
     /**
      * Create a detached, initialised ViewSubsamplesRecord
      */
-    public ViewSubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, String material, LocalDate dateGenotyped, String userComments, String adminComments, String varietyName, Integer varietyId) {
+    public ViewSubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, String genotypeName, String material, LocalDate dateGenotyped, String userComments, String adminComments, Integer varietyId, String varietyName) {
         super(ViewSubsamples.VIEW_SUBSAMPLES);
 
         setSubsampleId(subsampleId);
         setSubsampleCode(subsampleCode);
         setOutbreakId(outbreakId);
         setGenotypeId(genotypeId);
+        setGenotypeName(genotypeName);
         setMaterial(material);
         setDateGenotyped(dateGenotyped);
         setUserComments(userComments);
         setAdminComments(adminComments);
-        setVarietyName(varietyName);
         setVarietyId(varietyId);
+        setVarietyName(varietyName);
         resetTouchedOnNotNull();
     }
 
@@ -200,12 +215,13 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
             setSubsampleCode(value.getSubsampleCode());
             setOutbreakId(value.getOutbreakId());
             setGenotypeId(value.getGenotypeId());
+            setGenotypeName(value.getGenotypeName());
             setMaterial(value.getMaterial());
             setDateGenotyped(value.getDateGenotyped());
             setUserComments(value.getUserComments());
             setAdminComments(value.getAdminComments());
-            setVarietyName(value.getVarietyName());
             setVarietyId(value.getVarietyId());
+            setVarietyName(value.getVarietyName());
             resetTouchedOnNotNull();
         }
     }
