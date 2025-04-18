@@ -31,7 +31,8 @@ public class OutbreaksResource
 		@QueryParam("source") Integer source,
 		@QueryParam("severity") Integer severity,
 		@QueryParam("variety") Integer variety,
-		@QueryParam("userId") Integer userId)
+		@QueryParam("userId") Integer userId,
+		@QueryParam("outcode") String outcode)
 		throws SQLException
 	{
 		// You don't *need* a token for this call, but if we have one (and a
@@ -53,6 +54,8 @@ public class OutbreaksResource
 			}
 			if (year != null)
 				query.where(DSL.year(VIEW_OUTBREAKS.DATE_SUBMITTED).eq(year));
+			if (outcode != null)
+				query.where(VIEW_OUTBREAKS.OUTCODE.eq(outcode));
 			if (outbreakCode != null)
 				query.where(VIEW_OUTBREAKS.OUTBREAK_CODE.eq(outbreakCode));
 			if (status != null)
