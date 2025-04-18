@@ -18,6 +18,7 @@ import jhi.fab.codegen.tables.pojos.*;
 import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
 import static jhi.fab.codegen.tables.ViewOutbreaks.VIEW_OUTBREAKS;
+import static jhi.fab.codegen.tables.ViewSubsamples.VIEW_SUBSAMPLES;
 
 @Path("/outbreaks")
 public class OutbreaksResource
@@ -31,7 +32,8 @@ public class OutbreaksResource
 		@QueryParam("source") Integer source,
 		@QueryParam("severity") Integer severity,
 		@QueryParam("variety") Integer variety,
-		@QueryParam("userId") Integer userId)
+		@QueryParam("userId") Integer userId,
+		@QueryParam("outcode") String outcode)
 		throws SQLException
 	{
 		// You don't *need* a token for this call, but if we have one (and a
@@ -44,6 +46,11 @@ public class OutbreaksResource
 
 			var query = context.selectFrom(VIEW_OUTBREAKS);
 
+			// We always want to filter by a year, even if the UI didn't provide
+			if (year == null)
+				year = LocalDate.now().getYear();
+			query.where(DSL.year(VIEW_OUTBREAKS.DATE_SUBMITTED).eq(year));
+
 			if (variety != null) {
 				// Something something give me any outbreak where any of its
 				// subsamples have this variety OR the reported_variety matches
@@ -51,8 +58,9 @@ public class OutbreaksResource
 					.where(SUBSAMPLES.OUTBREAK_ID.eq(VIEW_OUTBREAKS.OUTBREAK_ID)).and(SUBSAMPLES.VARIETY_ID.eq(variety)))
 					.or(VIEW_OUTBREAKS.REPORTED_VARIETY_ID.eq(variety)));
 			}
-			if (year != null)
-				query.where(DSL.year(VIEW_OUTBREAKS.DATE_SUBMITTED).eq(year));
+
+			if (outcode != null)
+				query.where(VIEW_OUTBREAKS.OUTCODE.eq(outcode));
 			if (outbreakCode != null)
 				query.where(VIEW_OUTBREAKS.OUTBREAK_CODE.eq(outbreakCode));
 			if (status != null)
@@ -131,17 +139,20 @@ public class OutbreaksResource
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public synchronized Response postOutbreaks(@HeaderParam("Authorization") String authHeader, Outbreaks newOutbreak)
-		throws SQLException, Exception
+		throws SQLException
 	{
 		User user = new User(authHeader);
 
 		// Must be logged in to create a new outbreak
 		if (user.isOK() == false)
 			return Response.status(Response.Status.UNAUTHORIZED).build();
-		if (newOutbreak == null)
+		if (newOutbreak == null || newOutbreak.getUserId() == null)
 			return Response.status(Response.Status.BAD_REQUEST).build();
 
-		System.out.println("UserID is " + user.getUserID());
+		// Admins can override the userId but anyone else who posts a different
+		// userId from their own isn't allowed
+		if (user.isAdmin() == false && newOutbreak.getUserId() != user.getUserID())
+			return Response.status(Response.Status.BAD_REQUEST).build();
 
 		try (Connection conn = DatabaseUtils.getConnection())
 		{
@@ -162,9 +173,11 @@ public class OutbreaksResource
 
 			Outbreaks outbreak = context.insertInto(OUTBREAKS)
 				.set(OUTBREAKS.OUTBREAK_CODE, code)
-				.set(OUTBREAKS.USER_ID, user.getUserID())
+				.set(OUTBREAKS.USER_ID, newOutbreak.getUserId())
 				.set(OUTBREAKS.POSTCODE, newOutbreak.getPostcode())
-				.set(OUTBREAKS.NUTS_ID, newOutbreak.getNutsId())
+				.set(OUTBREAKS.OUTCODE, newOutbreak.getOutcode())
+				.set(OUTBREAKS.COUNTRY, newOutbreak.getCountry())
+				.set(OUTBREAKS.ITL_NUTS, newOutbreak.getItlNuts())
 				.set(OUTBREAKS.REAL_LATITUDE, newOutbreak.getRealLatitude())
 				.set(OUTBREAKS.REAL_LONGITUDE, newOutbreak.getRealLongitude())
 				.set(OUTBREAKS.VIEW_LATITUDE, newOutbreak.getViewLatitude())
@@ -179,28 +192,7 @@ public class OutbreaksResource
 				.returning(OUTBREAKS.fields())
 				.fetchOneInto(Outbreaks.class);
 
-			// Extra information needed to help format the email
-			ViewOutbreaks viewOB = context.selectFrom(VIEW_OUTBREAKS)
-				.where(VIEW_OUTBREAKS.OUTBREAK_ID.eq(outbreak.getOutbreakId()))
-				.fetchOneInto(ViewOutbreaks.class);
-
-			// Now email...
-			String host = System.getenv("FAB_URL");
-			String link = host + "/#/outbreak/" + outbreak.getOutbreakId();
-			String message = "<p>A new outbreak has just been reported:</p>"
-				+ "<p><table>"
-				+ "<tr><td><b>Code: </b></td><td>" + code + "</td><tr>"
-				+ "<tr><td><b>User: </b></td><td>" + viewOB.getUserName() + "</td><tr>"
-				+ "<tr><td><b>Postcode: </b></td><td>" + viewOB.getPostcode() + "</td><tr>"
-				+ "<tr><td><b>Latitude: </b></td><td>" + viewOB.getRealLatitude() + "</td><tr>"
-				+ "<tr><td><b>Longitude: </b></td><td>" + viewOB.getRealLongitude() + "</td><tr>"
-				+ "<tr><td><b>Severity: </b></td><td>" + viewOB.getSeverityName() + "</td><tr>"
-				+ "<tr><td><b>Source: </b></td><td>" + viewOB.getSourceName() + "</td><tr>"
-				+ "</table></p>"
-				+ "<p>You can view full details at: "
-				+ "<a href='" + link + "'>" + link + "</a>.</p>";
-
-			FAB.email(viewOB.getUserEmail(), true, "Fight Against Blight: New Outbreak Reported", message, null);
+			emailOutbreak(outbreak.getOutbreakId());
 
 			return Response.ok(outbreak).build();
 		}
@@ -210,7 +202,7 @@ public class OutbreaksResource
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public synchronized Response patchOutbreaks(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id, Outbreaks outbreak)
-		throws SQLException, Exception
+		throws SQLException
 	{
 		User user = new User(authHeader);
 
@@ -235,28 +227,7 @@ public class OutbreaksResource
 				.where(OUTBREAKS.OUTBREAK_ID.eq(outbreak.getOutbreakId()))
 				.execute();
 
-			// Extra information needed to help format the email
-			ViewOutbreaks viewOB = context.selectFrom(VIEW_OUTBREAKS)
-				.where(VIEW_OUTBREAKS.OUTBREAK_ID.eq(outbreak.getOutbreakId()))
-				.fetchOneInto(ViewOutbreaks.class);
-
-			// Now email...
-			String host = System.getenv("FAB_URL");
-			String link = host + "/#/outbreak/" + outbreak.getOutbreakId();
-			String message = "<p>An outbreak entry has been updated:</p>"
-				+ "<p><table>"
-				+ "<tr><td><b>Code: </b></td><td>" + viewOB.getOutbreakCode() + "</td><tr>"
-				+ "<tr><td><b>User: </b></td><td>" + viewOB.getUserName() + "</td><tr>"
-				+ "<tr><td><b>Postcode: </b></td><td>" + viewOB.getPostcode() + "</td><tr>"
-				+ "<tr><td><b>Latitude: </b></td><td>" + viewOB.getRealLatitude() + "</td><tr>"
-				+ "<tr><td><b>Longitude: </b></td><td>" + viewOB.getRealLongitude() + "</td><tr>"
-				+ "<tr><td><b>Severity: </b></td><td>" + viewOB.getSeverityName() + "</td><tr>"
-				+ "<tr><td><b>Source: </b></td><td>" + viewOB.getSourceName() + "</td><tr>"
-				+ "</table></p>"
-				+ "<p>You can view full details at: "
-				+ "<a href='" + link + "'>" + link + "</a>.</p>";
-
-			FAB.email(viewOB.getUserEmail(), true, "Fight Against Blight: Outbreak Updated", message, null);
+			emailOutbreak(outbreak.getOutbreakId());
 
 			return Response.ok(outbreak).build();
 		}
@@ -293,16 +264,85 @@ public class OutbreaksResource
 		if (outbreak.getUserId() != user.getUserID())
 		{
 			outbreak.setUserId(null);
-			outbreak.setRealLatitude(outbreak.getViewLatitude());
-			outbreak.setRealLongitude(outbreak.getViewLongitude());
 			outbreak.setUserEmail(null);
 			outbreak.setUserName(null);
 			outbreak.setUserComments(null);
 
-			// Hide the last part of the postcode
-			if (outbreak.getPostcode() != null)
-				outbreak.setPostcode(outbreak.getPostcode()
-					.substring(0, outbreak.getPostcode().length()-3));
+			// And these fields get less detailed
+			outbreak.setRealLatitude(outbreak.getViewLatitude());
+			outbreak.setRealLongitude(outbreak.getViewLongitude());
+			outbreak.setPostcode(outbreak.getOutcode());
+		}
+	}
+
+	static void emailOutbreak(int obId)
+		throws SQLException
+	{
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+
+			ViewOutbreaks viewOB = context.selectFrom(VIEW_OUTBREAKS)
+				.where(VIEW_OUTBREAKS.OUTBREAK_ID.eq(obId))
+				.fetchOneInto(ViewOutbreaks.class);
+
+			List<ViewSubsamples> subsamples = context.selectFrom(VIEW_SUBSAMPLES)
+				.where(VIEW_SUBSAMPLES.OUTBREAK_ID.eq(obId))
+				.fetchInto(ViewSubsamples.class);
+
+			// Now email...
+			String host = System.getenv("FAB_URL");
+			String link = host + "/#/outbreak/" + obId;
+			String message = "<p>An outbreak has been reported or updated:</p>"
+				+ "<p><table>"
+				+ "<tr><td><b>Reported: </b></td><td>" + viewOB.getDateSubmitted() + "</td><tr>"
+				+ "<tr><td><b>Code: </b></td><td>" + viewOB.getOutbreakCode() + "</td><tr>";
+
+			if (viewOB.getReportedVarietyId() != null)
+				message += "<tr><td><b>Variety: </b></td><td>" + viewOB.getReportedVarietyName() + "</td><tr>";
+
+			message += "<tr><td><b>User: </b></td><td>" + viewOB.getUserName() + "</td><tr>"
+				+ "<tr><td><b>Postcode: </b></td><td>" + viewOB.getPostcode() + "</td><tr>"
+				+ "<tr><td><b>Location: </b></td><td>" + viewOB.getItlNuts() + ", " + viewOB.getCountry() + "</td><tr>"
+				+ "<tr><td><b>Latitude: </b></td><td>" + viewOB.getRealLatitude() + "</td><tr>"
+				+ "<tr><td><b>Longitude: </b></td><td>" + viewOB.getRealLongitude() + "</td><tr>"
+				+ "<tr><td><b>Severity: </b></td><td>" + viewOB.getSeverityName() + "</td><tr>"
+				+ "<tr><td><b>Source: </b></td><td>" + viewOB.getSourceName() + "</td><tr>"
+				+ "</table></p>";
+
+			if (subsamples.isEmpty())
+				message += "<p>No subsample information is available for this outbreak yet.</p>";
+			else
+			{
+				message += "<p>Information on the subsamples is as follows:</p>"
+					+ "<p><table><tr>"
+					+ "<th align=left>Subsample</th>"
+					+ "<th align=left>Variety</th>"
+					+ "<th align=left>Material</th>"
+					+ "<th align=left>Genotype</th>"
+					+ "<th align=left>Date Genotyped</th>"
+					+ "</tr>";
+
+				for (ViewSubsamples ss: subsamples)
+				{
+					message += "<tr>"
+						+ "<td>" + ss.getSubsampleCode() + "</td>"
+						+ "<td>" + ss.getVarietyName() + "</td>"
+						+ "<td>" + ss.getMaterial() + "</td>"
+						+ "<td>" + ss.getGenotypeName() + "</td>"
+						+ "<td>" + ss.getDateGenotyped() + "</td>"
+						+ "</tr>";
+				}
+
+				message += "</table></p>";
+			}
+
+			message += "<p>You can view full details at: "
+				+ "<a href='" + link + "'>" + link + "</a></p>"
+				+ "<p>Thanks for using Fight Against Blight and helping with "
+				+ "research into blight populations around the UK.</p>";
+
+			FAB.email(viewOB.getUserEmail(), true, "Fight Against Blight: Outbreak Reported/Updated", message, null);
 		}
 	}
 }

@@ -10,9 +10,9 @@ import java.util.Collection;
 import java.util.List;
 
 import jhi.fab.codegen.Fab;
+import jhi.fab.codegen.Indexes;
 import jhi.fab.codegen.Keys;
 import jhi.fab.codegen.enums.OutbreaksStatus;
-import jhi.fab.codegen.tables.Nuts.NutsPath;
 import jhi.fab.codegen.tables.Severities.SeveritiesPath;
 import jhi.fab.codegen.tables.Sources.SourcesPath;
 import jhi.fab.codegen.tables.Subsamples.SubsamplesPath;
@@ -24,6 +24,7 @@ import org.jooq.Condition;
 import org.jooq.Field;
 import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.Index;
 import org.jooq.InverseForeignKey;
 import org.jooq.Name;
 import org.jooq.Path;
@@ -85,9 +86,19 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     public final TableField<OutbreaksRecord, String> POSTCODE = createField(DSL.name("postcode"), SQLDataType.VARCHAR(10), this, "");
 
     /**
-     * The column <code>fab.outbreaks.nuts_id</code>.
+     * The column <code>fab.outbreaks.outcode</code>.
      */
-    public final TableField<OutbreaksRecord, Integer> NUTS_ID = createField(DSL.name("nuts_id"), SQLDataType.INTEGER, this, "");
+    public final TableField<OutbreaksRecord, String> OUTCODE = createField(DSL.name("outcode"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>fab.outbreaks.country</code>.
+     */
+    public final TableField<OutbreaksRecord, String> COUNTRY = createField(DSL.name("country"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>fab.outbreaks.itl_nuts</code>.
+     */
+    public final TableField<OutbreaksRecord, String> ITL_NUTS = createField(DSL.name("itl_nuts"), SQLDataType.VARCHAR(255), this, "");
 
     /**
      * The column <code>fab.outbreaks.real_latitude</code>.
@@ -227,6 +238,11 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     }
 
     @Override
+    public List<Index> getIndexes() {
+        return Arrays.asList(Indexes.OUTBREAKS_OUTCODE);
+    }
+
+    @Override
     public Identity<OutbreaksRecord, Integer> getIdentity() {
         return (Identity<OutbreaksRecord, Integer>) super.getIdentity();
     }
@@ -238,19 +254,7 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
 
     @Override
     public List<ForeignKey<OutbreaksRecord, ?>> getReferences() {
-        return Arrays.asList(Keys.NUTS, Keys.REPORTED_VARIETY, Keys.SEVERITY, Keys.SOURCE, Keys.USER);
-    }
-
-    private transient NutsPath _nuts;
-
-    /**
-     * Get the implicit join path to the <code>fab.nuts</code> table.
-     */
-    public NutsPath nuts() {
-        if (_nuts == null)
-            _nuts = new NutsPath(this, Keys.NUTS, null);
-
-        return _nuts;
+        return Arrays.asList(Keys.REPORTED_VARIETY, Keys.SEVERITY, Keys.SOURCE, Keys.USER);
     }
 
     private transient VarietiesPath _varieties;

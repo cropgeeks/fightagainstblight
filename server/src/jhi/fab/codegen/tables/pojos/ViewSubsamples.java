@@ -20,12 +20,13 @@ public class ViewSubsamples implements Serializable {
     private String subsampleCode;
     private Integer outbreakId;
     private Integer genotypeId;
+    private String genotypeName;
     private String material;
     private LocalDate dateGenotyped;
     private String userComments;
     private String adminComments;
-    private String varietyName;
     private Integer varietyId;
+    private String varietyName;
 
     public ViewSubsamples() {}
 
@@ -34,12 +35,13 @@ public class ViewSubsamples implements Serializable {
         this.subsampleCode = value.subsampleCode;
         this.outbreakId = value.outbreakId;
         this.genotypeId = value.genotypeId;
+        this.genotypeName = value.genotypeName;
         this.material = value.material;
         this.dateGenotyped = value.dateGenotyped;
         this.userComments = value.userComments;
         this.adminComments = value.adminComments;
-        this.varietyName = value.varietyName;
         this.varietyId = value.varietyId;
+        this.varietyName = value.varietyName;
     }
 
     public ViewSubsamples(
@@ -47,23 +49,25 @@ public class ViewSubsamples implements Serializable {
         String subsampleCode,
         Integer outbreakId,
         Integer genotypeId,
+        String genotypeName,
         String material,
         LocalDate dateGenotyped,
         String userComments,
         String adminComments,
-        String varietyName,
-        Integer varietyId
+        Integer varietyId,
+        String varietyName
     ) {
         this.subsampleId = subsampleId;
         this.subsampleCode = subsampleCode;
         this.outbreakId = outbreakId;
         this.genotypeId = genotypeId;
+        this.genotypeName = genotypeName;
         this.material = material;
         this.dateGenotyped = dateGenotyped;
         this.userComments = userComments;
         this.adminComments = adminComments;
-        this.varietyName = varietyName;
         this.varietyId = varietyId;
+        this.varietyName = varietyName;
     }
 
     /**
@@ -123,6 +127,20 @@ public class ViewSubsamples implements Serializable {
     }
 
     /**
+     * Getter for <code>fab.view_subsamples.genotype_name</code>.
+     */
+    public String getGenotypeName() {
+        return this.genotypeName;
+    }
+
+    /**
+     * Setter for <code>fab.view_subsamples.genotype_name</code>.
+     */
+    public void setGenotypeName(String genotypeName) {
+        this.genotypeName = genotypeName;
+    }
+
+    /**
      * Getter for <code>fab.view_subsamples.material</code>.
      */
     public String getMaterial() {
@@ -179,20 +197,6 @@ public class ViewSubsamples implements Serializable {
     }
 
     /**
-     * Getter for <code>fab.view_subsamples.variety_name</code>.
-     */
-    public String getVarietyName() {
-        return this.varietyName;
-    }
-
-    /**
-     * Setter for <code>fab.view_subsamples.variety_name</code>.
-     */
-    public void setVarietyName(String varietyName) {
-        this.varietyName = varietyName;
-    }
-
-    /**
      * Getter for <code>fab.view_subsamples.variety_id</code>.
      */
     public Integer getVarietyId() {
@@ -204,6 +208,20 @@ public class ViewSubsamples implements Serializable {
      */
     public void setVarietyId(Integer varietyId) {
         this.varietyId = varietyId;
+    }
+
+    /**
+     * Getter for <code>fab.view_subsamples.variety_name</code>.
+     */
+    public String getVarietyName() {
+        return this.varietyName;
+    }
+
+    /**
+     * Setter for <code>fab.view_subsamples.variety_name</code>.
+     */
+    public void setVarietyName(String varietyName) {
+        this.varietyName = varietyName;
     }
 
     @Override
@@ -239,6 +257,12 @@ public class ViewSubsamples implements Serializable {
         }
         else if (!this.genotypeId.equals(other.genotypeId))
             return false;
+        if (this.genotypeName == null) {
+            if (other.genotypeName != null)
+                return false;
+        }
+        else if (!this.genotypeName.equals(other.genotypeName))
+            return false;
         if (this.material == null) {
             if (other.material != null)
                 return false;
@@ -263,17 +287,17 @@ public class ViewSubsamples implements Serializable {
         }
         else if (!this.adminComments.equals(other.adminComments))
             return false;
-        if (this.varietyName == null) {
-            if (other.varietyName != null)
-                return false;
-        }
-        else if (!this.varietyName.equals(other.varietyName))
-            return false;
         if (this.varietyId == null) {
             if (other.varietyId != null)
                 return false;
         }
         else if (!this.varietyId.equals(other.varietyId))
+            return false;
+        if (this.varietyName == null) {
+            if (other.varietyName != null)
+                return false;
+        }
+        else if (!this.varietyName.equals(other.varietyName))
             return false;
         return true;
     }
@@ -286,12 +310,13 @@ public class ViewSubsamples implements Serializable {
         result = prime * result + ((this.subsampleCode == null) ? 0 : this.subsampleCode.hashCode());
         result = prime * result + ((this.outbreakId == null) ? 0 : this.outbreakId.hashCode());
         result = prime * result + ((this.genotypeId == null) ? 0 : this.genotypeId.hashCode());
+        result = prime * result + ((this.genotypeName == null) ? 0 : this.genotypeName.hashCode());
         result = prime * result + ((this.material == null) ? 0 : this.material.hashCode());
         result = prime * result + ((this.dateGenotyped == null) ? 0 : this.dateGenotyped.hashCode());
         result = prime * result + ((this.userComments == null) ? 0 : this.userComments.hashCode());
         result = prime * result + ((this.adminComments == null) ? 0 : this.adminComments.hashCode());
-        result = prime * result + ((this.varietyName == null) ? 0 : this.varietyName.hashCode());
         result = prime * result + ((this.varietyId == null) ? 0 : this.varietyId.hashCode());
+        result = prime * result + ((this.varietyName == null) ? 0 : this.varietyName.hashCode());
         return result;
     }
 
@@ -303,12 +328,13 @@ public class ViewSubsamples implements Serializable {
         sb.append(", ").append(subsampleCode);
         sb.append(", ").append(outbreakId);
         sb.append(", ").append(genotypeId);
+        sb.append(", ").append(genotypeName);
         sb.append(", ").append(material);
         sb.append(", ").append(dateGenotyped);
         sb.append(", ").append(userComments);
         sb.append(", ").append(adminComments);
-        sb.append(", ").append(varietyName);
         sb.append(", ").append(varietyId);
+        sb.append(", ").append(varietyName);
 
         sb.append(")");
         return sb.toString();

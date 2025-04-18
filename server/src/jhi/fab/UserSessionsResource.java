@@ -155,4 +155,34 @@ public class UserSessionsResource
 
 		return imageBytes;
 	}
+
+	// Start a timer that will check the DB for expired tokens
+	void startTokenTimer()
+	{
+		new Timer().schedule(new TimerTask() {
+			public void run()
+			{
+				try (Connection conn = DatabaseUtils.getConnection())
+				{
+					// Anything older than this timestamp is getting removed
+					Instant instant = Instant.ofEpochMilli(
+						System.currentTimeMillis()
+						- Long.parseLong(System.getenv("FAB_TOKEN_EXPIRE")));
+
+					LocalDateTime dateTime = LocalDateTime.ofInstant(instant,
+						ZoneId.systemDefault());
+
+					DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+					context.deleteFrom(USER_SESSIONS)
+						.where(USER_SESSIONS.CREATED_ON.lessThan(dateTime))
+						.execute();
+				}
+				catch (SQLException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		// Run now (0), and then every hour
+		}, 0, (60*60*1000));
+	}
 }

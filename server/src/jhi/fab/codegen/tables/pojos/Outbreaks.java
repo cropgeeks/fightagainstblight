@@ -22,7 +22,9 @@ public class Outbreaks implements Serializable {
     private String outbreakCode;
     private Integer userId;
     private String postcode;
-    private Integer nutsId;
+    private String outcode;
+    private String country;
+    private String itlNuts;
     private Double realLatitude;
     private Double realLongitude;
     private Double viewLatitude;
@@ -45,7 +47,9 @@ public class Outbreaks implements Serializable {
         this.outbreakCode = value.outbreakCode;
         this.userId = value.userId;
         this.postcode = value.postcode;
-        this.nutsId = value.nutsId;
+        this.outcode = value.outcode;
+        this.country = value.country;
+        this.itlNuts = value.itlNuts;
         this.realLatitude = value.realLatitude;
         this.realLongitude = value.realLongitude;
         this.viewLatitude = value.viewLatitude;
@@ -67,7 +71,9 @@ public class Outbreaks implements Serializable {
         String outbreakCode,
         Integer userId,
         String postcode,
-        Integer nutsId,
+        String outcode,
+        String country,
+        String itlNuts,
         Double realLatitude,
         Double realLongitude,
         Double viewLatitude,
@@ -87,7 +93,9 @@ public class Outbreaks implements Serializable {
         this.outbreakCode = outbreakCode;
         this.userId = userId;
         this.postcode = postcode;
-        this.nutsId = nutsId;
+        this.outcode = outcode;
+        this.country = country;
+        this.itlNuts = itlNuts;
         this.realLatitude = realLatitude;
         this.realLongitude = realLongitude;
         this.viewLatitude = viewLatitude;
@@ -161,17 +169,45 @@ public class Outbreaks implements Serializable {
     }
 
     /**
-     * Getter for <code>fab.outbreaks.nuts_id</code>.
+     * Getter for <code>fab.outbreaks.outcode</code>.
      */
-    public Integer getNutsId() {
-        return this.nutsId;
+    public String getOutcode() {
+        return this.outcode;
     }
 
     /**
-     * Setter for <code>fab.outbreaks.nuts_id</code>.
+     * Setter for <code>fab.outbreaks.outcode</code>.
      */
-    public void setNutsId(Integer nutsId) {
-        this.nutsId = nutsId;
+    public void setOutcode(String outcode) {
+        this.outcode = outcode;
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.country</code>.
+     */
+    public String getCountry() {
+        return this.country;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.country</code>.
+     */
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.itl_nuts</code>.
+     */
+    public String getItlNuts() {
+        return this.itlNuts;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.itl_nuts</code>.
+     */
+    public void setItlNuts(String itlNuts) {
+        this.itlNuts = itlNuts;
     }
 
     /**
@@ -403,11 +439,23 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.postcode.equals(other.postcode))
             return false;
-        if (this.nutsId == null) {
-            if (other.nutsId != null)
+        if (this.outcode == null) {
+            if (other.outcode != null)
                 return false;
         }
-        else if (!this.nutsId.equals(other.nutsId))
+        else if (!this.outcode.equals(other.outcode))
+            return false;
+        if (this.country == null) {
+            if (other.country != null)
+                return false;
+        }
+        else if (!this.country.equals(other.country))
+            return false;
+        if (this.itlNuts == null) {
+            if (other.itlNuts != null)
+                return false;
+        }
+        else if (!this.itlNuts.equals(other.itlNuts))
             return false;
         if (this.realLatitude == null) {
             if (other.realLatitude != null)
@@ -504,7 +552,9 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.outbreakCode == null) ? 0 : this.outbreakCode.hashCode());
         result = prime * result + ((this.userId == null) ? 0 : this.userId.hashCode());
         result = prime * result + ((this.postcode == null) ? 0 : this.postcode.hashCode());
-        result = prime * result + ((this.nutsId == null) ? 0 : this.nutsId.hashCode());
+        result = prime * result + ((this.outcode == null) ? 0 : this.outcode.hashCode());
+        result = prime * result + ((this.country == null) ? 0 : this.country.hashCode());
+        result = prime * result + ((this.itlNuts == null) ? 0 : this.itlNuts.hashCode());
         result = prime * result + ((this.realLatitude == null) ? 0 : this.realLatitude.hashCode());
         result = prime * result + ((this.realLongitude == null) ? 0 : this.realLongitude.hashCode());
         result = prime * result + ((this.viewLatitude == null) ? 0 : this.viewLatitude.hashCode());
@@ -530,7 +580,9 @@ public class Outbreaks implements Serializable {
         sb.append(", ").append(outbreakCode);
         sb.append(", ").append(userId);
         sb.append(", ").append(postcode);
-        sb.append(", ").append(nutsId);
+        sb.append(", ").append(outcode);
+        sb.append(", ").append(country);
+        sb.append(", ").append(itlNuts);
         sb.append(", ").append(realLatitude);
         sb.append(", ").append(realLongitude);
         sb.append(", ").append(viewLatitude);
