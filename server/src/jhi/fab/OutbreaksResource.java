@@ -45,6 +45,11 @@ public class OutbreaksResource
 
 			var query = context.selectFrom(VIEW_OUTBREAKS);
 
+			// We always want to filter by a year, even if the UI didn't provide
+			if (year == null)
+				year = LocalDate.now().getYear();
+			query.where(DSL.year(VIEW_OUTBREAKS.DATE_SUBMITTED).eq(year));
+
 			if (variety != null) {
 				// Something something give me any outbreak where any of its
 				// subsamples have this variety OR the reported_variety matches
@@ -52,8 +57,7 @@ public class OutbreaksResource
 					.where(SUBSAMPLES.OUTBREAK_ID.eq(VIEW_OUTBREAKS.OUTBREAK_ID)).and(SUBSAMPLES.VARIETY_ID.eq(variety)))
 					.or(VIEW_OUTBREAKS.REPORTED_VARIETY_ID.eq(variety)));
 			}
-			if (year != null)
-				query.where(DSL.year(VIEW_OUTBREAKS.DATE_SUBMITTED).eq(year));
+
 			if (outcode != null)
 				query.where(VIEW_OUTBREAKS.OUTCODE.eq(outcode));
 			if (outbreakCode != null)
