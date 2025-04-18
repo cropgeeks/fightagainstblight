@@ -14,9 +14,9 @@
 
   <v-row class="mb-3">
     <v-col :cols=12 :lg=3 :md=4 :sm=6>
-      <v-autocomplete
+      <v-select
         v-model="selectedYear"
-        clearable
+        autocomplete="off"
         hide-details
         label="Year"
         :items="years"
@@ -25,6 +25,7 @@
     <v-col :cols=12 :lg=3 :md=4 :sm=6>
       <v-autocomplete
         v-model="selectedStatus"
+        autocomplete="off"
         clearable
         hide-details
         label="Status"
@@ -34,6 +35,7 @@
     <v-col :cols=12 :lg=3 :md=4 :sm=6>
       <v-autocomplete
         v-model="selectedVariety"
+        autocomplete="off"
         clearable
         hide-details
         label="Variety"
@@ -43,6 +45,7 @@
     <v-col :cols=12 :lg=3 :md=4 :sm=6>
       <v-autocomplete
         v-model="selectedSeverity"
+        autocomplete="off"
         clearable
         hide-details
         label="Severity"
@@ -52,10 +55,23 @@
     <v-col :cols=12 :lg=3 :md=4 :sm=6>
       <v-autocomplete
         v-model="selectedSource"
+        autocomplete="off"
         clearable
         hide-details
         label="Source"
         :items="sourceOptions"
+      />
+    </v-col>
+    <v-col :cols=12 :lg=3 :md=4 :sm=6>
+      <v-text-field
+        v-model="postcodeTemp"
+        autocomplete="off"
+        clearable
+        :error="postcodeValid === false"
+        :error-messages="postcodeValid === false ? ['Invalid post outcode.'] : null"
+        label="Search for outcode"
+        @blur="setPostcode"
+        @keydown.enter.exact="$event.target.blur()"
       />
     </v-col>
     <v-col :cols=12 :lg=3 :md=4 :sm=6>
@@ -134,6 +150,7 @@
 </template>
 
 <script lang="ts" setup>
+  import axios from 'axios'
   import OutbreakMap from '@/components/OutbreakMap.vue'
   import Sponsors from '@/components/Sponsors.vue'
 
@@ -160,6 +177,9 @@
   const onlyShowUserData = ref<boolean>(false)
   const outbreakCodeTemp = ref<string | undefined>()
   const outbreakCode = ref<string | undefined>()
+  const postcodeTemp = ref<string | undefined>()
+  const postcode = ref<string | undefined>()
+  const postcodeValid = ref<boolean | undefined>()
   const selectedSource = ref<number>()
   const selectedSeverity = ref<number>()
   const selectedVariety = ref<number>()
@@ -170,8 +190,8 @@
     { title: 'Severity', key: 'severityName' },
     { title: 'Source', key: 'sourceName' },
     { title: 'Status', key: 'status' },
-    { title: 'Date received', key: 'dateReceived', sortRaw: sort('dateReceived'), value: (item: Outbreak) => (item && item.dateReceived) ? new Date(item.dateReceived).toLocaleDateString() : null },
-    { title: 'Date submitted', key: 'dateSubmitted', sortRaw: sort('dateSubmitted'), value: (item: Outbreak) => (item && item.dateSubmitted) ? new Date(item.dateSubmitted).toLocaleDateString() : null },
+    { title: 'Reported on', key: 'dateSubmitted', sortRaw: sort('dateSubmitted'), value: (item: Outbreak) => (item && item.dateSubmitted) ? new Date(item.dateSubmitted).toLocaleDateString() : null },
+    { title: 'Sample received on', key: 'dateReceived', sortRaw: sort('dateReceived'), value: (item: Outbreak) => (item && item.dateReceived) ? new Date(item.dateReceived).toLocaleDateString() : null },
   ])
   const status = ref<Map<string, Status>>(outbreakStatus)
 
@@ -187,6 +207,20 @@
           return 0
       }
       return a[field] < b[field] ? -1 : 1
+    }
+  }
+
+  function setPostcode () {
+    postcodeValid.value = undefined
+
+    if (postcodeTemp.value) {
+      axios.get(`https://api.postcodes.io/outcodes/${postcodeTemp.value}`).then(() => {
+        postcode.value = postcodeTemp.value
+      }).catch(() => {
+        postcodeValid.value = false
+      })
+    } else {
+      postcode.value = undefined
     }
   }
 
@@ -270,6 +304,14 @@
   axiosCall<number[]>({ url: 'outbreaks/years' })
     .then((result: number[]) => {
       years.value = result
+
+      if (result.length > 0) {
+        const max = Math.max(...result)
+
+        if (max) {
+          selectedYear.value = max
+        }
+      }
     })
 
   // Watch for changes on the filtering options
@@ -282,6 +324,7 @@
       year: selectedYear.value,
       status: selectedStatus.value,
       outbreakCode: outbreakCode.value,
+      outcode: postcode.value,
       userId: onlyShowUserData.value ? store.token?.user?.userId : null,
     }})
       .then((result: Outbreak[]) => {

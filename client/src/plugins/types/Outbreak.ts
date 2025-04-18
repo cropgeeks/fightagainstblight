@@ -21,4 +21,7 @@ export interface Outbreak {
   userName?: string
   userEmail?: string
   reportedVarietyId?: number
+  outcode?: string
+  country?: string
+  itlNuts?: string
 }

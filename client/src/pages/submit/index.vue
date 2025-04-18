@@ -7,10 +7,21 @@
     <p>Please complete the form below to submit your sample.</p>
 
     <v-row>
+      <v-col v-if="isAdmin" :cols=12 :lg=3 :md=6>
+        <v-autocomplete
+          v-model="selectedUser"
+          hide-details
+          label="Submitted by"
+          :items="userOptions"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col :cols=12 :lg=3 :md=6>
         <UseGeolocation v-slot="{ coords: { latitude, longitude } }">
           <v-text-field
             v-model="postcode"
+            autocomplete="off"
             :append-inner-icon="(isFinite(latitude) && isFinite(longitude)) ? 'mdi-map-marker' : 'mdi-map-marker-off'"
             :error="postcodeValid === false"
             hide-details
@@ -48,36 +59,42 @@
       <v-col :cols=12 :lg=3 :md=6>
         <v-autocomplete
           v-model="selectedSeverity"
+          autocomplete="off"
           clearable
           label="Severity"
           :items="severityOptions"
         />
         <v-text-field
           v-model="severityOther"
+          autocomplete="off"
           label="Other severity (if not listed above)"
         />
       </v-col>
       <v-col :cols=12 :lg=3 :md=6>
         <v-autocomplete
           v-model="selectedSource"
+          autocomplete="off"
           clearable
           label="Source"
           :items="sourceOptions"
         />
         <v-text-field
           v-model="sourceOther"
+          autocomplete="off"
           label="Other source (if not listed above)"
         />
       </v-col>
       <v-col :cols=12 :lg=3 :md=6>
         <v-autocomplete
           v-model="selectedVariety"
+          autocomplete="off"
           clearable
           label="Variety"
           :items="varietyOptions"
         />
         <v-textarea
           v-model="comment"
+          autocomplete="off"
           label="Comment"
         />
       </v-col>
@@ -99,7 +116,7 @@
     />
   </section>
   <section v-else>
-    <router-link to="/login">Please log in to submit an outbreak.</router-link>
+    <router-link to="/login">Please <router-link to="/login">log in</router-link> to submit an outbreak.</router-link>
   </section>
 </template>
 
@@ -149,6 +166,7 @@
   import router from '@/router'
   import type { Variety } from '@/plugins/types/Variety'
   import type { SelectOption } from '@/plugins/types/SelectOption'
+  import type { User } from '@/plugins/types/User'
   const store = coreStore()
 
   // Refs
@@ -165,8 +183,10 @@
   const selectedSource = ref<number>()
   const selectedSeverity = ref<number>()
   const selectedVariety = ref<number>()
+  const selectedUser = ref<number>()
   const severityOther = ref<string>()
   const sources = ref<Source[]>([])
+  const users = ref<User[]>([])
   const comment = ref<string>()
   const submitting = ref<boolean>(false)
 
@@ -182,6 +202,18 @@
     .then((result: Source[]) => {
       sources.value = result
     })
+  axiosCall<User[]>({ url: 'users' })
+    .then(result => {
+      users.value = result
+    })
+
+  const isAdmin: ComputedRef<boolean> = computed(() => {
+    if (store.token && store.token.token && store.token.user && store.token.user.isAdmin) {
+      return true
+    } else {
+      return false
+    }
+  })
 
   function validatePostcode () {
     postcodeValid.value = undefined
@@ -330,6 +362,19 @@
     }
   })
 
+  const userOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
+    if (users.value) {
+      return users.value.sort((a: User, b: User) => a.userName.localeCompare(b.userName)).map(s => {
+        return {
+          value: s.userId,
+          title: s.userName
+        }
+      })
+    } else {
+      return []
+    }
+  })
+
   const sourceOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
     if (sources.value) {
       return sources.value.map(s => {
@@ -366,7 +411,11 @@
       userComment: comment.value,
       realLatitude: gpsLatitude.value,
       realLongitude: gpsLongitude.value,
+      userId: selectedUser.value,
       postcode: postcode.value ? postcode.value.replace(/\s+/g, '').toUpperCase() : undefined,
+      outcode: selectedPostcode.value?.outcode,
+      country: selectedPostcode.value?.country,
+      itlNuts: selectedPostcode.value?.nuts,
     }
 
     axiosCall<Outbreak>({ url: 'outbreaks', method: 'POST', params: outbreak })
@@ -381,6 +430,8 @@
   }
 
   if (store.token && store.token.user) {
+    selectedUser.value = store.token.user.userId
+
     axiosCall<Variety[]>({ url: 'varieties' })
       .then((result: Variety[]) => {
         varieties.value = result

@@ -25,8 +25,7 @@
         <v-col :cols=12 :lg=3 :md=4>
           <v-text-field
             v-model="outbreak.dateSubmitted"
-            :clearable="isAdmin"
-            :readonly="!isAdmin"
+            readonly
             persistent-placeholder
             label="Submitted on"
             type="date"
@@ -295,7 +294,8 @@
     { title: 'Subsample code', key: 'subsampleCode' },
     { title: 'Variety', key: 'varietyName' },
     { title: 'Material', key: 'material' },
-    { title: 'Date genotyped', key: 'dateGenotyped', value: (item: Subsample) => (item && item.dateGenotyped) ? new Date(item.dateGenotyped).toLocaleDateString() : null },
+    { title: 'Genotyped on', key: 'dateGenotyped', value: (item: Subsample) => (item && item.dateGenotyped) ? new Date(item.dateGenotyped).toLocaleDateString() : null },
+    { title: 'Genotype', key: 'genotypeName' },
     { title: 'Actions', key: 'actions', align: 'end', sortable: false }
   ])
   const dialog = ref<boolean>(false)
@@ -533,6 +533,18 @@
         } else {
           record.value.varietyName = undefined
         }
+        if (record.value.genotypeId) {
+          const genotype = genotypes.value.find(g => g.genotypeId === record.value?.genotypeId)
+
+          if (genotype) {
+            record.value.genotypeName = genotype.genotypeName
+          } else {
+            record.value.genotypeName = undefined
+          }
+        } else {
+          record.value.varietyName = undefined
+        }
+
         const index = subsamples.value.findIndex(s => s.tempId === record.value?.tempId)
         subsamples.value[index] = { ...record.value }
       } else {

@@ -6,6 +6,7 @@ export interface Subsample {
   varietyName?: string
   material?: string
   genotypeId?: number
+  genotypeName?: string
   outbreakId?: number
   outbreakCode?: string
   dateGenotyped?: string

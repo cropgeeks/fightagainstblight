@@ -3,21 +3,88 @@
     id="map"
     ref="mapElement"
   />
+
+  <!-- <div ref="popupContent" v-if="selectedOutbreak">
+    <span>{{ selectedOutbreak }}</span>
+    <v-btn block color="primary" class="marker-button" :to="`/outbreak/${selectedOutbreak.outbreakId}`">View outbreak</v-btn>
+  </div> -->
+
+  <!-- Teleport is a Vue 3 feature; it basically appends the component
+  to any DOM target (:to). Here, we point it to the content class of the Leaflet popup. Since only one popup is open at a time (presumably) this is safe. Otherwise you'd need to create a unique ID when creating the Leaflet popup. -->
+  <Teleport v-if="selectedOutbreak" :to="`.leaflet-popup-content${selectedOutbreak.outbreakId ? '' : ''}`" :key="selectedOutbreak.outbreakId">
+    <v-list>
+      <v-list-item
+        title="Outbreak code"
+        :subtitle="selectedOutbreak.outbreakCode"
+      />
+      <v-list-item
+        title="Reported on"
+        :subtitle="selectedOutbreak.dateSubmitted ? new Date(selectedOutbreak.dateSubmitted).toLocaleDateString() : 'N/A'"
+      />
+      <v-list-item
+        title="Status">
+        <template #subtitle>
+          <v-chip
+            v-if="selectedOutbreak.status"
+            :color="status.get(selectedOutbreak.status)?.color"
+            :prepend-icon="status.get(selectedOutbreak.status)?.icon"
+          >
+            {{ status.get(selectedOutbreak.status)?.text }}
+          </v-chip>
+        </template>
+      </v-list-item>
+      <v-list-item
+        title="Severity">
+        <template #subtitle>
+          <v-chip v-if="selectedOutbreak.severityName">
+            <v-img
+              class="me-3"
+              contains
+              height="20"
+              :src="`/img/severity/${selectedOutbreak.severityName.toLowerCase().replaceAll(/[\s\/]+/g, '-')}.svg`"
+              width="20"
+            />
+            <span>{{ selectedOutbreak.severityName }}</span>
+          </v-chip>
+        </template>
+      </v-list-item>
+      <v-list-item
+        title="Source">
+        <template #subtitle>
+          <v-chip v-if="selectedOutbreak.sourceName">
+            <v-img
+              class="me-3"
+              contains
+              height="20"
+              :src="`/img/source/${selectedOutbreak.sourceName.toLowerCase().replaceAll(/[\s\/]+/g, '-')}.svg`"
+              width="20"
+            />
+            <span>{{ selectedOutbreak.sourceName }}</span>
+          </v-chip>
+        </template>
+      </v-list-item>
+    </v-list>
+    <v-btn block color="primary" class="marker-button" :to="`/outbreak/${selectedOutbreak?.outbreakId}`">View outbreak</v-btn>
+  </Teleport>
 </template>
 
 <script lang="ts" setup>
   import type { Outbreak } from '@/plugins/types/Outbreak'
   import L, { Marker, type LatLngExpression } from 'leaflet'
+  import 'leaflet.markercluster'
   import { useTheme } from 'vuetify'
-  import { outbreakStatus } from '@/plugins/constants'
+  import { outbreakStatus, type Status } from '@/plugins/constants'
 
   import 'leaflet/dist/leaflet.css'
+  import 'leaflet.markercluster/dist/MarkerCluster.css'
+  import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 
   import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
   import iconUrl from 'leaflet/dist/images/marker-icon.png'
   import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
   import { isValidLatLng } from '@/plugins/misc'
   import { coreStore } from '@/stores/app'
+  import { DataMarker } from '@/plugins/types/DataMarker'
 
   // Set the leaflet marker icon
   // @ts-ignore
@@ -36,20 +103,44 @@
     outbreaks: () => [],
   })
 
+  const selectedOutbreak = ref<Outbreak>()
   const mapElement = ref('')
+  const status = ref<Map<string, Status>>(outbreakStatus)
 
   const store = coreStore()
   const vTheme = useTheme()
 
-  let map
+  let map: any
   let markers: Marker[] = []
+  let clusterer: any
 
   function updateMarkers () {
     if (markers && markers.length > 0) {
       markers.forEach(m => m.removeFrom(map))
     }
+    // Remove the old geojson layer if required
+    if (clusterer) {
+      clusterer.clearLayers()
+    } else {
+      // @ts-ignore
+      clusterer = L.markerClusterGroup({
+        chunkedLoading: true
+      })
+      clusterer.on('click', (e: any) => {
+        selectedOutbreak.value = undefined
+        setTimeout(() => {
+          nextTick(() => {
+            selectedOutbreak.value = e.layer.data
+          })
+        }, 200)
+      })
+      map.addLayer(clusterer)
+    }
 
     markers = []
+
+    const isSingleMarker = props.outbreaks.length === 1
+    const bounds = L.latLngBounds([])
 
     props.outbreaks.forEach(o => {
       const isConfirmed = o.status === 'confirmed'
@@ -57,34 +148,60 @@
         className: '',
         iconAnchor: isConfirmed ? [0, 24] : [0, 18],
         popupAnchor: isConfirmed ? [0, -36] : [0, -24],
-        html: `<span class="marker-style marker-style-${o.status}" style="background-color: ${vTheme.current.value.colors[outbreakStatus.get(o.status).color] || 'grey'}" />`
+        html: `<span class="marker-style marker-style-${o.status}" style="background-color: ${(o.status && outbreakStatus.get(o.status)) ? (vTheme.current.value.colors[outbreakStatus.get(o.status).color] || 'grey') : 'grey'}" />`
       })
 
-      let latLng: LatLngExpression | undefined = undefined
-
-      if (store.token && store.token.user && (store.token.user.isAdmin || store.token.user.userId === o.userId)) {
-        if (isValidLatLng(o.realLatitude, o.realLongitude)) {
-          // @ts-ignore
-          latLng = [o.realLatitude, o.realLongitude]
-        } else if (isValidLatLng(o.viewLatitude, o.viewLongitude)) {
-          // @ts-ignore
-          latLng = [o.viewLatitude, o.viewLongitude]
-        }
-      } else {
-        if (isValidLatLng(o.viewLatitude, o.viewLongitude)) {
-          // @ts-ignore
-          latLng = [o.viewLatitude, o.viewLongitude]
-        }
-      }
+      const latLng = getLatLng(o)
 
       if (latLng) {
-        const marker = L.marker(latLng, {
+        const marker = new DataMarker<Outbreak>(latLng, o, {
           icon: icon,
         })
-        marker.addTo(map)
-        markers.push(marker)
+        marker.bindPopup('')
+        bounds.extend(marker.getLatLng())
+        if (isSingleMarker) {
+          marker.addTo(map)
+          markers.push(marker)
+        } else {
+          clusterer.addLayer(marker)
+        }
       }
     })
+
+    if (isSingleMarker) {
+      const latLng = getLatLng(props.outbreaks[0])
+      if (latLng) {
+        map.setView(latLng, 12)
+      }
+
+      markers[0].openPopup()
+      nextTick(() => {
+        selectedOutbreak.value = props.outbreaks[0]
+      })
+    } else {
+      if (bounds && bounds.isValid()) {
+        map.fitBounds(bounds, { padding: [25, 25] })
+      }
+    }
+  }
+
+  function getLatLng (o: Outbreak): LatLngExpression | undefined {
+    let latLng: LatLngExpression | undefined = undefined
+    if (store.token && store.token.user && (store.token.user.isAdmin || store.token.user.userId === o.userId)) {
+      if (isValidLatLng(o.realLatitude, o.realLongitude)) {
+        // @ts-ignore
+        latLng = [o.realLatitude, o.realLongitude]
+      } else if (isValidLatLng(o.viewLatitude, o.viewLongitude)) {
+        // @ts-ignore
+        latLng = [o.viewLatitude, o.viewLongitude]
+      }
+    } else {
+      if (isValidLatLng(o.viewLatitude, o.viewLongitude)) {
+        // @ts-ignore
+        latLng = [o.viewLatitude, o.viewLongitude]
+      }
+    }
+    return latLng
   }
 
   watch(() => props.outbreaks, () => {
@@ -148,5 +265,25 @@
   left: -1rem;
   top: -1rem;
   border-radius: 2rem 2rem 0;
+}
+</style>
+
+<style>
+#map .leaflet-popup-content-wrapper {
+  border-radius: 0;
+}
+#map .leaflet-popup-content {
+  margin: 0;
+  width: 300px !important;
+}
+#map .leaflet-popup-content .v-btn {
+  border-radius: 0;
+}
+#map .leaflet-popup-tip {
+  background-color: rgb(var(--v-theme-primary));
+}
+
+.leaflet-container .leaflet-marker-pane img.marker-image {
+  width: inherit;
 }
 </style>
