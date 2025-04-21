@@ -110,7 +110,7 @@
     <template #item.outbreakCode="{ value, item }">
       <v-btn
         v-if="store.token"
-        color="primary"
+        :color="(currentUserId && (item.userId === currentUserId)) ? 'secondary' : 'primary'"
         :to="`/outbreak/${item.outbreakId}`"
       >
         {{ value }}
@@ -227,6 +227,14 @@
   function setOutbreakCode () {
     outbreakCode.value = outbreakCodeTemp.value
   }
+
+  const currentUserId: ComputedRef<number | undefined> = computed(() => {
+    if (store.token && store.token.user) {
+      return store.token.user.userId
+    } else {
+      return undefined
+    }
+  })
 
   const statusOptions: ComputedRef<SelectOption<string>[]> = computed(() => {
     const result: SelectOption<string>[] = []

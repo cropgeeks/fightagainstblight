@@ -75,6 +75,11 @@
       })
     }
   })
+
+  axiosCall<User>({ url: 'users/status' })
+    .then((r: User) => {
+      store.setUser(r)
+    })
   
   function logout () {
     store.setToken(null)
