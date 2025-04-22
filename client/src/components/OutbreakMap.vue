@@ -1,5 +1,6 @@
 <template>
   <div
+    :class="showOutbreakLink ? 'show-link' : null"
     id="map"
     ref="mapElement"
   />
@@ -41,7 +42,7 @@
               class="me-3"
               contains
               height="20"
-              :src="`/img/severity/${selectedOutbreak.severityName.toLowerCase().replaceAll(/[\s\/]+/g, '-')}.svg`"
+              :src="`/img/severity/${selectedOutbreak.severityName.toLowerCase().replace(/[\s\/]+/g, '-')}.svg`"
               width="20"
             />
             <span>{{ selectedOutbreak.severityName }}</span>
@@ -56,7 +57,7 @@
               class="me-3"
               contains
               height="20"
-              :src="`/img/source/${selectedOutbreak.sourceName.toLowerCase().replaceAll(/[\s\/]+/g, '-')}.svg`"
+              :src="`/img/source/${selectedOutbreak.sourceName.toLowerCase().replace(/[\s\/]+/g, '-')}.svg`"
               width="20"
             />
             <span>{{ selectedOutbreak.sourceName }}</span>
@@ -154,11 +155,12 @@
 
     props.outbreaks.forEach(o => {
       const isConfirmed = o.status === 'confirmed'
+      const status = o.status ? outbreakStatus.get(o.status) : undefined
       const icon = L.divIcon({
         className: '',
         iconAnchor: isConfirmed ? [0, 24] : [0, 18],
         popupAnchor: isConfirmed ? [0, -36] : [0, -24],
-        html: `<span class="marker-style marker-style-${o.status}" style="background-color: ${(o.status && outbreakStatus.get(o.status)) ? (vTheme.current.value.colors[outbreakStatus.get(o.status).color] || 'grey') : 'grey'}" />`
+        html: `<span class="marker-style marker-style-${o.status}" style="background-color: ${(o.status && status) ? (vTheme.current.value.colors[status.color] || 'grey') : 'grey'}" />`
       })
 
       const latLng = getLatLng(o)
@@ -305,7 +307,7 @@
 #map .leaflet-popup-content .v-btn {
   border-radius: 0;
 }
-#map .leaflet-popup-tip {
+#map.show-link .leaflet-popup-tip {
   background-color: rgb(var(--v-theme-primary));
 }
 
