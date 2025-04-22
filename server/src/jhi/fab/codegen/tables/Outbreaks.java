@@ -170,6 +170,11 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
      */
     public final TableField<OutbreaksRecord, OutbreaksStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).asEnumDataType(OutbreaksStatus.class), this, "");
 
+    /**
+     * The column <code>fab.outbreaks.is_public</code>.
+     */
+    public final TableField<OutbreaksRecord, Boolean> IS_PUBLIC = createField(DSL.name("is_public"), SQLDataType.BOOLEAN.defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+
     private Outbreaks(Name alias, Table<OutbreaksRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

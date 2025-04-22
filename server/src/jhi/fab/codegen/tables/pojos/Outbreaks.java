@@ -39,6 +39,7 @@ public class Outbreaks implements Serializable {
     private String userComments;
     private String adminComments;
     private OutbreaksStatus status;
+    private Boolean isPublic;
 
     public Outbreaks() {}
 
@@ -64,6 +65,7 @@ public class Outbreaks implements Serializable {
         this.userComments = value.userComments;
         this.adminComments = value.adminComments;
         this.status = value.status;
+        this.isPublic = value.isPublic;
     }
 
     public Outbreaks(
@@ -87,7 +89,8 @@ public class Outbreaks implements Serializable {
         String sourceOther,
         String userComments,
         String adminComments,
-        OutbreaksStatus status
+        OutbreaksStatus status,
+        Boolean isPublic
     ) {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
@@ -110,6 +113,7 @@ public class Outbreaks implements Serializable {
         this.userComments = userComments;
         this.adminComments = adminComments;
         this.status = status;
+        this.isPublic = isPublic;
     }
 
     /**
@@ -406,6 +410,20 @@ public class Outbreaks implements Serializable {
         this.status = status;
     }
 
+    /**
+     * Getter for <code>fab.outbreaks.is_public</code>.
+     */
+    public Boolean getIsPublic() {
+        return this.isPublic;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.is_public</code>.
+     */
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -541,6 +559,12 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.status.equals(other.status))
             return false;
+        if (this.isPublic == null) {
+            if (other.isPublic != null)
+                return false;
+        }
+        else if (!this.isPublic.equals(other.isPublic))
+            return false;
         return true;
     }
 
@@ -569,6 +593,7 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.userComments == null) ? 0 : this.userComments.hashCode());
         result = prime * result + ((this.adminComments == null) ? 0 : this.adminComments.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
+        result = prime * result + ((this.isPublic == null) ? 0 : this.isPublic.hashCode());
         return result;
     }
 
@@ -597,6 +622,7 @@ public class Outbreaks implements Serializable {
         sb.append(", ").append(userComments);
         sb.append(", ").append(adminComments);
         sb.append(", ").append(status);
+        sb.append(", ").append(isPublic);
 
         sb.append(")");
         return sb.toString();

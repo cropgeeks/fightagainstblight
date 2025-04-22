@@ -33,6 +33,7 @@ public class ViewOutbreaks implements Serializable {
     private String userComments;
     private String adminComments;
     private ViewOutbreaksStatus status;
+    private Boolean isPublic;
     private Integer severityId;
     private String severityName;
     private String severityOther;
@@ -64,6 +65,7 @@ public class ViewOutbreaks implements Serializable {
         this.userComments = value.userComments;
         this.adminComments = value.adminComments;
         this.status = value.status;
+        this.isPublic = value.isPublic;
         this.severityId = value.severityId;
         this.severityName = value.severityName;
         this.severityOther = value.severityOther;
@@ -94,6 +96,7 @@ public class ViewOutbreaks implements Serializable {
         String userComments,
         String adminComments,
         ViewOutbreaksStatus status,
+        Boolean isPublic,
         Integer severityId,
         String severityName,
         String severityOther,
@@ -122,6 +125,7 @@ public class ViewOutbreaks implements Serializable {
         this.userComments = userComments;
         this.adminComments = adminComments;
         this.status = status;
+        this.isPublic = isPublic;
         this.severityId = severityId;
         this.severityName = severityName;
         this.severityOther = severityOther;
@@ -344,6 +348,20 @@ public class ViewOutbreaks implements Serializable {
      */
     public void setStatus(ViewOutbreaksStatus status) {
         this.status = status;
+    }
+
+    /**
+     * Getter for <code>fab.view_outbreaks.is_public</code>.
+     */
+    public Boolean getIsPublic() {
+        return this.isPublic;
+    }
+
+    /**
+     * Setter for <code>fab.view_outbreaks.is_public</code>.
+     */
+    public void setIsPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     /**
@@ -613,6 +631,12 @@ public class ViewOutbreaks implements Serializable {
         }
         else if (!this.status.equals(other.status))
             return false;
+        if (this.isPublic == null) {
+            if (other.isPublic != null)
+                return false;
+        }
+        else if (!this.isPublic.equals(other.isPublic))
+            return false;
         if (this.severityId == null) {
             if (other.severityId != null)
                 return false;
@@ -707,6 +731,7 @@ public class ViewOutbreaks implements Serializable {
         result = prime * result + ((this.userComments == null) ? 0 : this.userComments.hashCode());
         result = prime * result + ((this.adminComments == null) ? 0 : this.adminComments.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
+        result = prime * result + ((this.isPublic == null) ? 0 : this.isPublic.hashCode());
         result = prime * result + ((this.severityId == null) ? 0 : this.severityId.hashCode());
         result = prime * result + ((this.severityName == null) ? 0 : this.severityName.hashCode());
         result = prime * result + ((this.severityOther == null) ? 0 : this.severityOther.hashCode());
@@ -741,6 +766,7 @@ public class ViewOutbreaks implements Serializable {
         sb.append(", ").append(userComments);
         sb.append(", ").append(adminComments);
         sb.append(", ").append(status);
+        sb.append(", ").append(isPublic);
         sb.append(", ").append(severityId);
         sb.append(", ").append(severityName);
         sb.append(", ").append(severityOther);

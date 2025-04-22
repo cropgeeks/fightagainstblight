@@ -168,6 +168,10 @@ public class OutbreaksResource
 					nextID[0] = Math.max(code, nextID[0]);
 				});
 
+			// Ensure we always have a value for isPublic
+			if (newOutbreak.getIsPublic() == null)
+				newOutbreak.setIsPublic(false);
+
 			// And format (FABYY_0000ID) where YY is 25 in the case of 2025
 			String code = "FAB"
 				+ ("" + LocalDate.now().getYear()).substring(2) + "_"
@@ -191,6 +195,7 @@ public class OutbreaksResource
 				.set(OUTBREAKS.SEVERITY_ID, newOutbreak.getSeverityId())
 				.set(OUTBREAKS.SEVERITY_OTHER, newOutbreak.getSeverityOther())
 				.set(OUTBREAKS.USER_COMMENTS, newOutbreak.getUserComments())
+				.set(OUTBREAKS.IS_PUBLIC, newOutbreak.getIsPublic())
 				.returning(OUTBREAKS.fields())
 				.fetchOneInto(Outbreaks.class);
 
@@ -282,7 +287,7 @@ public class OutbreaksResource
 		outbreak.setIsAdmin(null);
 		outbreak.setAdminComments(null);
 
-		// And a normal user also doesn't get to see...
+		// A normal user also doesn't get to see...
 		if (outbreak.getUserId() != user.getUserID())
 		{
 			outbreak.setUserId(null);
@@ -291,9 +296,12 @@ public class OutbreaksResource
 			outbreak.setUserComments(null);
 
 			// And these fields get less detailed
-			outbreak.setRealLatitude(outbreak.getViewLatitude());
-			outbreak.setRealLongitude(outbreak.getViewLongitude());
-			outbreak.setPostcode(outbreak.getOutcode());
+			if (outbreak.getIsPublic() == false)
+			{
+				outbreak.setRealLatitude(outbreak.getViewLatitude());
+				outbreak.setRealLongitude(outbreak.getViewLongitude());
+				outbreak.setPostcode(outbreak.getOutcode());
+			}
 		}
 	}
 
