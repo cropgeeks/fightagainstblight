@@ -315,6 +315,20 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
         return (OutbreaksStatus) get(20);
     }
 
+    /**
+     * Setter for <code>fab.outbreaks.is_public</code>.
+     */
+    public void setIsPublic(Boolean value) {
+        set(21, value);
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.is_public</code>.
+     */
+    public Boolean getIsPublic() {
+        return (Boolean) get(21);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -338,7 +352,7 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
     /**
      * Create a detached, initialised OutbreaksRecord
      */
-    public OutbreaksRecord(Integer outbreakId, String outbreakCode, Integer userId, String postcode, String outcode, String country, String itlNuts, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, LocalDate dateSubmitted, LocalDate dateReceived, Integer reportedVarietyId, Integer severityId, Integer sourceId, String severityOther, String sourceOther, String userComments, String adminComments, OutbreaksStatus status) {
+    public OutbreaksRecord(Integer outbreakId, String outbreakCode, Integer userId, String postcode, String outcode, String country, String itlNuts, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, LocalDate dateSubmitted, LocalDate dateReceived, Integer reportedVarietyId, Integer severityId, Integer sourceId, String severityOther, String sourceOther, String userComments, String adminComments, OutbreaksStatus status, Boolean isPublic) {
         super(Outbreaks.OUTBREAKS);
 
         setOutbreakId(outbreakId);
@@ -362,6 +376,7 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
         setUserComments(userComments);
         setAdminComments(adminComments);
         setStatus(status);
+        setIsPublic(isPublic);
         resetTouchedOnNotNull();
     }
 
@@ -393,6 +408,7 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
             setUserComments(value.getUserComments());
             setAdminComments(value.getAdminComments());
             setStatus(value.getStatus());
+            setIsPublic(value.getIsPublic());
             resetTouchedOnNotNull();
         }
     }
