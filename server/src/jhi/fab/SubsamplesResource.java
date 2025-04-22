@@ -47,6 +47,14 @@ public class SubsamplesResource
 					.where(VIEW_SUBSAMPLES.OUTBREAK_ID.eq(ob.getOutbreakId()))
 					.fetchInto(ViewSubsamples.class);
 
+				if (user.isAdmin() == false)
+					for (ViewSubsamples ss: results)
+					{
+						ss.setMyceliaPellet(null);
+						ss.setCultureSlope(null);
+						ss.setMatingType(null);
+					}
+
 				return Response.ok(results).build();
 			}
 			else
@@ -90,6 +98,9 @@ public class SubsamplesResource
 						.set(SUBSAMPLES.DATE_GENOTYPED, ss.getDateGenotyped())
 						.set(SUBSAMPLES.USER_COMMENTS, ss.getUserComments())
 						.set(SUBSAMPLES.ADMIN_COMMENTS, ss.getAdminComments())
+						.set(SUBSAMPLES.MYCELIA_PELLET, ss.getMyceliaPellet())
+						.set(SUBSAMPLES.CULTURE_SLOPE, ss.getCultureSlope())
+						.set(SUBSAMPLES.MATING_TYPE, ss.getMatingType())
 						.where(SUBSAMPLES.SUBSAMPLE_ID.eq(ss.getSubsampleId()))
 						.execute();
 
@@ -108,6 +119,9 @@ public class SubsamplesResource
 						.set(SUBSAMPLES.DATE_GENOTYPED, ss.getDateGenotyped())
 						.set(SUBSAMPLES.USER_COMMENTS, ss.getUserComments())
 						.set(SUBSAMPLES.ADMIN_COMMENTS, ss.getAdminComments())
+						.set(SUBSAMPLES.MYCELIA_PELLET, ss.getMyceliaPellet())
+						.set(SUBSAMPLES.CULTURE_SLOPE, ss.getCultureSlope())
+						.set(SUBSAMPLES.MATING_TYPE, ss.getMatingType())
 						.returning(SUBSAMPLES.fields())
 						.fetchOneInto(Subsamples.class);
 

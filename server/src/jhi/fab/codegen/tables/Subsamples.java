@@ -11,6 +11,7 @@ import java.util.List;
 
 import jhi.fab.codegen.Fab;
 import jhi.fab.codegen.Keys;
+import jhi.fab.codegen.enums.SubsamplesMatingType;
 import jhi.fab.codegen.tables.Outbreaks.OutbreaksPath;
 import jhi.fab.codegen.tables.SsrGenotypes.SsrGenotypesPath;
 import jhi.fab.codegen.tables.Varieties.VarietiesPath;
@@ -104,6 +105,21 @@ public class Subsamples extends TableImpl<SubsamplesRecord> {
      * The column <code>fab.subsamples.admin_comments</code>.
      */
     public final TableField<SubsamplesRecord, String> ADMIN_COMMENTS = createField(DSL.name("admin_comments"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>fab.subsamples.mycelia_pellet</code>.
+     */
+    public final TableField<SubsamplesRecord, Boolean> MYCELIA_PELLET = createField(DSL.name("mycelia_pellet"), SQLDataType.BOOLEAN.defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>fab.subsamples.culture_slope</code>.
+     */
+    public final TableField<SubsamplesRecord, Boolean> CULTURE_SLOPE = createField(DSL.name("culture_slope"), SQLDataType.BOOLEAN.defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>fab.subsamples.mating_type</code>.
+     */
+    public final TableField<SubsamplesRecord, SubsamplesMatingType> MATING_TYPE = createField(DSL.name("mating_type"), SQLDataType.VARCHAR(2).asEnumDataType(SubsamplesMatingType.class), this, "");
 
     private Subsamples(Name alias, Table<SubsamplesRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);

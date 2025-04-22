@@ -6,6 +6,7 @@ package jhi.fab.codegen.tables.records;
 
 import java.time.LocalDate;
 
+import jhi.fab.codegen.enums.SubsamplesMatingType;
 import jhi.fab.codegen.tables.Subsamples;
 
 import org.jooq.Record1;
@@ -146,6 +147,48 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
         return (String) get(8);
     }
 
+    /**
+     * Setter for <code>fab.subsamples.mycelia_pellet</code>.
+     */
+    public void setMyceliaPellet(Boolean value) {
+        set(9, value);
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.mycelia_pellet</code>.
+     */
+    public Boolean getMyceliaPellet() {
+        return (Boolean) get(9);
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.culture_slope</code>.
+     */
+    public void setCultureSlope(Boolean value) {
+        set(10, value);
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.culture_slope</code>.
+     */
+    public Boolean getCultureSlope() {
+        return (Boolean) get(10);
+    }
+
+    /**
+     * Setter for <code>fab.subsamples.mating_type</code>.
+     */
+    public void setMatingType(SubsamplesMatingType value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>fab.subsamples.mating_type</code>.
+     */
+    public SubsamplesMatingType getMatingType() {
+        return (SubsamplesMatingType) get(11);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -169,7 +212,7 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
     /**
      * Create a detached, initialised SubsamplesRecord
      */
-    public SubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, Integer varietyId, String material, LocalDate dateGenotyped, String userComments, String adminComments) {
+    public SubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, Integer varietyId, String material, LocalDate dateGenotyped, String userComments, String adminComments, Boolean myceliaPellet, Boolean cultureSlope, SubsamplesMatingType matingType) {
         super(Subsamples.SUBSAMPLES);
 
         setSubsampleId(subsampleId);
@@ -181,6 +224,9 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
         setDateGenotyped(dateGenotyped);
         setUserComments(userComments);
         setAdminComments(adminComments);
+        setMyceliaPellet(myceliaPellet);
+        setCultureSlope(cultureSlope);
+        setMatingType(matingType);
         resetTouchedOnNotNull();
     }
 
@@ -200,6 +246,9 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
             setDateGenotyped(value.getDateGenotyped());
             setUserComments(value.getUserComments());
             setAdminComments(value.getAdminComments());
+            setMyceliaPellet(value.getMyceliaPellet());
+            setCultureSlope(value.getCultureSlope());
+            setMatingType(value.getMatingType());
             resetTouchedOnNotNull();
         }
     }

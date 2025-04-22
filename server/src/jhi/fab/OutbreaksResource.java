@@ -195,6 +195,7 @@ public class OutbreaksResource
 				.set(OUTBREAKS.SEVERITY_ID, newOutbreak.getSeverityId())
 				.set(OUTBREAKS.SEVERITY_OTHER, newOutbreak.getSeverityOther())
 				.set(OUTBREAKS.USER_COMMENTS, newOutbreak.getUserComments())
+				.set(OUTBREAKS.ADMIN_COMMENTS, newOutbreak.getAdminComments())
 				.set(OUTBREAKS.IS_PUBLIC, newOutbreak.getIsPublic())
 				.returning(OUTBREAKS.fields())
 				.fetchOneInto(Outbreaks.class);

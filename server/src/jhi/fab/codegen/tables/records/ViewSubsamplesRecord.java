@@ -6,6 +6,7 @@ package jhi.fab.codegen.tables.records;
 
 import java.time.LocalDate;
 
+import jhi.fab.codegen.enums.ViewSubsamplesMatingType;
 import jhi.fab.codegen.tables.ViewSubsamples;
 
 import org.jooq.impl.TableRecordImpl;
@@ -173,6 +174,48 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
         return (String) get(10);
     }
 
+    /**
+     * Setter for <code>fab.view_subsamples.mycelia_pellet</code>.
+     */
+    public void setMyceliaPellet(Boolean value) {
+        set(11, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_subsamples.mycelia_pellet</code>.
+     */
+    public Boolean getMyceliaPellet() {
+        return (Boolean) get(11);
+    }
+
+    /**
+     * Setter for <code>fab.view_subsamples.culture_slope</code>.
+     */
+    public void setCultureSlope(Boolean value) {
+        set(12, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_subsamples.culture_slope</code>.
+     */
+    public Boolean getCultureSlope() {
+        return (Boolean) get(12);
+    }
+
+    /**
+     * Setter for <code>fab.view_subsamples.mating_type</code>.
+     */
+    public void setMatingType(ViewSubsamplesMatingType value) {
+        set(13, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_subsamples.mating_type</code>.
+     */
+    public ViewSubsamplesMatingType getMatingType() {
+        return (ViewSubsamplesMatingType) get(13);
+    }
+
     // -------------------------------------------------------------------------
     // Constructors
     // -------------------------------------------------------------------------
@@ -187,7 +230,7 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
     /**
      * Create a detached, initialised ViewSubsamplesRecord
      */
-    public ViewSubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, String genotypeName, String material, LocalDate dateGenotyped, String userComments, String adminComments, Integer varietyId, String varietyName) {
+    public ViewSubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, String genotypeName, String material, LocalDate dateGenotyped, String userComments, String adminComments, Integer varietyId, String varietyName, Boolean myceliaPellet, Boolean cultureSlope, ViewSubsamplesMatingType matingType) {
         super(ViewSubsamples.VIEW_SUBSAMPLES);
 
         setSubsampleId(subsampleId);
@@ -201,6 +244,9 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
         setAdminComments(adminComments);
         setVarietyId(varietyId);
         setVarietyName(varietyName);
+        setMyceliaPellet(myceliaPellet);
+        setCultureSlope(cultureSlope);
+        setMatingType(matingType);
         resetTouchedOnNotNull();
     }
 
@@ -222,6 +268,9 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
             setAdminComments(value.getAdminComments());
             setVarietyId(value.getVarietyId());
             setVarietyName(value.getVarietyName());
+            setMyceliaPellet(value.getMyceliaPellet());
+            setCultureSlope(value.getCultureSlope());
+            setMatingType(value.getMatingType());
             resetTouchedOnNotNull();
         }
     }
