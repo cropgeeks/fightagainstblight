@@ -1,5 +1,7 @@
 package jhi.fab;
 
+import java.io.*;
+import java.nio.charset.*;
 import java.sql.*;
 import java.text.*;
 import java.time.*;
@@ -251,6 +253,26 @@ public class OutbreaksResource
 		return SubsamplesResource.postSubsamples(authHeader, id, subsamples);
 	}
 
+	@GET
+	@Path("/{id}/notify")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response notify(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id)
+		throws SQLException
+	{
+		User user = new User(authHeader);
+
+		// Must be logged in
+		if (user.isOK() == false)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		// And an admin
+		if (user.isAdmin() == false)
+			return Response.status(Response.Status.FORBIDDEN).build();
+
+		emailOutbreak(id);
+
+		return Response.ok().build();
+	}
+
 	private void map(ViewOutbreaks outbreak, User user)
 	{
 		if (user.isAdmin())
@@ -344,5 +366,31 @@ public class OutbreaksResource
 
 			FAB.email(viewOB.getUserEmail(), true, "Fight Against Blight: Outbreak Reported/Updated", message, null);
 		}
+	}
+
+	@GET
+	@Path("/csv")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getCSV(@HeaderParam("Authorization") String authHeader,
+		@QueryParam("year") Integer year,
+		@QueryParam("outbreakCode") String outbreakCode,
+		@QueryParam("status") String status,
+		@QueryParam("source") Integer source,
+		@QueryParam("severity") Integer severity,
+		@QueryParam("variety") Integer variety,
+		@QueryParam("userId") Integer userId,
+		@QueryParam("outcode") String outcode)
+		throws SQLException, Exception
+	{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    OutputStreamWriter writer = new OutputStreamWriter(baos, StandardCharsets.UTF_8);
+		BufferedWriter out = new BufferedWriter(writer);
+
+		out.write("testing");
+		out.close();
+
+		return Response.ok(baos.toByteArray())
+			.header("Content-Disposition", "attachment; filename=\"EuroBlight.csv\"")
+			.build();
 	}
 }
