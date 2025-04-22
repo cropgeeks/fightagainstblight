@@ -20,12 +20,12 @@
         v-show="!!message"
         class="pa-4"
       >
-        {{ message }}
+        <span v-html="message" />
       </v-card-text>
       <v-card-actions class="pt-0">
         <v-spacer />
         <v-btn
-          color="primary darken-1"
+          :color="options.color"
           text
           @click="agree"
         >

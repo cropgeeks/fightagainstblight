@@ -55,6 +55,13 @@
             </div>
           </template>
         </v-list>
+
+        <v-checkbox
+          v-model="isPublic"
+          hint="When selected, the precise location of the outbreak will be visible to everyone to improve the utility of this tool."
+          label="Use precise location"
+          persistent-hint
+        />
       </v-col>
       <v-col :cols=12 :lg=3 :md=6>
         <v-autocomplete
@@ -103,6 +110,7 @@
     <v-btn
       color="primary"
       :disabled="!canContinue || submitting"
+      prepend-icon="mdi-upload"
       @click="onSubmit"
     >
       Submit
@@ -124,6 +132,8 @@
   import axios from 'axios'
   import L, { Map, Marker } from 'leaflet'
   import 'leaflet/dist/leaflet.css'
+  // @ts-ignore
+  import emitter from 'tiny-emitter/instance'
 
   import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
   import iconUrl from 'leaflet/dist/images/marker-icon.png'
@@ -158,6 +168,12 @@
     nuts?: string
   }
 
+  interface Outcode {
+    outcode: string
+    latitude?: number
+    longitude?: number
+  }
+
   import { coreStore } from '@/stores/app'
   import type { Severity } from '@/plugins/types/Severity'
   import type { Source } from '@/plugins/types/Source'
@@ -175,6 +191,7 @@
   const gpsLongitude = ref<number | undefined>()
   const postcode = ref<string | undefined>()
   const selectedPostcode = ref<Postcode | undefined>()
+  const selectedOutcode = ref<Outcode | undefined>()
   const postcodeValid = ref<boolean | undefined>()
   const varieties = ref<Variety[]>([])
   const postcodeOptions = ref<PostcodeOption[]>([])
@@ -189,6 +206,7 @@
   const users = ref<User[]>([])
   const comment = ref<string>()
   const submitting = ref<boolean>(false)
+  const isPublic = ref<boolean>(false)
 
   let map: Map
   let marker: Marker
@@ -401,14 +419,29 @@
     }
   })
 
+  watch(selectedPostcode, async (newValue) => {
+    if (newValue) {
+      axios.get(`https://api.postcodes.io/outcodes/${newValue?.outcode}`).then(r => {
+        if (r && r.data && r.data.result) {
+          selectedOutcode.value = r.data.result
+        } else {
+          selectedOutcode.value = undefined
+        }
+      })
+    } else {
+      selectedOutcode.value = undefined
+    }
+  })
+
   function onSubmit () {
     submitting.value = true
+    emitter.emit('set-loading', true)
     const outbreak: Outbreak = {
       severityId: selectedSeverity.value,
       severityOther: severityOther.value,
       sourceId: selectedSource.value,
       sourceOther: sourceOther.value,
-      userComment: comment.value,
+      userComments: comment.value,
       realLatitude: gpsLatitude.value,
       realLongitude: gpsLongitude.value,
       userId: selectedUser.value,
@@ -416,15 +449,20 @@
       outcode: selectedPostcode.value?.outcode,
       country: selectedPostcode.value?.country,
       itlNuts: selectedPostcode.value?.nuts,
+      viewLatitude: selectedOutcode.value?.latitude,
+      viewLongitude: selectedOutcode.value?.longitude,
+      isPublic: isPublic.value,
     }
 
     axiosCall<Outbreak>({ url: 'outbreaks', method: 'POST', params: outbreak })
       .then((result: Outbreak) => {
         submitting.value = false
+        emitter.emit('set-loading', false)
         router.push(`/outbreak/${result.outbreakId}`)
       })
       .catch(e => {
         submitting.value = false
+        emitter.emit('set-loading', false)
         console.error(e)
       })
   }

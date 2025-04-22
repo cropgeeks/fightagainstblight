@@ -57,7 +57,7 @@ const axiosCall = <T> ({ baseUrl = null, url = '', params = null, method = 'get'
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         if (acceptableStatusCodes.includes(error.response.status)) {
-          if (error.response.status === 401 || error.response.status === 403) {
+          if (error.response.status === 401) {
             store.setToken(null)
           }
           const err = new Error('API error')

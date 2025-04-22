@@ -1,0 +1,464 @@
+<template>
+  <BackButton />
+
+  <v-row>
+    <v-col :cols=12 :md=8>
+      <h1 class="mb-4">Blight Report & Incident Summary</h1>
+      <p class="mb-2">Below you'll find a table and a map showing outbreaks along with their status and reporting date. Use the filtering options to search for outbreaks of interest or use the map to browse outbreaks for a specific region.</p>
+      <p class="mb-2">To report a new outbreak, please use the form on <router-link to="/submit">this page</router-link>.</p>
+    </v-col>
+    <v-col :cols=12 :md=4 class="d-flex align-center pa-5 sponsor-img">
+      <v-img src="@/assets/hutton.svg" />
+    </v-col>
+  </v-row>
+
+  <v-row class="mb-4">
+    <v-col
+      :cols="12"
+      :lg="3"
+      :md="4"
+      :sm="6"
+    >
+      <v-select
+        v-model="selectedYear"
+        autocomplete="off"
+        hide-details
+        label="Year"
+        :items="years"
+      />
+    </v-col>
+    <v-col
+      :cols="12"
+      :lg="3"
+      :md="4"
+      :sm="6"
+    >
+      <v-autocomplete
+        v-model="selectedStatus"
+        autocomplete="off"
+        clearable
+        hide-details
+        label="Status"
+        :items="statusOptions"
+      />
+    </v-col>
+    <v-col
+      :cols="12"
+      :lg="3"
+      :md="4"
+      :sm="6"
+    >
+      <v-autocomplete
+        v-model="selectedVariety"
+        autocomplete="off"
+        clearable
+        hide-details
+        label="Variety"
+        :items="varietyOptions"
+      />
+    </v-col>
+    <v-col
+      :cols="12"
+      :lg="3"
+      :md="4"
+      :sm="6"
+    >
+      <v-autocomplete
+        v-model="selectedSeverity"
+        autocomplete="off"
+        clearable
+        hide-details
+        label="Severity"
+        :items="severityOptions"
+      />
+    </v-col>
+    <v-col
+      :cols="12"
+      :lg="3"
+      :md="4"
+      :sm="6"
+    >
+      <v-autocomplete
+        v-model="selectedSource"
+        autocomplete="off"
+        clearable
+        hide-details
+        label="Source"
+        :items="sourceOptions"
+      />
+    </v-col>
+    <v-col
+      :cols="12"
+      :lg="3"
+      :md="4"
+      :sm="6"
+    >
+      <v-text-field
+        v-model="postcodeTemp"
+        autocomplete="off"
+        clearable
+        :error="postcodeValid === false"
+        :error-messages="postcodeValid === false ? ['Invalid post outcode.'] : null"
+        label="Search for postcode district"
+        @blur="setPostcode"
+        @keydown.enter.exact="$event.target.blur()"
+      />
+    </v-col>
+    <v-col
+      :cols="12"
+      :lg="3"
+      :md="4"
+      :sm="6"
+    >
+      <v-text-field
+        v-model="outbreakCodeTemp"
+        clearable
+        label="Search for outbreak code"
+        @blur="setOutbreakCode"
+        @keydown.enter.exact="$event.target.blur()"
+      />
+    </v-col>
+    <v-col
+      v-if="store.token && store.token.user"
+      :cols="12"
+      :lg="3"
+      :md="4"
+      :sm="6"
+    >
+      <v-checkbox
+        v-model="onlyShowUserData"
+        label="Only show my data"
+      />
+    </v-col>
+  </v-row>
+  <v-row
+    class="mb-3"
+  >
+    <v-col
+      v-if="isAdmin && reportDownloadLink"
+      :cols="12"
+      :lg="3"
+      :md="4"
+      :sm="6"
+    >
+      <v-btn
+        class="mb-2"
+        prepend-icon="mdi-download"
+        :href="reportDownloadLink"
+        text="Download report"
+      />
+      <p class="text-caption text-info">The download will contain all outbreaks in your current filtering.</p>
+    </v-col>
+  </v-row>
+
+  <v-data-table
+    class="mb-4"
+    :headers="headers"
+    :items="outbreaks"
+    :loading="loading"
+    :sort-by="[{ key: 'dateSubmitted', order: 'desc' }]"
+  >
+    <template #item.status="{ value }">
+      <v-chip
+        v-if="value"
+        :color="status.get(value)?.color"
+        :prepend-icon="status.get(value)?.icon"
+      >
+        {{ status.get(value)?.text }}
+      </v-chip>
+    </template>
+
+    <template #item.outbreakCode="{ value, item }">
+      <v-btn
+        v-if="store.token"
+        :color="(currentUserId && (item.userId === currentUserId)) ? 'secondary' : 'primary'"
+        :to="`/outbreak/${item.outbreakId}`"
+      >
+        {{ value }}
+      </v-btn>
+      <span v-else>{{ value }}</span>
+    </template>
+
+    <template #item.severityName="{ value }">
+      <v-chip v-if="value">
+        <v-img
+          class="me-3"
+          contains
+          height="20"
+          :src="`/img/severity/${value.toLowerCase().replaceAll(/[\s\/]+/g, '-')}.svg`"
+          width="20"
+        />
+        <span>{{ value }}</span>
+      </v-chip>
+    </template>
+    <template #item.sourceName="{ value }">
+      <v-chip v-if="value">
+        <v-img
+          class="me-3"
+          contains
+          height="20"
+          :src="`/img/source/${value.toLowerCase().replaceAll(/[\s\/]+/g, '-')}.svg`"
+          width="20"
+        />
+        <span>{{ value }}</span>
+      </v-chip>
+    </template>
+  </v-data-table>
+
+  <OutbreakMap :outbreaks="outbreaksWithGps" />
+
+  <v-alert
+    class="mt-5"
+    icon="mdi-help-circle"
+    title="Contact us"
+    type="info"
+    variant="tonal"
+  >
+    <template #text>
+      If you wish more information about the service or encounter any issues, please contact us at <a href="mailto:fab@hutton.ac.uk?subject=Question from blight.hutton.ac.uk">fab@hutton.ac.uk</a>.
+    </template>
+  </v-alert>
+
+  <Sponsors class="my-5" />
+</template>
+
+<script lang="ts" setup>
+  import axios from 'axios'
+  import OutbreakMap from '@/components/OutbreakMap.vue'
+  import Sponsors from '@/components/Sponsors.vue'
+  import BackButton from '@/components/BackButton.vue'
+
+  import { axiosCall } from '@/plugins/api'
+  import { outbreakStatus } from '@/plugins/constants'
+  import type { Status } from '@/plugins/constants'
+  import type { Outbreak } from '@/plugins/types/Outbreak'
+  import type { SelectOption } from '@/plugins/types/SelectOption'
+  import type { Severity } from '@/plugins/types/Severity'
+  import type { Source } from '@/plugins/types/Source'
+  import type { Variety } from '@/plugins/types/Variety'
+  
+  import { coreStore } from '@/stores/app'
+
+  const store = coreStore()
+
+  // Refs
+  const outbreaks = ref<Outbreak[]>([])
+  const severities = ref<Severity[]>([])
+  const varieties = ref<Variety[]>([])
+  const sources = ref<Source[]>([])
+  const years = ref<number[]>([])
+  const loading = ref<boolean>(false)
+  const onlyShowUserData = ref<boolean>(false)
+  const outbreakCodeTemp = ref<string | undefined>()
+  const outbreakCode = ref<string | undefined>()
+  const postcodeTemp = ref<string | undefined>()
+  const postcode = ref<string | undefined>()
+  const postcodeValid = ref<boolean | undefined>()
+  const selectedSource = ref<number>()
+  const selectedSeverity = ref<number>()
+  const selectedVariety = ref<number>()
+  const selectedYear = ref<number | undefined>()
+  const selectedStatus = ref<string>()
+  const headers = ref<any[]>([
+    { title: 'Outbreak code', key: 'outbreakCode' },
+    { title: 'Severity', key: 'severityName' },
+    { title: 'Source', key: 'sourceName' },
+    { title: 'Status', key: 'status' },
+    { title: 'Reported on', key: 'dateSubmitted', sortRaw: sort('dateSubmitted'), value: (item: Outbreak) => (item && item.dateSubmitted) ? new Date(item.dateSubmitted).toLocaleDateString() : null },
+    { title: 'Sample received on', key: 'dateReceived', sortRaw: sort('dateReceived'), value: (item: Outbreak) => (item && item.dateReceived) ? new Date(item.dateReceived).toLocaleDateString() : null },
+  ])
+  const status = ref<Map<string, Status>>(outbreakStatus)
+
+  function sort (field: string) {
+    return function sort (a: any, b: any) {
+      if (a === null) {
+          return 1
+      }
+      if (b === null) {
+          return -1
+      }
+      if (a[field] === b[field]) {
+          return 0
+      }
+      return a[field] < b[field] ? -1 : 1
+    }
+  }
+
+  function setPostcode () {
+    postcodeValid.value = undefined
+
+    if (postcodeTemp.value) {
+      axios.get(`https://api.postcodes.io/outcodes/${postcodeTemp.value}`).then(() => {
+        postcode.value = postcodeTemp.value
+      }).catch(() => {
+        postcodeValid.value = false
+      })
+    } else {
+      postcode.value = undefined
+    }
+  }
+
+  function setOutbreakCode () {
+    outbreakCode.value = outbreakCodeTemp.value
+  }
+
+  const isAdmin: ComputedRef<boolean> = computed(() => {
+    if (store.token && store.token.token && store.token.user && store.token.user.isAdmin) {
+      return true
+    } else {
+      return false
+    }
+  })
+
+  const currentUserId: ComputedRef<number | undefined> = computed(() => {
+    if (store.token && store.token.user) {
+      return store.token.user.userId
+    } else {
+      return undefined
+    }
+  })
+
+  const statusOptions: ComputedRef<SelectOption<string>[]> = computed(() => {
+    const result: SelectOption<string>[] = []
+
+    status.value.forEach((value: Status) => {
+      result.push({
+        title: value.text,
+        value: value.dbValue,
+      })
+    })
+
+    return result
+  })
+
+  const varietyOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
+    if (varieties.value) {
+      return varieties.value.sort((a: Variety, b: Variety) => a.varietyName.localeCompare(b.varietyName)).map(s => {
+        return {
+          value: s.varietyId,
+          title: s.varietyName
+        }
+      })
+    } else {
+      return []
+    }
+  })
+
+  const severityOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
+    if (severities.value) {
+      return severities.value.map(s => {
+        return {
+          value: s.severityId,
+          title: s.severityName
+        }
+      })
+    } else {
+      return []
+    }
+  })
+
+  const sourceOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
+    if (sources.value) {
+      return sources.value.map(s => {
+        return {
+          value: s.sourceId,
+          title: s.sourceName
+        }
+      })
+    } else {
+      return []
+    }
+  })
+
+  const outbreaksWithGps: ComputedRef<Outbreak[]> = computed(() => {
+    if (outbreaks.value) {
+      return outbreaks.value.filter(o => o.viewLatitude !== undefined && o.viewLatitude !== null && o.viewLongitude !== undefined && o.viewLongitude !== null)
+    } else {
+      return []
+    }
+  })
+
+  const reportDownloadLink: ComputedRef<string | undefined> = computed(() => {
+    if (isAdmin.value) {
+      const params: Map<string, string | number | undefined> = new Map()
+
+      params.set('source', selectedSource.value)
+      params.set('severity', selectedSeverity.value)
+      params.set('variety', selectedVariety.value)
+      params.set('year', selectedYear.value)
+      params.set('status', selectedStatus.value)
+      params.set('outbreakCode', outbreakCode.value)
+      params.set('outcode', postcode.value)
+      params.set('userId', onlyShowUserData.value ? store.token?.user?.userId : undefined)
+
+      return `${store.baseUrl}outbreaks/csv?${[...params.keys()].map(k => {
+        const temp = params.get(k)
+        if (temp) {
+         return `${k}=${encodeURIComponent(temp).replace(/(%20)+/g, '+')}`
+        } else {
+          return undefined
+        }
+      }).filter(k => k).join('&')}`
+    } else {
+      return undefined
+    }
+  })
+
+  // Get all the filtering options
+  axiosCall<Severity[]>({ url: 'severities' })
+    .then((result: Severity[]) => {
+      severities.value = result
+    })
+  axiosCall<Variety[]>({ url: 'varieties' })
+    .then((result: Variety[]) => {
+      varieties.value = result
+    })
+  axiosCall<Source[]>({ url: 'sources' })
+    .then((result: Source[]) => {
+      sources.value = result
+    })
+  axiosCall<number[]>({ url: 'outbreaks/years' })
+    .then((result: number[]) => {
+      years.value = result
+
+      if (result.length > 0) {
+        const max = Math.max(...result)
+
+        if (max) {
+          selectedYear.value = max
+        }
+      }
+    })
+
+  // Watch for changes on the filtering options
+  watchEffect(async () => {
+    loading.value = true
+    axiosCall<Outbreak[]>({ url: 'outbreaks', params: {
+      source: selectedSource.value,
+      severity: selectedSeverity.value,
+      variety: selectedVariety.value,
+      year: selectedYear.value,
+      status: selectedStatus.value,
+      outbreakCode: outbreakCode.value,
+      outcode: postcode.value,
+      userId: onlyShowUserData.value ? store.token?.user?.userId : null,
+    }})
+      .then((result: Outbreak[]) => {
+        loading.value = false
+        outbreaks.value = result
+      })
+      .catch(() => {
+        loading.value = false
+      })
+  })
+
+  // Initially get all outbreaks
+  axiosCall<Outbreak[]>({ url: 'outbreaks' })
+    .then((result: Outbreak[]) => {
+      outbreaks.value = result
+    })
+</script>
+
+<style>
+
+</style>

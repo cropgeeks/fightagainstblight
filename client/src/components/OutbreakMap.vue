@@ -64,13 +64,13 @@
         </template>
       </v-list-item>
     </v-list>
-    <v-btn block color="primary" class="marker-button" :to="`/outbreak/${selectedOutbreak?.outbreakId}`">View outbreak</v-btn>
+    <v-btn v-if="showOutbreakLink" block color="primary" class="marker-button" :to="`/outbreak/${selectedOutbreak?.outbreakId}`">View outbreak</v-btn>
   </Teleport>
 </template>
 
 <script lang="ts" setup>
   import type { Outbreak } from '@/plugins/types/Outbreak'
-  import L, { Marker, type LatLngExpression } from 'leaflet'
+  import L, { Control, Marker, type LatLngExpression } from 'leaflet'
   import 'leaflet.markercluster'
   import { useTheme } from 'vuetify'
   import { outbreakStatus, type Status } from '@/plugins/constants'
@@ -97,10 +97,12 @@
 
   interface Props {
     outbreaks: Outbreak[],
+    showOutbreakLink?: boolean,
   }
 
   const props = withDefaults(defineProps<Props>(), {
     outbreaks: () => [],
+    showOutbreakLink: true,
   })
 
   const selectedOutbreak = ref<Outbreak>()
@@ -124,9 +126,17 @@
     } else {
       // @ts-ignore
       clusterer = L.markerClusterGroup({
-        chunkedLoading: true
+        chunkedLoading: true,
+        disableClusteringAtZoom: 10,
+        polygonOptions: {
+          color: 'rgb(var(--v-theme-secondary))'
+        }
       })
       clusterer.on('click', (e: any) => {
+        if (selectedOutbreak.value && selectedOutbreak.value.outbreakId === e.layer.data.outbreakId) {
+          return
+        }
+
         selectedOutbreak.value = undefined
         setTimeout(() => {
           nextTick(() => {
@@ -188,19 +198,21 @@
   function getLatLng (o: Outbreak): LatLngExpression | undefined {
     let latLng: LatLngExpression | undefined = undefined
     if (store.token && store.token.user && (store.token.user.isAdmin || store.token.user.userId === o.userId)) {
+      // Admins or owners get to see precise location (if available)
       if (isValidLatLng(o.realLatitude, o.realLongitude)) {
         // @ts-ignore
         latLng = [o.realLatitude, o.realLongitude]
-      } else if (isValidLatLng(o.viewLatitude, o.viewLongitude)) {
-        // @ts-ignore
-        latLng = [o.viewLatitude, o.viewLongitude]
       }
-    } else {
+    }
+
+    if (!latLng) {
+      // Fall-back to view location else
       if (isValidLatLng(o.viewLatitude, o.viewLongitude)) {
         // @ts-ignore
         latLng = [o.viewLatitude, o.viewLongitude]
       }
     }
+
     return latLng
   }
 
@@ -230,6 +242,20 @@
     map.addLayer(openstreetmap)
 
     L.control.layers(baseMaps).addTo(map)
+
+    const legend = new Control({ position: 'bottomleft' })
+    legend.onAdd = () => {
+      const div = L.DomUtil.create('div', 'info legend')
+      div.classList.add('pa-2')
+      outbreakStatus.forEach(status => {
+        if (status.dbValue === 'deleted') {
+          return
+        }
+        div.innerHTML += `<i style="color: ${vTheme.current.value.colors[status.color] || 'grey'}"><?xml version="1.0" encoding="UTF-8" standalone="no"?><svg viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><g><path id="path1" style="fill:currentColor;" d="m 25.192388,4.1152238 a 13,13 0 0 0 -18.3847761,0 13,13 0 0 0 0,18.3847762 L 16,31.692388 25.192388,22.5 a 13,13 0 0 0 0,-18.3847762 z"/></g></svg></i><span>${status.text}</span><br>`
+      })
+      return div
+    }
+    legend.addTo(map)
     
     // Disable zoom until focus gained, disable when blur
     // map.scrollWheelZoom.disable()
@@ -285,5 +311,41 @@
 
 .leaflet-container .leaflet-marker-pane img.marker-image {
   width: inherit;
+}
+
+.marker-cluster {
+  color: white;
+  background-color: rgba(var(--v-theme-primary), 0.6);
+}
+.marker-cluster div {
+  background-color: rgba(var(--v-theme-primary), 0.8);
+}
+
+.marker-cluster-small {
+  filter: brightness(130%);
+}
+.marker-cluster-small div {
+  filter: brightness(130%);
+}
+
+.marker-cluster-medium {
+  filter: brightness(115%);
+}
+.marker-cluster-medium div {
+  filter: brightness(115%);
+}
+
+.legend {
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  line-height: 1.75em;
+  color: #555;
+}
+.legend i {
+  background-image: ;
+  width: 1.5em;
+  height: 1.5em;
+  float: left;
+  margin-right: 0.5em;
 }
 </style>

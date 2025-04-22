@@ -9,8 +9,8 @@ export interface Outbreak {
   sourceOther?: string
   dateReceived?: string
   dateSubmitted?: string
-  userComment?: string
-  adminComment?: string
+  userComments?: string
+  adminComments?: string
   realLatitude?: number
   realLongitude?: number
   viewLatitude?: number
@@ -24,4 +24,5 @@ export interface Outbreak {
   outcode?: string
   country?: string
   itlNuts?: string
+  isPublic?: boolean
 }
