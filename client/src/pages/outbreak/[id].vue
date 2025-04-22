@@ -1,8 +1,35 @@
 <template>
-  <BackButton />
+  <BackButton
+    text="Back to outbreaks"
+    to="/outbreak"
+  />
 
   <div v-if="outbreak">
     <h1>Outbreak details: {{ outbreak.outbreakCode }}</h1>
+
+    <div
+      v-if="isAdmin"
+      class="my-5"
+    >
+      <v-btn
+        class="me-2"
+        color="primary"
+        :disabled="loading"
+        prepend-icon="mdi-send"
+        @click="notifyOwner"
+      >
+        Notify owner
+      </v-btn>
+
+      <v-btn
+        class="me-2"
+        color="error"
+        :disabled="loading"
+        prepend-icon="mdi-delete"
+        text="Delete outbreak"
+        @click="deleteOutbreak"
+      />
+    </div>
 
     <v-sheet
       :border="true"
@@ -59,7 +86,6 @@
         <v-col :cols=12 :lg=3 :md=4>
           <v-autocomplete
             v-model="outbreak.status"
-            :clearable="isAdmin"
             :readonly="!isAdmin"
             label="Status"
             :items="statusOptions"
@@ -116,7 +142,16 @@
               hide-details
               label="Assign variety to all subsamples"
               :items="varietyOptions"
-            />
+            >
+              <template #append>
+                <v-icon
+                  v-if="isAdmin && atLeastOneSubsampleVariety"
+                  color="error"
+                  icon="mdi-delete"
+                  @click="clearSubsampleVariety"
+                />
+              </template>
+            </v-autocomplete>
 
             <v-btn
               v-if="isAdmin"
@@ -132,16 +167,17 @@
         </template>
 
         <template #footer.prepend>
-          <v-btn
-            v-if="isAdmin"
-            class="me-auto ms-2"
-            color="primary"
-            :disabled="loading"
-            prepend-icon="mdi-content-save"
-            @click="submitSubsamples"
-          >
-            Update subsamples
-          </v-btn>
+          <div v-if="isAdmin" class="me-auto">
+            <v-btn
+              class=" ms-2"
+              color="primary"
+              :disabled="loading"
+              prepend-icon="mdi-content-save"
+              @click="submitSubsamples"
+            >
+              Update subsamples
+            </v-btn>
+          </div>
         </template>
 
         <template #item.subsampleId="{ item }">
@@ -173,6 +209,7 @@
     <OutbreakMap
       v-if="hasGps"
       :outbreaks="[outbreak]"
+      :show-outbreak-link="false"
     />
 
     <v-dialog v-model="dialog" max-width="500">
@@ -273,6 +310,7 @@
 
   const store = coreStore()
   const route = useRoute('/outbreak/[id]')
+  const router = useRouter()
 
   const confirmModal = ref()
   const outbreakId = ref<number>(+(route.params.id || -1))
@@ -325,6 +363,14 @@
   const isAdmin: ComputedRef<boolean> = computed(() => {
     if (outbreak.value && store.token && store.token.token && store.token.user && store.token.user.isAdmin) {
       return true
+    } else {
+      return false
+    }
+  })
+
+  const atLeastOneSubsampleVariety: ComputedRef<boolean> = computed(() => {
+    if (outbreak.value && subsamples.value) {
+      return subsamples.value.some(s => s.varietyId)
     } else {
       return false
     }
@@ -427,6 +473,18 @@
     }
   })
 
+  function clearSubsampleVariety () {
+    confirmModal.value.open(undefined, 'Remove subsample variety?')
+      .then((response: boolean) => {
+        if (response) {
+          subsamples.value.forEach(s => {
+            delete s.varietyId
+            delete s.varietyName
+          })
+        }
+      })
+  }
+
   function update (updateSubsamples: boolean) {
     axiosCall<Outbreak>({ url: `outbreaks/${outbreakId.value}` })
       .then((o: Outbreak) => {
@@ -497,6 +555,23 @@
       subsampleCodesInUse.value = []
     }
   }
+  function deleteOutbreak () {
+    confirmModal.value.open(undefined, 'Deleted outbreaks cannot be restored!<br/>Are you sure you want to delete this outbreak?', { color: 'error' })
+      .then((response: boolean) => {
+        if (response) {
+          loading.value = true
+          axiosCall({ url: `outbreaks/${outbreak.value?.outbreakId}`, method: 'DELETE' })
+            .then(() => {
+              loading.value = false
+              router.push('/')
+            })
+            .catch(e => {
+              loading.value = false
+              console.error(e)
+            })
+        }
+      })
+  }
   function edit (tempId: string | undefined) {
     subsampleCodeValid.value = undefined
     isEditing.value = true
@@ -521,18 +596,20 @@
         return
       }
 
-      if (isEditing.value) {
-        if (record.value.varietyId) {
-          const variety = varieties.value.find(v => v.varietyId === record.value?.varietyId)
+      if (record.value.varietyId) {
+        const variety = varieties.value.find(v => v.varietyId === record.value?.varietyId)
+        console.log(record.value.varietyId, variety)
 
-          if (variety) {
-            record.value.varietyName = variety.varietyName
-          } else {
-            record.value.varietyName = undefined
-          }
+        if (variety) {
+          record.value.varietyName = variety.varietyName
         } else {
           record.value.varietyName = undefined
         }
+      } else {
+        record.value.varietyName = undefined
+      }
+
+      if (isEditing.value) {
         if (record.value.genotypeId) {
           const genotype = genotypes.value.find(g => g.genotypeId === record.value?.genotypeId)
 
@@ -542,7 +619,7 @@
             record.value.genotypeName = undefined
           }
         } else {
-          record.value.varietyName = undefined
+          record.value.genotypeName = undefined
         }
 
         const index = subsamples.value.findIndex(s => s.tempId === record.value?.tempId)
@@ -563,6 +640,17 @@
       .catch(e => {
         loading.value = false
         console.error(e)
+      })
+  }
+  function notifyOwner () {
+    loading.value = true
+    axiosCall({ url: `outbreaks/${outbreak.value?.outbreakId}/notify` })
+      .then(() => {
+        loading.value = false
+      })
+      .catch(e => {
+        console.error(e)
+        loading.value = false
       })
   }
   function submitSubsamples () {

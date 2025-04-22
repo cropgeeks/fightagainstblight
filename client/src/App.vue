@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main class="d-flex flex-column">
       <v-app-bar :elevation="2">
         <v-img
           id="logo"
@@ -32,10 +32,48 @@
         </template>
       </v-app-bar>
 
-      <v-container>
+      <v-container class="app-content">
         <router-view />
       </v-container>
+
+      <v-footer
+        class="d-flex align-center justify-center ga-2 flex-wrap flex-grow-1 py-3 mt-auto"
+        color="surface-light"
+      >
+        <v-btn
+          v-for="link in links"
+          :key="link.text"
+          :href="link.href"
+          rounded
+          :title="link.tooltip"
+          :to="link.to"
+          variant="text"
+          @click="link.click"
+        >
+          <v-icon
+            v-if="link.icon"
+            :icon="link.icon"
+          />
+          <span v-if="link.text">{{ link.text }}</span>
+        </v-btn>
+
+        <div class="flex-1-0-100 text-center mt-2">
+          {{ new Date().getFullYear() }} — <strong><a href="https://www.hutton.ac.uk/">The James Hutton Institute</a></strong>
+        </div>
+      </v-footer>
     </v-main>
+
+    <v-overlay
+      v-model="loading"
+      persistent
+      class="align-center justify-center"
+    >
+      <v-progress-circular
+        color="primary"
+        size="64"
+        indeterminate
+      />
+    </v-overlay>
   </v-app>
 </template>
 
@@ -43,11 +81,35 @@
   import { axiosCall } from '@/plugins/api'
   import { coreStore } from '@/stores/app'
   import { useRoute, useRouter } from 'vue-router'
+  import { useGoTo } from 'vuetify'
   import type { User } from '@/plugins/types/User'
+  // @ts-ignore
+  import emitter from 'tiny-emitter/instance'
+
+  type CallbackFunction = () => void
+
+  interface Link {
+    id: string
+    text?: string
+    to?: string
+    href?: string
+    icon?: string
+    tooltip: string
+    click?: CallbackFunction
+  }
+
+  const links = ref<Link[]>([
+    { id:'home', tooltip: 'Go home', text: 'Home', to: '/' },
+    { id: 'tos', tooltip: 'Privacy Policy & Terms Of Use', text: 'Privacy Policy & Terms Of Use', href: 'https://www.hutton.ac.uk/terms' },
+    { id: 'totop', tooltip: 'Return to top', icon: 'mdi-chevron-up', click: () => { goTo(0) } }
+  ])
 
   const route = useRoute()
   const router = useRouter()
   const store = coreStore()
+  const goTo = useGoTo()
+
+  const loading = ref<boolean>(false)
 
   // Set base URL based on environment
   let baseUrl = './api/'
@@ -84,10 +146,25 @@
   function logout () {
     store.setToken(null)
   }
+
+  function setLoading (newValue: boolean) {
+    loading.value = newValue
+  }
+
+  onMounted(() => {
+    emitter.on('set-loading', setLoading)
+  })
+  onBeforeUnmount(() => {
+    emitter.off('set-loading', setLoading)
+  })
 </script>
 
 <style>
 #logo img {
   width: auto;
+}
+.app-content {
+  height: 100%;
+  flex-grow: 1;
 }
 </style>
