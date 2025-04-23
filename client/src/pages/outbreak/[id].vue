@@ -49,7 +49,12 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-row class="my-2 mx-1">
-        <v-col :cols=12 :lg=3 :md=4>
+        <v-col
+          :cols="12"
+          :lg="3"
+          :md="4"
+          :sm="6"
+        >
           <v-text-field
             v-model="outbreak.dateSubmitted"
             readonly
@@ -58,7 +63,12 @@
             type="date"
           />
         </v-col>
-        <v-col :cols=12 :lg=3 :md=4>
+        <v-col
+          :cols="12"
+          :lg="3"
+          :md="4"
+          :sm="6"
+        >
           <v-text-field
             v-model="outbreak.dateReceived"
             :clearable="isAdmin"
@@ -68,7 +78,12 @@
             type="date"
           />
         </v-col>
-        <v-col :cols=12 :lg=3 :md=4>
+        <v-col
+          :cols="12"
+          :lg="3"
+          :md="4"
+          :sm="6"
+        >
           <v-autocomplete
             v-if="isAdmin"
             v-model="outbreak.userId"
@@ -83,12 +98,42 @@
             label="Owner"
           />
         </v-col>
-        <v-col :cols=12 :lg=3 :md=4>
+        <v-col
+          :cols="12"
+          :lg="3"
+          :md="4"
+          :sm="6"
+        >
           <v-autocomplete
             v-model="outbreak.status"
             :readonly="!isAdmin"
             label="Status"
             :items="statusOptions"
+          />
+        </v-col>
+        <v-col
+          v-if="isOwner || isAdmin"
+          :cols="12"
+          :lg="3"
+          :md="4"
+          :sm="6"
+        >
+          <v-textarea
+            v-model="outbreak.userComments"
+            readonly
+            label="User comments"
+          />
+        </v-col>
+        <v-col
+          v-if="isAdmin"
+          :cols="12"
+          :lg="3"
+          :md="4"
+          :sm="6"
+        >
+          <v-textarea
+            v-model="outbreak.adminComments"
+            label="Admin comments"
           />
         </v-col>
       </v-row>
@@ -166,6 +211,26 @@
           </v-toolbar>
         </template>
 
+        <template #item.myceliaPellet="{ item }">
+          <v-chip
+            :prepend-icon="item.myceliaPellet ? 'mdi-check-circle' : 'mdi-close-circle'"
+            :color="item.myceliaPellet ? 'success' : 'grey'"
+            variant="tonal"
+          >
+            {{ item.myceliaPellet ? 'Yes' : 'No' }}
+          </v-chip>
+        </template>
+
+        <template #item.cultureSlope="{ item }">
+          <v-chip
+            :prepend-icon="item.cultureSlope ? 'mdi-check-circle' : 'mdi-close-circle'"
+            :color="item.cultureSlope ? 'success' : 'grey'"
+            variant="tonal"
+          >
+            {{ item.cultureSlope ? 'Yes' : 'No' }}
+          </v-chip>
+        </template>
+
         <template #footer.prepend>
           <div v-if="isAdmin" class="me-auto">
             <v-btn
@@ -215,7 +280,7 @@
     <v-dialog v-model="dialog" max-width="500">
       <v-card
         v-if="record"
-        :subtitle="`${isEditing ? 'Update' : 'Create'} subsample`"
+        :subtitle="`${isEditing ? 'Update details about this' : 'Create a new'} subsample`"
         :title="`${isEditing ? 'Edit' : 'Add'} subsample`"
       >
         <template #text>
@@ -250,7 +315,7 @@
             </v-col>
 
             <v-col cols="12" md="6">
-              <v-combobox
+              <v-autocomplete
                 v-model="record.material"
                 hide-details
                 :items="sampleMaterials"
@@ -264,6 +329,29 @@
                 hide-details
                 label="Genotyped on"
                 type="date"
+              />
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-autocomplete
+                v-model="record.matingType"
+                hide-details
+                :items="matingTypeOptions"
+                label="Mating type"
+              />
+            </v-col>
+            <v-col cols="12" md="6" />
+            <v-col cols="12" md="6">
+              <v-checkbox
+                v-model="record.myceliaPellet"
+                hide-details
+                label="Mycelia pellet"
+              />
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-checkbox
+                v-model="record.cultureSlope"
+                hide-details
+                label="Culture slope"
               />
             </v-col>
           </v-row>
@@ -334,6 +422,9 @@
     { title: 'Material', key: 'material' },
     { title: 'Genotyped on', key: 'dateGenotyped', value: (item: Subsample) => (item && item.dateGenotyped) ? new Date(item.dateGenotyped).toLocaleDateString() : null },
     { title: 'Genotype', key: 'genotypeName' },
+    { title: 'Mycelia pellet', key: 'myceliaPellet' },
+    { title: 'Culture slope', key: 'cultureSlope' },
+    { title: 'Mating type', key: 'matingType' },
     { title: 'Actions', key: 'actions', align: 'end', sortable: false }
   ])
   const dialog = ref<boolean>(false)
@@ -374,6 +465,15 @@
     } else {
       return false
     }
+  })
+
+  const matingTypeOptions: ComputedRef<SelectOption<string>[]> = computed(() => {
+    const result: SelectOption<string>[] = [
+      { title: 'A1', value: 'A1' },
+      { title: 'A2', value: 'A2' },
+    ]
+
+    return result
   })
 
   const statusOptions: ComputedRef<SelectOption<string>[]> = computed(() => {
@@ -497,14 +597,14 @@
 
               if (s.length < 1) {
                 temp = [
-                  { varietyId: o.reportedVarietyId, material: 'Leaf', subsampleCode: 'A' },
-                  { varietyId: o.reportedVarietyId, material: 'Leaf', subsampleCode: 'B' },
-                  { varietyId: o.reportedVarietyId, material: 'Leaf', subsampleCode: 'C' },
-                  { varietyId: o.reportedVarietyId, material: 'Leaf', subsampleCode: 'D' },
-                  { varietyId: o.reportedVarietyId, material: 'FTA', subsampleCode: 'E' },
-                  { varietyId: o.reportedVarietyId, material: 'FTA', subsampleCode: 'F' },
-                  { varietyId: o.reportedVarietyId, material: 'FTA', subsampleCode: 'G' },
-                  { varietyId: o.reportedVarietyId, material: 'FTA', subsampleCode: 'H' },
+                  { varietyId: o.reportedVarietyId, material: 'Leaf', subsampleCode: 'A', myceliaPellet: false, cultureSlope: false, matingType: undefined },
+                  { varietyId: o.reportedVarietyId, material: 'Leaf', subsampleCode: 'B', myceliaPellet: false, cultureSlope: false, matingType: undefined },
+                  { varietyId: o.reportedVarietyId, material: 'Leaf', subsampleCode: 'C', myceliaPellet: false, cultureSlope: false, matingType: undefined },
+                  { varietyId: o.reportedVarietyId, material: 'Leaf', subsampleCode: 'D', myceliaPellet: false, cultureSlope: false, matingType: undefined },
+                  { varietyId: o.reportedVarietyId, material: 'FTA', subsampleCode: 'E', myceliaPellet: false, cultureSlope: false, matingType: undefined },
+                  { varietyId: o.reportedVarietyId, material: 'FTA', subsampleCode: 'F', myceliaPellet: false, cultureSlope: false, matingType: undefined },
+                  { varietyId: o.reportedVarietyId, material: 'FTA', subsampleCode: 'G', myceliaPellet: false, cultureSlope: false, matingType: undefined },
+                  { varietyId: o.reportedVarietyId, material: 'FTA', subsampleCode: 'H', myceliaPellet: false, cultureSlope: false, matingType: undefined },
                 ]
 
                 if (varieties.value) {

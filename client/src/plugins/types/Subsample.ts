@@ -12,4 +12,7 @@ export interface Subsample {
   dateGenotyped?: string
   userComments?: string
   adminComments?: string
+  myceliaPellet?: boolean
+  cultureSlope?: boolean
+  matingType?: string
 }
