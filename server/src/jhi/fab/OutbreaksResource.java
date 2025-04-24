@@ -231,11 +231,9 @@ public class OutbreaksResource
 				.set(OUTBREAKS.USER_ID, user.getUserID())
 				.set(OUTBREAKS.DATE_RECEIVED, outbreak.getDateReceived())
 				.set(OUTBREAKS.STATUS, outbreak.getStatus())
-				.set(OUTBREAKS.USER_COMMENTS, outbreak.getAdminComments())
+				.set(OUTBREAKS.ADMIN_COMMENTS, outbreak.getAdminComments())
 				.where(OUTBREAKS.OUTBREAK_ID.eq(outbreak.getOutbreakId()))
 				.execute();
-
-			emailOutbreak(outbreak.getOutbreakId());
 
 			return Response.ok(outbreak).build();
 		}
