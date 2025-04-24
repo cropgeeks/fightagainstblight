@@ -223,6 +223,7 @@
 </template>
 
 <script lang="ts" setup>
+  import * as XLSX from 'xlsx'
   import axios from 'axios'
   import OutbreakMap from '@/components/OutbreakMap.vue'
   import Sponsors from '@/components/Sponsors.vue'
@@ -238,7 +239,6 @@
   import type { Variety } from '@/plugins/types/Variety'
   
   import { coreStore } from '@/stores/app'
-import { downloadBlob } from '@/plugins/misc'
 
   const store = coreStore()
 
@@ -392,11 +392,17 @@ import { downloadBlob } from '@/plugins/misc'
       } 
     })
     .then(result => {
-      downloadBlob({
-        blob: result,
-        filename: 'fight-against-blight-report',
-        extension: 'txt'
-      })
+      const reader = new FileReader();
+      reader.onload = e => {
+        // @ts-ignore
+        const data = e.target?.result.split(/\r?\n/).map((d: string) => d.split('\t'))
+
+        const ws = XLSX.utils.aoa_to_sheet(data)
+        const wb = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1")
+        XLSX.writeFile(wb, "out.xlsx")
+      }
+      reader.readAsText(result);
     })
   }
 
