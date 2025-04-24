@@ -400,9 +400,8 @@
         const ws = XLSX.utils.aoa_to_sheet(data)
         const wb = XLSX.utils.book_new()
         XLSX.utils.book_append_sheet(wb, ws, "Sheet1")
-        XLSX.writeFile(wb, "out.xlsx")
+        XLSX.writeFile(wb, "fight-against-blight-report.xlsx")
       }
-      reader.readAsText(result);
     })
   }
 
