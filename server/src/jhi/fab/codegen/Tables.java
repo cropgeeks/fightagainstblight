@@ -12,6 +12,7 @@ import jhi.fab.codegen.tables.Subsamples;
 import jhi.fab.codegen.tables.UserSessions;
 import jhi.fab.codegen.tables.Users;
 import jhi.fab.codegen.tables.Varieties;
+import jhi.fab.codegen.tables.ViewEuroblight;
 import jhi.fab.codegen.tables.ViewOutbreaks;
 import jhi.fab.codegen.tables.ViewSubsamples;
 
@@ -61,6 +62,11 @@ public class Tables {
      * The table <code>fab.varieties</code>.
      */
     public static final Varieties VARIETIES = Varieties.VARIETIES;
+
+    /**
+     * The table <code>fab.view_euroblight</code>.
+     */
+    public static final ViewEuroblight VIEW_EUROBLIGHT = ViewEuroblight.VIEW_EUROBLIGHT;
 
     /**
      * The table <code>fab.view_outbreaks</code>.

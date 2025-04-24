@@ -53,7 +53,6 @@ class User
 					long now = System.currentTimeMillis();
 
 					// Has the token expired?
-					// TODO: How and when will we clean up expired tokens?
 					long expire = Long.parseLong(System.getenv("FAB_TOKEN_EXPIRE"));
 					if (tokenMilli < (now-expire))
 						System.out.println("Token has expired");
