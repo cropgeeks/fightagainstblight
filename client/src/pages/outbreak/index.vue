@@ -135,7 +135,7 @@
     class="mb-3"
   >
     <v-col
-      v-if="isAdmin && reportDownloadLink"
+      v-if="isAdmin"
       :cols="12"
       :lg="3"
       :md="4"
@@ -144,8 +144,8 @@
       <v-btn
         class="mb-2"
         prepend-icon="mdi-download"
-        :href="reportDownloadLink"
         text="Download report"
+        @click="downloadReport"
       />
       <p class="text-caption text-info">The download will contain all outbreaks in your current filtering.</p>
     </v-col>
@@ -238,6 +238,7 @@
   import type { Variety } from '@/plugins/types/Variety'
   
   import { coreStore } from '@/stores/app'
+import { downloadBlob } from '@/plugins/misc'
 
   const store = coreStore()
 
@@ -378,31 +379,26 @@
     }
   })
 
-  const reportDownloadLink: ComputedRef<string | undefined> = computed(() => {
-    if (isAdmin.value) {
-      const params: Map<string, string | number | undefined> = new Map()
-
-      params.set('source', selectedSource.value)
-      params.set('severity', selectedSeverity.value)
-      params.set('variety', selectedVariety.value)
-      params.set('year', selectedYear.value)
-      params.set('status', selectedStatus.value)
-      params.set('outbreakCode', outbreakCode.value)
-      params.set('outcode', postcode.value)
-      params.set('userId', onlyShowUserData.value ? store.token?.user?.userId : undefined)
-
-      return `${store.baseUrl}outbreaks/csv?${[...params.keys()].map(k => {
-        const temp = params.get(k)
-        if (temp) {
-         return `${k}=${encodeURIComponent(temp).replace(/(%20)+/g, '+')}`
-        } else {
-          return undefined
-        }
-      }).filter(k => k).join('&')}`
-    } else {
-      return undefined
-    }
-  })
+  function downloadReport () {
+    axiosCall<Blob>({ url: 'outbreaks/csv', dataType: 'blob', params: {
+        source: selectedSource.value,
+        severity: selectedSeverity.value,
+        variety: selectedVariety.value,
+        year: selectedYear.value,
+        status: selectedStatus.value,
+        outbreakCode: outbreakCode.value,
+        outcode: postcode.value,
+        userId: onlyShowUserData.value ? store.token?.user?.userId : undefined,
+      } 
+    })
+    .then(result => {
+      downloadBlob({
+        blob: result,
+        filename: 'fight-against-blight-report',
+        extension: 'csv'
+      })
+    })
+  }
 
   // Get all the filtering options
   axiosCall<Severity[]>({ url: 'severities' })

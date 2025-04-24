@@ -13,7 +13,7 @@ const acceptableStatusCodes = [400, 401, 403, 404, 409]
  * @param {String} method (Optional) REST method (default: `'get'`)
  * @returns Promise
  */
-const axiosCall = <T> ({ baseUrl = null, url = '', params = null, method = 'get', contentType = 'application/json; charset=utf-8' }: {baseUrl?: string | null, url: string, params?: Object | null, method?: string, contentType?: string, ignoreErrors?: boolean }) => {
+const axiosCall = <T> ({ baseUrl = null, url = '', params = null, method = 'get', dataType = 'json', contentType = 'application/json; charset=utf-8' }: {baseUrl?: string | null, url: string, params?: Object | null, method?: string, dataType?: string, contentType?: string, ignoreErrors?: boolean }) => {
   const store = coreStore()
   let requestData = null
   let requestParams = null
@@ -43,6 +43,7 @@ const axiosCall = <T> ({ baseUrl = null, url = '', params = null, method = 'get'
       data: requestData,
       method,
       crossDomain: true,
+      responseType: dataType,
       withCredentials: store.token !== null && store.token.token !== null,
       headers: headers
     }).then(data => {
