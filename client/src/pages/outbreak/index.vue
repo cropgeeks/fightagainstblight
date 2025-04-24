@@ -395,7 +395,7 @@ import { downloadBlob } from '@/plugins/misc'
       downloadBlob({
         blob: result,
         filename: 'fight-against-blight-report',
-        extension: 'csv'
+        extension: 'txt'
       })
     })
   }
