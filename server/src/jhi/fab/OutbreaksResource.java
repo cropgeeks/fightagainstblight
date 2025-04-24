@@ -95,7 +95,7 @@ public class OutbreaksResource
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getOutbreaks(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id)
+	public Response getOutbreakById(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id)
 		throws SQLException
 	{
 		// You don't *need* a token for this call, but if we have one (and a
@@ -124,7 +124,7 @@ public class OutbreaksResource
 	@GET
 	@Path("/years")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getSubsamples(@HeaderParam("Authorization") String authHeader)
+	public Response getYears(@HeaderParam("Authorization") String authHeader)
 		throws SQLException
 	{
 		User user = new User(authHeader);
@@ -144,7 +144,7 @@ public class OutbreaksResource
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public synchronized Response postOutbreaks(@HeaderParam("Authorization") String authHeader, Outbreaks newOutbreak)
+	public synchronized Response postOutbreak(@HeaderParam("Authorization") String authHeader, Outbreaks newOutbreak)
 		throws SQLException
 	{
 		User user = new User(authHeader);
@@ -213,7 +213,7 @@ public class OutbreaksResource
 	@PATCH
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public synchronized Response patchOutbreaks(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id, Outbreaks outbreak)
+	public synchronized Response patchOutbreakById(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id, Outbreaks outbreak)
 		throws SQLException
 	{
 		User user = new User(authHeader);
@@ -240,6 +240,32 @@ public class OutbreaksResource
 				.execute();
 
 			return Response.ok(outbreak).build();
+		}
+	}
+
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public synchronized Response deleteOutbreakById(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id)
+		throws SQLException
+	{
+		User user = new User(authHeader);
+
+		// Must be logged in to delete an outbreak
+		if (user.isOK() == false)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		// And an admin
+		if (user.isAdmin() == false)
+			return Response.status(Response.Status.FORBIDDEN).build();
+
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+			context.deleteFrom(OUTBREAKS)
+				.where(OUTBREAKS.OUTBREAK_ID.eq(id))
+				.execute();
+
+			return Response.ok().build();
 		}
 	}
 
