@@ -8,7 +8,7 @@
       <p class="mb-2">To report a new outbreak, please use the form on <router-link to="/submit">this page</router-link>.</p>
     </v-col>
     <v-col :cols=12 :md=4 class="d-flex align-center pa-5 sponsor-img">
-      <v-img src="@/assets/hutton.svg" />
+      <v-img position="right center" src="@/assets/hutton.svg" />
     </v-col>
   </v-row>
 
@@ -399,8 +399,8 @@
 
         const ws = XLSX.utils.aoa_to_sheet(data)
         const wb = XLSX.utils.book_new()
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1")
-        XLSX.writeFile(wb, "fight-against-blight-report.xlsx")
+        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1')
+        XLSX.writeFile(wb, `${new Date().toISOString().split('T')[0]}-fight-against-blight-report.xlsx`)
       }
       reader.readAsText(result)
     })

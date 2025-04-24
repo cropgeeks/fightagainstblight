@@ -8,7 +8,7 @@
       <p class="mb-2">To report a new outbreak, please use the form on <router-link to="/submit">this page</router-link>.</p>
     </v-col>
     <v-col :cols=12 :md=4 class="d-flex align-center pa-5 sponsor-img">
-      <v-img src="@/assets/hutton.svg" />
+      <v-img position="right center" src="@/assets/hutton.svg" />
     </v-col>
   </v-row>
 
