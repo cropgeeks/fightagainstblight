@@ -15,6 +15,7 @@ import jhi.fab.codegen.tables.Subsamples;
 import jhi.fab.codegen.tables.UserSessions;
 import jhi.fab.codegen.tables.Users;
 import jhi.fab.codegen.tables.Varieties;
+import jhi.fab.codegen.tables.ViewEuroblight;
 import jhi.fab.codegen.tables.ViewOutbreaks;
 import jhi.fab.codegen.tables.ViewSubsamples;
 
@@ -78,6 +79,11 @@ public class Fab extends SchemaImpl {
     public final Varieties VARIETIES = Varieties.VARIETIES;
 
     /**
+     * The table <code>fab.view_euroblight</code>.
+     */
+    public final ViewEuroblight VIEW_EUROBLIGHT = ViewEuroblight.VIEW_EUROBLIGHT;
+
+    /**
      * The table <code>fab.view_outbreaks</code>.
      */
     public final ViewOutbreaks VIEW_OUTBREAKS = ViewOutbreaks.VIEW_OUTBREAKS;
@@ -111,6 +117,7 @@ public class Fab extends SchemaImpl {
             UserSessions.USER_SESSIONS,
             Users.USERS,
             Varieties.VARIETIES,
+            ViewEuroblight.VIEW_EUROBLIGHT,
             ViewOutbreaks.VIEW_OUTBREAKS,
             ViewSubsamples.VIEW_SUBSAMPLES
         );

@@ -19,6 +19,7 @@ import jhi.fab.codegen.enums.*;
 import jhi.fab.codegen.tables.pojos.*;
 import static jhi.fab.codegen.tables.Outbreaks.OUTBREAKS;
 import static jhi.fab.codegen.tables.Subsamples.SUBSAMPLES;
+import static jhi.fab.codegen.tables.ViewEuroblight.VIEW_EUROBLIGHT;
 import static jhi.fab.codegen.tables.ViewOutbreaks.VIEW_OUTBREAKS;
 import static jhi.fab.codegen.tables.ViewSubsamples.VIEW_SUBSAMPLES;
 
@@ -38,6 +39,9 @@ public class OutbreaksResource
 		@QueryParam("outcode") String outcode)
 		throws SQLException
 	{
+		// IMPORTANT - any addition/changes to the filters here should also
+		// happen to /csv
+
 		// You don't *need* a token for this call, but if we have one (and a
 		// valid user) we'll use it to fill out a more detailed response
 		User user = new User(authHeader);
@@ -389,15 +393,112 @@ public class OutbreaksResource
 		@QueryParam("outcode") String outcode)
 		throws SQLException, Exception
 	{
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	    OutputStreamWriter writer = new OutputStreamWriter(baos, StandardCharsets.UTF_8);
-		BufferedWriter out = new BufferedWriter(writer);
+		// IMPORTANT - any addition/changes to the filters here should also
+		// happen to /outbreaks
 
-		out.write("testing");
-		out.close();
+		User user = new User(authHeader);
 
-		return Response.ok(baos.toByteArray())
-			.header("Content-Disposition", "attachment; filename=\"EuroBlight.csv\"")
+		// Must be logged in...
+		if (user.isOK() == false)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		// ...and an admin
+		if (user.isAdmin() == false)
+			return Response.status(Response.Status.FORBIDDEN).build();
+
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+
+			var query = context.selectFrom(VIEW_EUROBLIGHT);
+
+			// We always want to filter by a year, even if the UI didn't provide
+			if (year == null)
+				year = LocalDate.now().getYear();
+			query.where(DSL.year(VIEW_EUROBLIGHT.DATE_SUBMITTED).eq(year));
+
+			if (variety != null)
+				query.where(VIEW_EUROBLIGHT.VARIETY_ID.eq(variety));
+			if (outcode != null)
+				query.where(VIEW_EUROBLIGHT.OUTCODE.eq(outcode));
+			if (outbreakCode != null)
+				query.where(VIEW_EUROBLIGHT.OUTBREAK_CODE.eq(outbreakCode));
+			if (status != null)
+			{
+				try { query.where(VIEW_EUROBLIGHT.STATUS.eq(ViewEuroblightStatus.lookupLiteral(status))); }
+				catch (Exception e) { return Response.status(Response.Status.BAD_REQUEST).build(); }
+			}
+			if (source != null)
+				query.where(VIEW_EUROBLIGHT.SOURCE_ID.eq(source));
+			if (severity != null)
+				query.where(VIEW_EUROBLIGHT.SEVERITY_ID.eq(severity));
+			if (userId != null)
+				query.where(VIEW_EUROBLIGHT.USER_ID.eq(userId));
+
+			List<ViewEuroblight> results = query.fetchInto(ViewEuroblight.class);
+
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			OutputStreamWriter writer = new OutputStreamWriter(baos, StandardCharsets.UTF_8);
+			BufferedWriter out = new BufferedWriter(writer);
+
+			out.write("SampleCode\t");
+			out.write("SampleType\t");
+			out.write("CollectionDate\t");
+			out.write("GenotypedDate\t");
+			out.write("Collector\t");
+			out.write("Institution\t");
+			out.write("Host\t");
+			out.write("Cultivar\t");
+			out.write("Country\t");
+			out.write("Region\t");
+			out.write("Location\t");
+			out.write("Latitude\t");
+			out.write("Longtitude\t");
+			out.write("Site\t");
+			out.write("Outbreak size\t");
+			out.write("SSR genotype\t");
+			out.write("Comment");
+			out.newLine();
+
+			int count = 0;
+			for (ViewEuroblight result: results)
+			{
+				out.write((++count) + "\t");
+
+				out.write(format(result.getSubsampleCode()));
+				out.write(format(result.getMaterial()));
+				out.write(format(result.getDateSubmitted()));
+				out.write(format(result.getDateGenotyped()));
+				out.write(format(result.getUserName()));
+				out.write(format("The James Hutton Institute"));
+				out.write(format("Potato"));
+				out.write(format(result.getVarietyName()));
+				out.write(format(result.getCountry()));
+				out.write(format(result.getItlNuts()));
+				out.write(format(result.getOutcode()));
+				out.write(format(result.getViewLatitude()));
+				out.write(format(result.getViewLongitude()));
+				out.write(format(result.getSourceName()));
+				out.write(format(result.getSeverityName()));
+				out.write(format(result.getGenotypeName()));
+
+				if (result.getAdminComments() != null)
+					out.write(result.getAdminComments());
+
+				out.newLine();
+			}
+			out.close();
+
+			return Response.ok(baos.toByteArray())
+				.header("Content-Disposition", "attachment; filename=\"EuroBlight.txt\"")
 			.build();
+		}
+	}
+
+	private String format(Object object)
+	{
+		if (object == null)
+			return "\t";
+		else
+			return "" + object.toString() + "\t";
 	}
 }
