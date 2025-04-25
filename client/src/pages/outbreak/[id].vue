@@ -510,7 +510,7 @@
 
   const varietyOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
     if (varieties.value) {
-      return varieties.value.sort((a: Variety, b: Variety) => a.varietyName.localeCompare(b.varietyName)).map(s => {
+      return varieties.value.map(s => {
         return {
           value: s.varietyId,
           title: s.varietyName
@@ -522,7 +522,7 @@
   })
   const genotypeOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
     if (genotypes.value) {
-      return genotypes.value.sort((a: Genotype, b: Genotype) => a.genotypeName.localeCompare(b.genotypeName)).map(g => {
+      return genotypes.value.map(g => {
         return {
           value: g.genotypeId,
           title: g.genotypeName
