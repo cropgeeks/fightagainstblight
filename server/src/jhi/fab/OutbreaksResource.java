@@ -198,6 +198,7 @@ public class OutbreaksResource
 				.set(OUTBREAKS.SOURCE_OTHER, newOutbreak.getSourceOther())
 				.set(OUTBREAKS.SEVERITY_ID, newOutbreak.getSeverityId())
 				.set(OUTBREAKS.SEVERITY_OTHER, newOutbreak.getSeverityOther())
+				.set(OUTBREAKS.HOST, newOutbreak.getHost())
 				.set(OUTBREAKS.USER_COMMENTS, newOutbreak.getUserComments())
 				.set(OUTBREAKS.ADMIN_COMMENTS, newOutbreak.getAdminComments())
 				.set(OUTBREAKS.IS_PUBLIC, newOutbreak.getIsPublic())
@@ -496,7 +497,7 @@ public class OutbreaksResource
 				out.write(format(result.getDateGenotyped()));
 				out.write(format(result.getUserName()));
 				out.write(format("The James Hutton Institute"));
-				out.write(format("Potato"));
+				out.write(format(result.getHost()));
 				out.write(format(result.getVarietyName()));
 				out.write(format(result.getCountry()));
 				out.write(format(result.getItlNuts()));
