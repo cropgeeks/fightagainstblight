@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     BackButton: typeof import('./components/BackButton.vue')['default']
     ConfirmModal: typeof import('./components/ConfirmModal.vue')['default']
+    OutbreakDetails: typeof import('./components/OutbreakDetails.vue')['default']
     OutbreakMap: typeof import('./components/OutbreakMap.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

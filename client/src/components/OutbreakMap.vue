@@ -13,68 +13,18 @@
   <!-- Teleport is a Vue 3 feature; it basically appends the component
   to any DOM target (:to). Here, we point it to the content class of the Leaflet popup. Since only one popup is open at a time (presumably) this is safe. Otherwise you'd need to create a unique ID when creating the Leaflet popup. -->
   <Teleport v-if="selectedOutbreak" :to="`.leaflet-popup-content${selectedOutbreak.outbreakId ? '' : ''}`" :key="selectedOutbreak.outbreakId">
-    <v-list>
-      <v-list-item
-        title="Outbreak code"
-        :subtitle="selectedOutbreak.outbreakCode"
-      />
-      <v-list-item
-        title="Reported on"
-        :subtitle="selectedOutbreak.dateSubmitted ? new Date(selectedOutbreak.dateSubmitted).toLocaleDateString() : 'N/A'"
-      />
-      <v-list-item
-        title="Status">
-        <template #subtitle>
-          <v-chip
-            v-if="selectedOutbreak.status"
-            :color="status.get(selectedOutbreak.status)?.color"
-            :prepend-icon="status.get(selectedOutbreak.status)?.icon"
-          >
-            {{ status.get(selectedOutbreak.status)?.text }}
-          </v-chip>
-        </template>
-      </v-list-item>
-      <v-list-item
-        title="Severity">
-        <template #subtitle>
-          <v-chip v-if="selectedOutbreak.severityName">
-            <v-img
-              class="me-3"
-              contains
-              height="20"
-              :src="`/img/severity/${selectedOutbreak.severityName.toLowerCase().replace(/[\s\/]+/g, '-')}.svg`"
-              width="20"
-            />
-            <span>{{ selectedOutbreak.severityName }}</span>
-          </v-chip>
-        </template>
-      </v-list-item>
-      <v-list-item
-        title="Source">
-        <template #subtitle>
-          <v-chip v-if="selectedOutbreak.sourceName">
-            <v-img
-              class="me-3"
-              contains
-              height="20"
-              :src="`/img/source/${selectedOutbreak.sourceName.toLowerCase().replace(/[\s\/]+/g, '-')}.svg`"
-              width="20"
-            />
-            <span>{{ selectedOutbreak.sourceName }}</span>
-          </v-chip>
-        </template>
-      </v-list-item>
-    </v-list>
+    <OutbreakDetails :outbreak="selectedOutbreak" />
     <v-btn v-if="showOutbreakLink" block color="primary" class="marker-button" :to="`/outbreak/${selectedOutbreak?.outbreakId}`">View outbreak</v-btn>
   </Teleport>
 </template>
 
 <script lang="ts" setup>
+  import OutbreakDetails from '@/components/OutbreakDetails.vue'
   import type { Outbreak } from '@/plugins/types/Outbreak'
   import L, { Control, Marker, type LatLngExpression } from 'leaflet'
   import 'leaflet.markercluster'
   import { useTheme } from 'vuetify'
-  import { outbreakStatus, type Status } from '@/plugins/constants'
+  import { outbreakStatus } from '@/plugins/constants'
 
   import 'leaflet/dist/leaflet.css'
   import 'leaflet.markercluster/dist/MarkerCluster.css'
@@ -108,7 +58,6 @@
 
   const selectedOutbreak = ref<Outbreak>()
   const mapElement = ref('')
-  const status = ref<Map<string, Status>>(outbreakStatus)
 
   const store = coreStore()
   const vTheme = useTheme()

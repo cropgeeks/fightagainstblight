@@ -7,15 +7,15 @@
     <v-row
       v-for="row in sponsorsPerRow.keys()"
       :key="`row-${row}`"
-      :class="`${row !== 0 ? 'border-t' : null}`"
     >
       <v-col
         v-for="sponsor in sponsorsPerRow.get(row)"
         :key="`sponsor-${sponsor.name}`"
-        class="d-flex align-center pa-5 sponsor-img"
+        class="d-flex align-center pa-5 sponsor-img mx-auto"
         :cols=12
         :lg=3
         :md=4
+        :sm=6
       >
         <v-img
           :src="`/img/sponsors/${sponsor.logo}`"

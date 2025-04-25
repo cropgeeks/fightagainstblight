@@ -8,7 +8,8 @@
       <p class="mb-2">To report a new outbreak, please use the form on <router-link to="/submit">this page</router-link>.</p>
     </v-col>
     <v-col :cols=12 :md=4 class="d-flex align-center pa-5 sponsor-img">
-      <v-img position="right center" src="@/assets/hutton.svg" />
+      <v-img class="d-none d-md-inline-block" position="right center" src="@/assets/hutton.svg" />
+      <v-img class="d-md-none" position="center center" src="@/assets/hutton.svg" />
     </v-col>
   </v-row>
 
@@ -168,6 +169,22 @@
       </v-chip>
     </template>
 
+    <template #item.host="{ value }">
+      <v-chip
+        v-if="value"
+        :color="host.get(value)?.color"
+      >
+        <v-img
+          class="me-3"
+          contains
+          height="20"
+          :src="`/img/host/${value.toLowerCase().replaceAll(/[\s\/]+/g, '-')}.svg`"
+          width="20"
+        />
+        {{ host.get(value)?.text }}
+      </v-chip>
+    </template>
+
     <template #item.outbreakCode="{ value, item }">
       <v-btn
         v-if="store.token"
@@ -230,8 +247,8 @@
   import BackButton from '@/components/BackButton.vue'
 
   import { axiosCall } from '@/plugins/api'
-  import { outbreakStatus } from '@/plugins/constants'
-  import type { Status } from '@/plugins/constants'
+  import { outbreakStatus, outbreakHosts } from '@/plugins/constants'
+  import type { Host, Status } from '@/plugins/constants'
   import type { Outbreak } from '@/plugins/types/Outbreak'
   import type { SelectOption } from '@/plugins/types/SelectOption'
   import type { Severity } from '@/plugins/types/Severity'
@@ -265,10 +282,12 @@
     { title: 'Severity', key: 'severityName' },
     { title: 'Source', key: 'sourceName' },
     { title: 'Status', key: 'status' },
+    { title: 'Host', key: 'host' },
     { title: 'Reported on', key: 'dateSubmitted', sortRaw: sort('dateSubmitted'), value: (item: Outbreak) => (item && item.dateSubmitted) ? new Date(item.dateSubmitted).toLocaleDateString() : null },
     { title: 'Sample received on', key: 'dateReceived', sortRaw: sort('dateReceived'), value: (item: Outbreak) => (item && item.dateReceived) ? new Date(item.dateReceived).toLocaleDateString() : null },
   ])
   const status = ref<Map<string, Status>>(outbreakStatus)
+  const host = ref<Map<string, Host>>(outbreakHosts)
 
   function sort (field: string) {
     return function sort (a: any, b: any) {
@@ -334,7 +353,7 @@
 
   const varietyOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
     if (varieties.value) {
-      return varieties.value.sort((a: Variety, b: Variety) => a.varietyName.localeCompare(b.varietyName)).map(s => {
+      return varieties.value.map(s => {
         return {
           value: s.varietyId,
           title: s.varietyName

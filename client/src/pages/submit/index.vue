@@ -351,10 +351,10 @@
   }
 
   const canContinue: ComputedRef<boolean> = computed(() => {
-    if (!selectedSeverity.value && (!severityOther.value || severityOther.value.trim().length < 1)) {
+    if (!selectedSeverity.value) {
       return false
     }
-    if (!selectedSource.value && (!sourceOther.value || sourceOther.value.trim().length < 1)) {
+    if (!selectedSource.value) {
       return false
     }
     if (!postcode.value) {
@@ -408,7 +408,7 @@
 
   const varietyOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
     if (varieties.value) {
-      return varieties.value.sort((a: Variety, b: Variety) => a.varietyName.localeCompare(b.varietyName)).map(s => {
+      return varieties.value.map(s => {
         return {
           value: s.varietyId,
           title: s.varietyName

@@ -25,4 +25,5 @@ export interface Outbreak {
   country?: string
   itlNuts?: string
   isPublic?: boolean
+  host?: string
 }
