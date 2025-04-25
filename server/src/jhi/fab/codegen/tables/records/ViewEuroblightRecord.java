@@ -6,6 +6,7 @@ package jhi.fab.codegen.tables.records;
 
 import java.time.LocalDate;
 
+import jhi.fab.codegen.enums.ViewEuroblightHost;
 import jhi.fab.codegen.enums.ViewEuroblightMatingType;
 import jhi.fab.codegen.enums.ViewEuroblightStatus;
 import jhi.fab.codegen.tables.ViewEuroblight;
@@ -106,255 +107,269 @@ public class ViewEuroblightRecord extends TableRecordImpl<ViewEuroblightRecord> 
     }
 
     /**
+     * Setter for <code>fab.view_euroblight.host</code>.
+     */
+    public void setHost(ViewEuroblightHost value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>fab.view_euroblight.host</code>.
+     */
+    public ViewEuroblightHost getHost() {
+        return (ViewEuroblightHost) get(6);
+    }
+
+    /**
      * Setter for <code>fab.view_euroblight.user_name</code>.
      */
     public void setUserName(String value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.user_name</code>.
      */
     public String getUserName() {
-        return (String) get(6);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.variety_name</code>.
      */
     public void setVarietyName(String value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.variety_name</code>.
      */
     public String getVarietyName() {
-        return (String) get(7);
+        return (String) get(8);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.country</code>.
      */
     public void setCountry(String value) {
-        set(8, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.country</code>.
      */
     public String getCountry() {
-        return (String) get(8);
+        return (String) get(9);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.itl_nuts</code>.
      */
     public void setItlNuts(String value) {
-        set(9, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.itl_nuts</code>.
      */
     public String getItlNuts() {
-        return (String) get(9);
+        return (String) get(10);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.outcode</code>.
      */
     public void setOutcode(String value) {
-        set(10, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.outcode</code>.
      */
     public String getOutcode() {
-        return (String) get(10);
+        return (String) get(11);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.view_latitude</code>.
      */
     public void setViewLatitude(Double value) {
-        set(11, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.view_latitude</code>.
      */
     public Double getViewLatitude() {
-        return (Double) get(11);
+        return (Double) get(12);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.view_longitude</code>.
      */
     public void setViewLongitude(Double value) {
-        set(12, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.view_longitude</code>.
      */
     public Double getViewLongitude() {
-        return (Double) get(12);
+        return (Double) get(13);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.source_name</code>.
      */
     public void setSourceName(String value) {
-        set(13, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.source_name</code>.
      */
     public String getSourceName() {
-        return (String) get(13);
+        return (String) get(14);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.severity_name</code>.
      */
     public void setSeverityName(String value) {
-        set(14, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.severity_name</code>.
      */
     public String getSeverityName() {
-        return (String) get(14);
+        return (String) get(15);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.genotype_name</code>.
      */
     public void setGenotypeName(String value) {
-        set(15, value);
+        set(16, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.genotype_name</code>.
      */
     public String getGenotypeName() {
-        return (String) get(15);
+        return (String) get(16);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.source_id</code>.
      */
     public void setSourceId(Integer value) {
-        set(16, value);
+        set(17, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.source_id</code>.
      */
     public Integer getSourceId() {
-        return (Integer) get(16);
+        return (Integer) get(17);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.severity_id</code>.
      */
     public void setSeverityId(Integer value) {
-        set(17, value);
+        set(18, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.severity_id</code>.
      */
     public Integer getSeverityId() {
-        return (Integer) get(17);
+        return (Integer) get(18);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.variety_id</code>.
      */
     public void setVarietyId(Integer value) {
-        set(18, value);
+        set(19, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.variety_id</code>.
      */
     public Integer getVarietyId() {
-        return (Integer) get(18);
+        return (Integer) get(19);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.user_id</code>.
      */
     public void setUserId(Integer value) {
-        set(19, value);
+        set(20, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.user_id</code>.
      */
     public Integer getUserId() {
-        return (Integer) get(19);
+        return (Integer) get(20);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.status</code>.
      */
     public void setStatus(ViewEuroblightStatus value) {
-        set(20, value);
+        set(21, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.status</code>.
      */
     public ViewEuroblightStatus getStatus() {
-        return (ViewEuroblightStatus) get(20);
+        return (ViewEuroblightStatus) get(21);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.date_submitted</code>.
      */
     public void setDateSubmitted(LocalDate value) {
-        set(21, value);
+        set(22, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.date_submitted</code>.
      */
     public LocalDate getDateSubmitted() {
-        return (LocalDate) get(21);
+        return (LocalDate) get(22);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.date_genotyped</code>.
      */
     public void setDateGenotyped(LocalDate value) {
-        set(22, value);
+        set(23, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.date_genotyped</code>.
      */
     public LocalDate getDateGenotyped() {
-        return (LocalDate) get(22);
+        return (LocalDate) get(23);
     }
 
     /**
      * Setter for <code>fab.view_euroblight.admin_comments</code>.
      */
     public void setAdminComments(String value) {
-        set(23, value);
+        set(24, value);
     }
 
     /**
      * Getter for <code>fab.view_euroblight.admin_comments</code>.
      */
     public String getAdminComments() {
-        return (String) get(23);
+        return (String) get(24);
     }
 
     // -------------------------------------------------------------------------
@@ -371,7 +386,7 @@ public class ViewEuroblightRecord extends TableRecordImpl<ViewEuroblightRecord> 
     /**
      * Create a detached, initialised ViewEuroblightRecord
      */
-    public ViewEuroblightRecord(String subsampleCode, String material, Boolean myceliaPellet, Boolean cultureSlope, ViewEuroblightMatingType matingType, String outbreakCode, String userName, String varietyName, String country, String itlNuts, String outcode, Double viewLatitude, Double viewLongitude, String sourceName, String severityName, String genotypeName, Integer sourceId, Integer severityId, Integer varietyId, Integer userId, ViewEuroblightStatus status, LocalDate dateSubmitted, LocalDate dateGenotyped, String adminComments) {
+    public ViewEuroblightRecord(String subsampleCode, String material, Boolean myceliaPellet, Boolean cultureSlope, ViewEuroblightMatingType matingType, String outbreakCode, ViewEuroblightHost host, String userName, String varietyName, String country, String itlNuts, String outcode, Double viewLatitude, Double viewLongitude, String sourceName, String severityName, String genotypeName, Integer sourceId, Integer severityId, Integer varietyId, Integer userId, ViewEuroblightStatus status, LocalDate dateSubmitted, LocalDate dateGenotyped, String adminComments) {
         super(ViewEuroblight.VIEW_EUROBLIGHT);
 
         setSubsampleCode(subsampleCode);
@@ -380,6 +395,7 @@ public class ViewEuroblightRecord extends TableRecordImpl<ViewEuroblightRecord> 
         setCultureSlope(cultureSlope);
         setMatingType(matingType);
         setOutbreakCode(outbreakCode);
+        setHost(host);
         setUserName(userName);
         setVarietyName(varietyName);
         setCountry(country);
@@ -414,6 +430,7 @@ public class ViewEuroblightRecord extends TableRecordImpl<ViewEuroblightRecord> 
             setCultureSlope(value.getCultureSlope());
             setMatingType(value.getMatingType());
             setOutbreakCode(value.getOutbreakCode());
+            setHost(value.getHost());
             setUserName(value.getUserName());
             setVarietyName(value.getVarietyName());
             setCountry(value.getCountry());

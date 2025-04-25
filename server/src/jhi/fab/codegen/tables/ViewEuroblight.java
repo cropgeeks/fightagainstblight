@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 
 import jhi.fab.codegen.Fab;
+import jhi.fab.codegen.enums.ViewEuroblightHost;
 import jhi.fab.codegen.enums.ViewEuroblightMatingType;
 import jhi.fab.codegen.enums.ViewEuroblightStatus;
 import jhi.fab.codegen.tables.records.ViewEuroblightRecord;
@@ -79,6 +80,11 @@ public class ViewEuroblight extends TableImpl<ViewEuroblightRecord> {
      * The column <code>fab.view_euroblight.outbreak_code</code>.
      */
     public final TableField<ViewEuroblightRecord, String> OUTBREAK_CODE = createField(DSL.name("outbreak_code"), SQLDataType.VARCHAR(255), this, "");
+
+    /**
+     * The column <code>fab.view_euroblight.host</code>.
+     */
+    public final TableField<ViewEuroblightRecord, ViewEuroblightHost> HOST = createField(DSL.name("host"), SQLDataType.VARCHAR(6).defaultValue(DSL.inline("potato", SQLDataType.VARCHAR)).asEnumDataType(ViewEuroblightHost.class), this, "");
 
     /**
      * The column <code>fab.view_euroblight.user_name</code>.
@@ -153,7 +159,7 @@ public class ViewEuroblight extends TableImpl<ViewEuroblightRecord> {
     /**
      * The column <code>fab.view_euroblight.status</code>.
      */
-    public final TableField<ViewEuroblightRecord, ViewEuroblightStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).asEnumDataType(ViewEuroblightStatus.class), this, "");
+    public final TableField<ViewEuroblightRecord, ViewEuroblightStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).defaultValue(DSL.inline("pending", SQLDataType.VARCHAR)).asEnumDataType(ViewEuroblightStatus.class), this, "");
 
     /**
      * The column <code>fab.view_euroblight.date_submitted</code>.
@@ -175,7 +181,7 @@ public class ViewEuroblight extends TableImpl<ViewEuroblightRecord> {
     }
 
     private ViewEuroblight(Name alias, Table<ViewEuroblightRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `view_euroblight` as select `fab`.`subsamples`.`subsample_code` AS `subsample_code`,`fab`.`subsamples`.`material` AS `material`,`fab`.`subsamples`.`mycelia_pellet` AS `mycelia_pellet`,`fab`.`subsamples`.`culture_slope` AS `culture_slope`,`fab`.`subsamples`.`mating_type` AS `mating_type`,`fab`.`outbreaks`.`outbreak_code` AS `outbreak_code`,`fab`.`users`.`user_name` AS `user_name`,`fab`.`varieties`.`variety_name` AS `variety_name`,`fab`.`outbreaks`.`country` AS `country`,`fab`.`outbreaks`.`itl_nuts` AS `itl_nuts`,`fab`.`outbreaks`.`outcode` AS `outcode`,`fab`.`outbreaks`.`view_latitude` AS `view_latitude`,`fab`.`outbreaks`.`view_longitude` AS `view_longitude`,`fab`.`sources`.`source_name` AS `source_name`,`fab`.`severities`.`severity_name` AS `severity_name`,`fab`.`ssr_genotypes`.`genotype_name` AS `genotype_name`,`fab`.`sources`.`source_id` AS `source_id`,`fab`.`severities`.`severity_id` AS `severity_id`,`fab`.`varieties`.`variety_id` AS `variety_id`,`fab`.`users`.`user_id` AS `user_id`,`fab`.`outbreaks`.`status` AS `status`,`fab`.`outbreaks`.`date_submitted` AS `date_submitted`,`fab`.`subsamples`.`date_genotyped` AS `date_genotyped`,`fab`.`subsamples`.`admin_comments` AS `admin_comments` from ((((((`fab`.`subsamples` left join `fab`.`outbreaks` on((`fab`.`subsamples`.`outbreak_id` = `fab`.`outbreaks`.`outbreak_id`))) left join `fab`.`users` on((`fab`.`outbreaks`.`user_id` = `fab`.`users`.`user_id`))) left join `fab`.`varieties` on((`fab`.`subsamples`.`variety_id` = `fab`.`varieties`.`variety_id`))) left join `fab`.`sources` on((`fab`.`outbreaks`.`source_id` = `fab`.`sources`.`source_id`))) left join `fab`.`severities` on((`fab`.`outbreaks`.`severity_id` = `fab`.`severities`.`severity_id`))) left join `fab`.`ssr_genotypes` on((`fab`.`subsamples`.`genotype_id` = `fab`.`ssr_genotypes`.`genotype_id`)))"), where);
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `view_euroblight` as select `fab`.`subsamples`.`subsample_code` AS `subsample_code`,`fab`.`subsamples`.`material` AS `material`,`fab`.`subsamples`.`mycelia_pellet` AS `mycelia_pellet`,`fab`.`subsamples`.`culture_slope` AS `culture_slope`,`fab`.`subsamples`.`mating_type` AS `mating_type`,`fab`.`outbreaks`.`outbreak_code` AS `outbreak_code`,`fab`.`outbreaks`.`host` AS `host`,`fab`.`users`.`user_name` AS `user_name`,`fab`.`varieties`.`variety_name` AS `variety_name`,`fab`.`outbreaks`.`country` AS `country`,`fab`.`outbreaks`.`itl_nuts` AS `itl_nuts`,`fab`.`outbreaks`.`outcode` AS `outcode`,`fab`.`outbreaks`.`view_latitude` AS `view_latitude`,`fab`.`outbreaks`.`view_longitude` AS `view_longitude`,`fab`.`sources`.`source_name` AS `source_name`,`fab`.`severities`.`severity_name` AS `severity_name`,`fab`.`ssr_genotypes`.`genotype_name` AS `genotype_name`,`fab`.`sources`.`source_id` AS `source_id`,`fab`.`severities`.`severity_id` AS `severity_id`,`fab`.`varieties`.`variety_id` AS `variety_id`,`fab`.`users`.`user_id` AS `user_id`,`fab`.`outbreaks`.`status` AS `status`,`fab`.`outbreaks`.`date_submitted` AS `date_submitted`,`fab`.`subsamples`.`date_genotyped` AS `date_genotyped`,`fab`.`subsamples`.`admin_comments` AS `admin_comments` from ((((((`fab`.`subsamples` left join `fab`.`outbreaks` on((`fab`.`subsamples`.`outbreak_id` = `fab`.`outbreaks`.`outbreak_id`))) left join `fab`.`users` on((`fab`.`outbreaks`.`user_id` = `fab`.`users`.`user_id`))) left join `fab`.`varieties` on((`fab`.`subsamples`.`variety_id` = `fab`.`varieties`.`variety_id`))) left join `fab`.`sources` on((`fab`.`outbreaks`.`source_id` = `fab`.`sources`.`source_id`))) left join `fab`.`severities` on((`fab`.`outbreaks`.`severity_id` = `fab`.`severities`.`severity_id`))) left join `fab`.`ssr_genotypes` on((`fab`.`subsamples`.`genotype_id` = `fab`.`ssr_genotypes`.`genotype_id`)))"), where);
     }
 
     /**

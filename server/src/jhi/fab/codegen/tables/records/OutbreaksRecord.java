@@ -6,6 +6,7 @@ package jhi.fab.codegen.tables.records;
 
 import java.time.LocalDate;
 
+import jhi.fab.codegen.enums.OutbreaksHost;
 import jhi.fab.codegen.enums.OutbreaksStatus;
 import jhi.fab.codegen.tables.Outbreaks;
 
@@ -329,6 +330,20 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
         return (Boolean) get(21);
     }
 
+    /**
+     * Setter for <code>fab.outbreaks.host</code>.
+     */
+    public void setHost(OutbreaksHost value) {
+        set(22, value);
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.host</code>.
+     */
+    public OutbreaksHost getHost() {
+        return (OutbreaksHost) get(22);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -352,7 +367,7 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
     /**
      * Create a detached, initialised OutbreaksRecord
      */
-    public OutbreaksRecord(Integer outbreakId, String outbreakCode, Integer userId, String postcode, String outcode, String country, String itlNuts, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, LocalDate dateSubmitted, LocalDate dateReceived, Integer reportedVarietyId, Integer severityId, Integer sourceId, String severityOther, String sourceOther, String userComments, String adminComments, OutbreaksStatus status, Boolean isPublic) {
+    public OutbreaksRecord(Integer outbreakId, String outbreakCode, Integer userId, String postcode, String outcode, String country, String itlNuts, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, LocalDate dateSubmitted, LocalDate dateReceived, Integer reportedVarietyId, Integer severityId, Integer sourceId, String severityOther, String sourceOther, String userComments, String adminComments, OutbreaksStatus status, Boolean isPublic, OutbreaksHost host) {
         super(Outbreaks.OUTBREAKS);
 
         setOutbreakId(outbreakId);
@@ -377,6 +392,7 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
         setAdminComments(adminComments);
         setStatus(status);
         setIsPublic(isPublic);
+        setHost(host);
         resetTouchedOnNotNull();
     }
 
@@ -409,6 +425,7 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
             setAdminComments(value.getAdminComments());
             setStatus(value.getStatus());
             setIsPublic(value.getIsPublic());
+            setHost(value.getHost());
             resetTouchedOnNotNull();
         }
     }

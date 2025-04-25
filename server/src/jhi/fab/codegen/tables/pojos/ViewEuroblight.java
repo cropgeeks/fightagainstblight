@@ -7,6 +7,7 @@ package jhi.fab.codegen.tables.pojos;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import jhi.fab.codegen.enums.ViewEuroblightHost;
 import jhi.fab.codegen.enums.ViewEuroblightMatingType;
 import jhi.fab.codegen.enums.ViewEuroblightStatus;
 
@@ -25,6 +26,7 @@ public class ViewEuroblight implements Serializable {
     private Boolean cultureSlope;
     private ViewEuroblightMatingType matingType;
     private String outbreakCode;
+    private ViewEuroblightHost host;
     private String userName;
     private String varietyName;
     private String country;
@@ -53,6 +55,7 @@ public class ViewEuroblight implements Serializable {
         this.cultureSlope = value.cultureSlope;
         this.matingType = value.matingType;
         this.outbreakCode = value.outbreakCode;
+        this.host = value.host;
         this.userName = value.userName;
         this.varietyName = value.varietyName;
         this.country = value.country;
@@ -80,6 +83,7 @@ public class ViewEuroblight implements Serializable {
         Boolean cultureSlope,
         ViewEuroblightMatingType matingType,
         String outbreakCode,
+        ViewEuroblightHost host,
         String userName,
         String varietyName,
         String country,
@@ -105,6 +109,7 @@ public class ViewEuroblight implements Serializable {
         this.cultureSlope = cultureSlope;
         this.matingType = matingType;
         this.outbreakCode = outbreakCode;
+        this.host = host;
         this.userName = userName;
         this.varietyName = varietyName;
         this.country = country;
@@ -207,6 +212,20 @@ public class ViewEuroblight implements Serializable {
      */
     public void setOutbreakCode(String outbreakCode) {
         this.outbreakCode = outbreakCode;
+    }
+
+    /**
+     * Getter for <code>fab.view_euroblight.host</code>.
+     */
+    public ViewEuroblightHost getHost() {
+        return this.host;
+    }
+
+    /**
+     * Setter for <code>fab.view_euroblight.host</code>.
+     */
+    public void setHost(ViewEuroblightHost host) {
+        this.host = host;
     }
 
     /**
@@ -506,6 +525,12 @@ public class ViewEuroblight implements Serializable {
         }
         else if (!this.outbreakCode.equals(other.outbreakCode))
             return false;
+        if (this.host == null) {
+            if (other.host != null)
+                return false;
+        }
+        else if (!this.host.equals(other.host))
+            return false;
         if (this.userName == null) {
             if (other.userName != null)
                 return false;
@@ -627,6 +652,7 @@ public class ViewEuroblight implements Serializable {
         result = prime * result + ((this.cultureSlope == null) ? 0 : this.cultureSlope.hashCode());
         result = prime * result + ((this.matingType == null) ? 0 : this.matingType.hashCode());
         result = prime * result + ((this.outbreakCode == null) ? 0 : this.outbreakCode.hashCode());
+        result = prime * result + ((this.host == null) ? 0 : this.host.hashCode());
         result = prime * result + ((this.userName == null) ? 0 : this.userName.hashCode());
         result = prime * result + ((this.varietyName == null) ? 0 : this.varietyName.hashCode());
         result = prime * result + ((this.country == null) ? 0 : this.country.hashCode());
@@ -658,6 +684,7 @@ public class ViewEuroblight implements Serializable {
         sb.append(", ").append(cultureSlope);
         sb.append(", ").append(matingType);
         sb.append(", ").append(outbreakCode);
+        sb.append(", ").append(host);
         sb.append(", ").append(userName);
         sb.append(", ").append(varietyName);
         sb.append(", ").append(country);

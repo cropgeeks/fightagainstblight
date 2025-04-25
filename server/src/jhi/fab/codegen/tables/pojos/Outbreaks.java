@@ -7,6 +7,7 @@ package jhi.fab.codegen.tables.pojos;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import jhi.fab.codegen.enums.OutbreaksHost;
 import jhi.fab.codegen.enums.OutbreaksStatus;
 
 
@@ -40,6 +41,7 @@ public class Outbreaks implements Serializable {
     private String adminComments;
     private OutbreaksStatus status;
     private Boolean isPublic;
+    private OutbreaksHost host;
 
     public Outbreaks() {}
 
@@ -66,6 +68,7 @@ public class Outbreaks implements Serializable {
         this.adminComments = value.adminComments;
         this.status = value.status;
         this.isPublic = value.isPublic;
+        this.host = value.host;
     }
 
     public Outbreaks(
@@ -90,7 +93,8 @@ public class Outbreaks implements Serializable {
         String userComments,
         String adminComments,
         OutbreaksStatus status,
-        Boolean isPublic
+        Boolean isPublic,
+        OutbreaksHost host
     ) {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
@@ -114,6 +118,7 @@ public class Outbreaks implements Serializable {
         this.adminComments = adminComments;
         this.status = status;
         this.isPublic = isPublic;
+        this.host = host;
     }
 
     /**
@@ -424,6 +429,20 @@ public class Outbreaks implements Serializable {
         this.isPublic = isPublic;
     }
 
+    /**
+     * Getter for <code>fab.outbreaks.host</code>.
+     */
+    public OutbreaksHost getHost() {
+        return this.host;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.host</code>.
+     */
+    public void setHost(OutbreaksHost host) {
+        this.host = host;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -565,6 +584,12 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.isPublic.equals(other.isPublic))
             return false;
+        if (this.host == null) {
+            if (other.host != null)
+                return false;
+        }
+        else if (!this.host.equals(other.host))
+            return false;
         return true;
     }
 
@@ -594,6 +619,7 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.adminComments == null) ? 0 : this.adminComments.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.isPublic == null) ? 0 : this.isPublic.hashCode());
+        result = prime * result + ((this.host == null) ? 0 : this.host.hashCode());
         return result;
     }
 
@@ -623,6 +649,7 @@ public class Outbreaks implements Serializable {
         sb.append(", ").append(adminComments);
         sb.append(", ").append(status);
         sb.append(", ").append(isPublic);
+        sb.append(", ").append(host);
 
         sb.append(")");
         return sb.toString();
