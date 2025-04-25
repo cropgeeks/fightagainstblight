@@ -29,6 +29,21 @@ public class SeveritiesResource
 			List<Severities> list = context.selectFrom(SEVERITIES)
 				.fetchInto(Severities.class);
 
+			// Sort alphabetically
+			Collections.sort(list, java.util.Comparator.comparing(Severities::getSeverityName));
+
+			// Move the unknowns/others to the top of the list
+			for (int i = 0; i < list.size(); i++)
+			{
+				Severities s = list.get(i);
+
+				if (s.getSeverityName().equalsIgnoreCase("unknown"))
+				{
+					list.remove(s);
+					list.add(0, s);
+				}
+			}
+
 			return Response.ok(list).build();
 		}
 	}

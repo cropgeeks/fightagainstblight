@@ -181,6 +181,21 @@ public class SubsamplesResource
 				.from(SUBSAMPLES)
 				.fetchInto(String.class);
 
+			// Sort alphabetically
+			Collections.sort(list);
+
+			// Move the unknowns/others to the top of the list
+			for (int i = 0; i < list.size(); i++)
+			{
+				String material = list.get(i);
+
+				if (material.equalsIgnoreCase("unknown"))
+				{
+					list.remove(material);
+					list.add(0, material);
+				}
+			}
+
 			return Response.ok(list).build();
 		}
 	}

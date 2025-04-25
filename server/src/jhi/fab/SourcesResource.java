@@ -29,6 +29,21 @@ public class SourcesResource
 			List<Sources> list = context.selectFrom(SOURCES)
 				.fetchInto(Sources.class);
 
+			// Sort alphabetically
+			Collections.sort(list, java.util.Comparator.comparing(Sources::getSourceName));
+
+			// Move the unknowns/others to the top of the list
+			for (int i = 0; i < list.size(); i++)
+			{
+				Sources s = list.get(i);
+
+				if (s.getSourceName().equalsIgnoreCase("unknown"))
+				{
+					list.remove(s);
+					list.add(0, s);
+				}
+			}
+
 			return Response.ok(list).build();
 		}
 	}

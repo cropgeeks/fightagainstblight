@@ -29,6 +29,21 @@ public class SsrGenotypesResource
 			List<SsrGenotypes> list = context.selectFrom(SSR_GENOTYPES)
 				.fetchInto(SsrGenotypes.class);
 
+			// Sort alphabetically
+			Collections.sort(list, java.util.Comparator.comparing(SsrGenotypes::getGenotypeName));
+
+			// Move the unknowns/others to the top of the list
+			for (int i = 0; i < list.size(); i++)
+			{
+				SsrGenotypes ssr = list.get(i);
+
+				if (ssr.getGenotypeName().equalsIgnoreCase("unknown"))
+				{
+					list.remove(ssr);
+					list.add(0, ssr);
+				}
+			}
+
 			return Response.ok(list).build();
 		}
 	}
