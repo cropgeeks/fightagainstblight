@@ -12,12 +12,13 @@
         />
 
         <template #append>
-          <span
-            v-if="store.token && store.token.user && store.token.user.userName"
-            class="me-2"
-          >
-            {{ store.token.user.userName }}
-          </span>
+          <v-tooltip v-if="userInitials" :text="store.token?.user?.userName">
+            <template v-slot:activator="{ props }">
+              <v-avatar v-bind="props" class="mx-2" color="primary">
+                <span class="text-h6">{{ userInitials }}</span>
+              </v-avatar>
+            </template>
+          </v-tooltip>
 
           <v-btn
             v-if="store.token && store.token.token"
@@ -135,6 +136,14 @@
             store.setUser(r)
           })
       })
+    }
+  })
+
+  const userInitials: ComputedRef<string | undefined> = computed(() => {
+    if (store.token && store.token.user && store.token.user.userName) {
+      return store.token.user.userName.split(/\s+/g).slice(0, 2).map(s => s.charAt(0).toUpperCase()).join('')
+    } else {
+      return undefined
     }
   })
 
