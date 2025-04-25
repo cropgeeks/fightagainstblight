@@ -159,6 +159,7 @@
         :headers="headers"
         :items="subsamples"
         :items-per-page="-1"
+        :no-data-text="(!isAdmin && !isOwner) ? 'Sample information is private to the scout who reported it.' : undefined"
         :sort-by="[{ key: 'dateGenotyped', order: 'desc' }]"
       >
         <template #top>
@@ -253,7 +254,7 @@
         </template>
 
         <template #item.actions="{ item }">
-          <div class="d-flex ga-2 justify-end">
+          <div v-if="isAdmin" class="d-flex ga-2 justify-end">
             <v-icon
               color="medium-emphasis"
               icon="mdi-pencil"
@@ -279,7 +280,7 @@
 
     <v-dialog v-model="dialog" max-width="500">
       <v-card
-        v-if="record"
+        v-if="record && isAdmin"
         :subtitle="`${isEditing ? 'Update details about this' : 'Create a new'} subsample`"
         :title="`${isEditing ? 'Edit' : 'Add'} subsample`"
       >
@@ -369,12 +370,20 @@
           <v-spacer />
 
           <v-btn
-            text="Save"
+            text="Confirm"
             @click="save"
           />
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <v-snackbar
+      v-model="snackbar"
+      :color="snackbarConfig.color"
+      multi-line
+    >
+      {{ snackbarConfig.text }}
+    </v-snackbar>
 
     <ConfirmModal ref="confirmModal" />
   </div>
@@ -399,6 +408,11 @@
   const store = coreStore()
   const route = useRoute('/outbreak/[id]')
   const router = useRouter()
+
+  interface SnackbarConfig {
+    text: string,
+    color: string
+  }
 
   const confirmModal = ref()
   const outbreakId = ref<number>(+(route.params.id || -1))
@@ -430,6 +444,11 @@
   const dialog = ref<boolean>(false)
   const isEditing = ref<boolean>(false)
   const record = ref<Subsample>()
+  const snackbar = ref<boolean>(false)
+  const snackbarConfig = ref<SnackbarConfig>({
+    text: '',
+    color: 'success',
+  })
 
   const hasGps: ComputedRef<boolean> = computed(() => {
     if (outbreak.value) {
@@ -736,6 +755,8 @@
       .then(() => {
         loading.value = false
         update(false)
+        snackbarConfig.value.text = 'Outbreak successfully updated.'
+        snackbar.value = true
       })
       .catch(e => {
         loading.value = false
@@ -747,6 +768,8 @@
     axiosCall({ url: `outbreaks/${outbreak.value?.outbreakId}/notify` })
       .then(() => {
         loading.value = false
+        snackbarConfig.value.text = 'Outbreak owner successfully notified.'
+        snackbar.value = true
       })
       .catch(e => {
         console.error(e)

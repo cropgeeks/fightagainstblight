@@ -1,10 +1,10 @@
 <template>
   <BackButton />
 
-  <h1>Sample submission</h1>
+  <h1>Report an outbreak</h1>
 
   <section v-if="store.token && store.token.user">
-    <p>Please complete the form below to submit your sample.</p>
+    <p>Please complete the form below to report a new outbreak.</p>
 
     <v-row>
       <v-col v-if="isAdmin" :cols=12 :lg=3 :md=6>
@@ -58,8 +58,8 @@
 
         <v-checkbox
           v-model="isPublic"
-          hint="When selected, the precise location of the outbreak will be visible to everyone to improve the utility of this tool."
-          label="Use precise location"
+          hint="When selected, we won't hide the precise location of this outbreak, helping everyone in the Fight against Blight."
+          label="Make outbreak public"
           persistent-hint
         />
       </v-col>
@@ -102,7 +102,7 @@
         <v-textarea
           v-model="comment"
           autocomplete="off"
-          label="Comment"
+          label="Comments"
         />
       </v-col>
     </v-row>

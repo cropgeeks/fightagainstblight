@@ -26,7 +26,7 @@
     />
     <v-alert
       v-else
-      text="Please fill in your email address above. You will receive an email with a login link that will enable access to your data and to submit new outbreaks."
+      text="Please fill in your email address above. You'll receive an email with a login link that'll enable access to your data and allow you to submit new outbreaks."
       type="info"
       variant="tonal"
     />
@@ -37,7 +37,7 @@
       color="primary"
       :disabled="disabled"
       prepend-icon="mdi-send"
-      size="large"
+      size="large"  
       @click="send"
     >
       Send link

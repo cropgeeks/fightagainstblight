@@ -99,7 +99,7 @@
         clearable
         :error="postcodeValid === false"
         :error-messages="postcodeValid === false ? ['Invalid post outcode.'] : null"
-        label="Search for postcode district"
+        label="Search for postcode district (e.g. DD2)"
         @blur="setPostcode"
         @keydown.enter.exact="$event.target.blur()"
       />
