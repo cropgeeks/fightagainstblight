@@ -12,6 +12,7 @@ import java.util.List;
 import jhi.fab.codegen.Fab;
 import jhi.fab.codegen.Indexes;
 import jhi.fab.codegen.Keys;
+import jhi.fab.codegen.enums.OutbreaksHost;
 import jhi.fab.codegen.enums.OutbreaksStatus;
 import jhi.fab.codegen.tables.Severities.SeveritiesPath;
 import jhi.fab.codegen.tables.Sources.SourcesPath;
@@ -168,12 +169,17 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     /**
      * The column <code>fab.outbreaks.status</code>.
      */
-    public final TableField<OutbreaksRecord, OutbreaksStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).asEnumDataType(OutbreaksStatus.class), this, "");
+    public final TableField<OutbreaksRecord, OutbreaksStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).defaultValue(DSL.inline("pending", SQLDataType.VARCHAR)).asEnumDataType(OutbreaksStatus.class), this, "");
 
     /**
      * The column <code>fab.outbreaks.is_public</code>.
      */
     public final TableField<OutbreaksRecord, Boolean> IS_PUBLIC = createField(DSL.name("is_public"), SQLDataType.BOOLEAN.defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+
+    /**
+     * The column <code>fab.outbreaks.host</code>.
+     */
+    public final TableField<OutbreaksRecord, OutbreaksHost> HOST = createField(DSL.name("host"), SQLDataType.VARCHAR(6).defaultValue(DSL.inline("potato", SQLDataType.VARCHAR)).asEnumDataType(OutbreaksHost.class), this, "");
 
     private Outbreaks(Name alias, Table<OutbreaksRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
