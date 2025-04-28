@@ -64,8 +64,10 @@ public class UserSessionsResource
 	{
 		User user = new User(authHeader);
 
-		if (user.isOK() == false)
+		if (user.noToken())
 			return Response.status(Response.Status.UNAUTHORIZED).build();
+		if (user.tokenInvalid())
+			return Response.status(Response.Status.FORBIDDEN).build();
 
 		try (Connection conn = DatabaseUtils.getConnection())
 		{

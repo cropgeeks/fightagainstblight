@@ -12,9 +12,10 @@ import static jhi.fab.codegen.tables.Users.USERS;
 
 class User
 {
-	private static int OK = 200;
-	private static int UNAUTHORIZED = 401;
-	private int status = UNAUTHORIZED;
+	private final static int OK = 200;
+	private final static int NO_TOKEN = 10;
+	private final static int TOKEN_INVALID = 20;
+	private int status = NO_TOKEN;
 
 	private int userID = -1;
 	private boolean isAdmin = false;
@@ -27,6 +28,18 @@ class User
 		return isAdmin;
 	}
 
+	boolean isOK() {
+		return status == OK;
+	}
+
+	boolean noToken() {
+		return status == NO_TOKEN;
+	}
+
+	boolean tokenInvalid() {
+		return status == TOKEN_INVALID;
+	}
+
 	User(String authHeader)
 		throws SQLException
 	{
@@ -35,6 +48,8 @@ class User
 		{
 			// Extract the Bearer token from the Authorization header
 			String token = authHeader.substring("Bearer ".length()).trim();
+
+			status = TOKEN_INVALID;
 
 			// Does this token exist?
 			try (Connection conn = DatabaseUtils.getConnection())
@@ -84,9 +99,5 @@ class User
 				}
 			}
 		}
-	}
-
-	boolean isOK() {
-		return status == OK;
 	}
 }
