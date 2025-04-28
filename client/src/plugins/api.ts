@@ -59,7 +59,6 @@ const axiosCall = <T> ({ baseUrl = null, url = '', params = null, method = 'get'
         // that falls out of the range of 2xx
         if (acceptableStatusCodes.includes(error.response.status)) {
           if (error.response.status === 401) {
-            emitter.emit('force-logout')
             store.setToken(null)
           }
           const err = new Error('API error')
