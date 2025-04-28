@@ -1,7 +1,14 @@
 <template>
   <BackButton />
 
-  <h1>Report an outbreak</h1>
+  <div class="mb-3 d-flex justify-space-between align-center flex-wrap">
+    <h1>Report an outbreak</h1>
+    <v-btn
+      href="/data/2025-scout-response-form.docx"
+      prepend-icon="mdi-file-word"
+      text="Scout Response Form"
+    />
+  </div>
 
   <section v-if="store.token && store.token.user">
     <p>Please complete the form below to report a new outbreak.</p>
@@ -67,7 +74,6 @@
         <v-autocomplete
           v-model="selectedSeverity"
           autocomplete="off"
-          clearable
           label="Severity"
           :items="severityOptions"
         />
@@ -81,7 +87,6 @@
         <v-autocomplete
           v-model="selectedSource"
           autocomplete="off"
-          clearable
           label="Source"
           :items="sourceOptions"
         />
@@ -93,9 +98,15 @@
       </v-col>
       <v-col :cols=12 :lg=3 :md=6>
         <v-autocomplete
+          v-model="selectedHost"
+          autocomplete="off"
+          label="Host"
+          :items="hostOptions"
+        />
+        <v-autocomplete
           v-model="selectedVariety"
           autocomplete="off"
-          clearable
+          :readonly="forcedVariety !== undefined"
           label="Variety"
           :items="varietyOptions"
         />
@@ -183,6 +194,7 @@
   import type { Variety } from '@/plugins/types/Variety'
   import type { SelectOption } from '@/plugins/types/SelectOption'
   import type { User } from '@/plugins/types/User'
+  import { outbreakHosts, type Host } from '@/plugins/constants'
   const store = coreStore()
 
   // Refs
@@ -200,6 +212,7 @@
   const selectedSource = ref<number>()
   const selectedSeverity = ref<number>()
   const selectedVariety = ref<number>()
+  const selectedHost = ref<string>('potato')
   const selectedUser = ref<number>()
   const severityOther = ref<string>()
   const sources = ref<Source[]>([])
@@ -207,6 +220,7 @@
   const comment = ref<string>()
   const submitting = ref<boolean>(false)
   const isPublic = ref<boolean>(false)
+  const host = ref(outbreakHosts)
 
   let map: Map
   let marker: Marker
@@ -351,6 +365,9 @@
   }
 
   const canContinue: ComputedRef<boolean> = computed(() => {
+    if (!selectedHost.value || selectedHost.value.trim().length < 1) {
+      return false
+    }
     if (!selectedSeverity.value) {
       return false
     }
@@ -380,6 +397,19 @@
     }
   })
 
+  const hostOptions: ComputedRef<SelectOption<string>[]> = computed(() => {
+    const result: SelectOption<string>[] = []
+
+    host.value.forEach((value: Host) => {
+      result.push({
+        title: value.text,
+        value: value.dbValue,
+      })
+    })
+
+    return result
+  })
+
   const userOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
     if (users.value) {
       return users.value.sort((a: User, b: User) => a.userName.localeCompare(b.userName)).map(s => {
@@ -406,6 +436,8 @@
     }
   })
 
+
+
   const varietyOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
     if (varieties.value) {
       return varieties.value.map(s => {
@@ -416,6 +448,19 @@
       })
     } else {
       return []
+    }
+  })
+
+  const forcedVariety: ComputedRef<number | undefined> = computed(() => {
+    if (selectedHost.value && selectedHost.value !== 'potato') {
+      if (varieties.value) {
+        let match = varieties.value.find(v => v.varietyName.toLowerCase() === 'other')
+        if (!match) {
+          match = varieties.value.find(v => v.varietyName.toLowerCase() === 'unknown')
+        }
+
+        return match?.varietyId
+      }
     }
   })
 
@@ -430,6 +475,14 @@
       })
     } else {
       selectedOutcode.value = undefined
+    }
+  })
+
+  watch(forcedVariety, async (newValue) => {
+    if (forcedVariety) {
+      selectedVariety.value = newValue
+    } else {
+      selectedVariety.value = undefined
     }
   })
 
@@ -452,6 +505,7 @@
       viewLatitude: selectedOutcode.value?.latitude,
       viewLongitude: selectedOutcode.value?.longitude,
       isPublic: isPublic.value,
+      host: selectedHost.value,
     }
 
     axiosCall<Outbreak>({ url: 'outbreaks', method: 'POST', params: outbreak })

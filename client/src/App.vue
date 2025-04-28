@@ -34,6 +34,19 @@
       </v-app-bar>
 
       <v-container class="app-content">
+        <v-alert
+          v-model="logoutWarning"
+          closable
+          icon="mdi-logout"
+          title="Session expired"
+          type="warning"
+          variant="tonal"
+        >
+          <template #text>
+            Your session has expired. Please <router-link @click="logoutWarning = false" to="/login">sign back in</router-link> to continue.
+          </template>
+        </v-alert>
+
         <router-view />
       </v-container>
 
@@ -111,6 +124,7 @@
   const goTo = useGoTo()
 
   const loading = ref<boolean>(false)
+  const logoutWarning = ref<boolean>(false)
 
   // Set base URL based on environment
   let baseUrl = './api/'
@@ -160,11 +174,17 @@
     loading.value = newValue
   }
 
+  function showLogout () {
+    logoutWarning.value = true
+  }
+
   onMounted(() => {
     emitter.on('set-loading', setLoading)
+    emitter.on('force-logout', showLogout)
   })
   onBeforeUnmount(() => {
     emitter.off('set-loading', setLoading)
+    emitter.off('force-logout', showLogout)
   })
 </script>
 
