@@ -151,6 +151,7 @@
           })
           .catch(e => {
             if (e.status === 403) {
+              store.setToken(null)
               logoutWarning.value = true
             }
           })
@@ -173,6 +174,7 @@
     })
     .catch(e => {
       if (e.status === 403) {
+        store.setToken(null)
         logoutWarning.value = true
       }
     })
