@@ -49,6 +49,7 @@
         v-if="banner.id === 'report-outbreak'"
         block
         class="mt-3"
+        href="/data/2025-scout-response-form.docx"
         prepend-icon="mdi-file-word"
         text="Scout Response Form"
       />

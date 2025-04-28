@@ -139,7 +139,6 @@
 
   watch(() => route.query.token, async newToken => {
     if (newToken) {
-      console.log(newToken)
       // Take the token, then remove from URL
       // @ts-ignore
       store.setToken(newToken)
@@ -147,7 +146,13 @@
       nextTick(() => {
         axiosCall<User>({ url: 'users/status' })
           .then((r: User) => {
+            logoutWarning.value = false
             store.setUser(r)
+          })
+          .catch(e => {
+            if (e.status === 403) {
+              logoutWarning.value = true
+            }
           })
       })
     }
@@ -163,7 +168,13 @@
 
   axiosCall<User>({ url: 'users/status' })
     .then((r: User) => {
+      logoutWarning.value = false
       store.setUser(r)
+    })
+    .catch(e => {
+      if (e.status === 403) {
+        logoutWarning.value = true
+      }
     })
   
   function logout () {
@@ -174,17 +185,11 @@
     loading.value = newValue
   }
 
-  function showLogout () {
-    logoutWarning.value = true
-  }
-
   onMounted(() => {
     emitter.on('set-loading', setLoading)
-    emitter.on('force-logout', showLogout)
   })
   onBeforeUnmount(() => {
     emitter.off('set-loading', setLoading)
-    emitter.off('force-logout', showLogout)
   })
 </script>
 
