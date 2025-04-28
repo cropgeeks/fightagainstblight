@@ -29,6 +29,21 @@ public class VarietiesResource
 			List<Varieties> list = context.selectFrom(VARIETIES)
 				.fetchInto(Varieties.class);
 
+			// Sort alphabetically
+			Collections.sort(list, java.util.Comparator.comparing(Varieties::getVarietyName));
+
+			// Move the unknowns/others to the top of the list
+			for (int i = 0; i < list.size(); i++)
+			{
+				Varieties v = list.get(i);
+
+				if (v.getVarietyName().equalsIgnoreCase("unknown"))
+				{
+					list.remove(v);
+					list.add(0, v);
+				}
+			}
+
 			return Response.ok(list).build();
 		}
 	}
