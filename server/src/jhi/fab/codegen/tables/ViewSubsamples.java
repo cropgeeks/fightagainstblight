@@ -85,11 +85,6 @@ public class ViewSubsamples extends TableImpl<ViewSubsamplesRecord> {
     public final TableField<ViewSubsamplesRecord, LocalDate> DATE_GENOTYPED = createField(DSL.name("date_genotyped"), SQLDataType.LOCALDATE, this, "");
 
     /**
-     * The column <code>fab.view_subsamples.user_comments</code>.
-     */
-    public final TableField<ViewSubsamplesRecord, String> USER_COMMENTS = createField(DSL.name("user_comments"), SQLDataType.VARCHAR(255), this, "");
-
-    /**
      * The column <code>fab.view_subsamples.admin_comments</code>.
      */
     public final TableField<ViewSubsamplesRecord, String> ADMIN_COMMENTS = createField(DSL.name("admin_comments"), SQLDataType.VARCHAR(255), this, "");
@@ -124,7 +119,7 @@ public class ViewSubsamples extends TableImpl<ViewSubsamplesRecord> {
     }
 
     private ViewSubsamples(Name alias, Table<ViewSubsamplesRecord> aliased, Field<?>[] parameters, Condition where) {
-        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `view_subsamples` as select `fab`.`subsamples`.`subsample_id` AS `subsample_id`,`fab`.`subsamples`.`subsample_code` AS `subsample_code`,`fab`.`subsamples`.`outbreak_id` AS `outbreak_id`,`fab`.`subsamples`.`genotype_id` AS `genotype_id`,`fab`.`ssr_genotypes`.`genotype_name` AS `genotype_name`,`fab`.`subsamples`.`material` AS `material`,`fab`.`subsamples`.`date_genotyped` AS `date_genotyped`,`fab`.`subsamples`.`user_comments` AS `user_comments`,`fab`.`subsamples`.`admin_comments` AS `admin_comments`,`fab`.`varieties`.`variety_id` AS `variety_id`,`fab`.`varieties`.`variety_name` AS `variety_name`,`fab`.`subsamples`.`mycelia_pellet` AS `mycelia_pellet`,`fab`.`subsamples`.`culture_slope` AS `culture_slope`,`fab`.`subsamples`.`mating_type` AS `mating_type` from ((`fab`.`subsamples` left join `fab`.`varieties` on((`fab`.`subsamples`.`variety_id` = `fab`.`varieties`.`variety_id`))) left join `fab`.`ssr_genotypes` on((`fab`.`subsamples`.`genotype_id` = `fab`.`ssr_genotypes`.`genotype_id`)))"), where);
+        super(alias, null, aliased, parameters, DSL.comment(""), TableOptions.view("create view `view_subsamples` as select `fab`.`subsamples`.`subsample_id` AS `subsample_id`,`fab`.`subsamples`.`subsample_code` AS `subsample_code`,`fab`.`subsamples`.`outbreak_id` AS `outbreak_id`,`fab`.`subsamples`.`genotype_id` AS `genotype_id`,`fab`.`ssr_genotypes`.`genotype_name` AS `genotype_name`,`fab`.`subsamples`.`material` AS `material`,`fab`.`subsamples`.`date_genotyped` AS `date_genotyped`,`fab`.`subsamples`.`admin_comments` AS `admin_comments`,`fab`.`varieties`.`variety_id` AS `variety_id`,`fab`.`varieties`.`variety_name` AS `variety_name`,`fab`.`subsamples`.`mycelia_pellet` AS `mycelia_pellet`,`fab`.`subsamples`.`culture_slope` AS `culture_slope`,`fab`.`subsamples`.`mating_type` AS `mating_type` from ((`fab`.`subsamples` left join `fab`.`varieties` on((`fab`.`subsamples`.`variety_id` = `fab`.`varieties`.`variety_id`))) left join `fab`.`ssr_genotypes` on((`fab`.`subsamples`.`genotype_id` = `fab`.`ssr_genotypes`.`genotype_id`)))"), where);
     }
 
     /**

@@ -19,9 +19,7 @@ public enum ViewOutbreaksStatus implements EnumType {
 
     confirmed("confirmed"),
 
-    negative("negative"),
-
-    deleted("deleted");
+    negative("negative");
 
     private final String literal;
 

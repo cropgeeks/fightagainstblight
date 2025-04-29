@@ -344,6 +344,20 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
         return (OutbreaksHost) get(22);
     }
 
+    /**
+     * Setter for <code>fab.outbreaks.reported_variety</code>.
+     */
+    public void setReportedVariety(String value) {
+        set(23, value);
+    }
+
+    /**
+     * Getter for <code>fab.outbreaks.reported_variety</code>.
+     */
+    public String getReportedVariety() {
+        return (String) get(23);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -367,7 +381,7 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
     /**
      * Create a detached, initialised OutbreaksRecord
      */
-    public OutbreaksRecord(Integer outbreakId, String outbreakCode, Integer userId, String postcode, String outcode, String country, String itlNuts, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, LocalDate dateSubmitted, LocalDate dateReceived, Integer reportedVarietyId, Integer severityId, Integer sourceId, String severityOther, String sourceOther, String userComments, String adminComments, OutbreaksStatus status, Boolean isPublic, OutbreaksHost host) {
+    public OutbreaksRecord(Integer outbreakId, String outbreakCode, Integer userId, String postcode, String outcode, String country, String itlNuts, Double realLatitude, Double realLongitude, Double viewLatitude, Double viewLongitude, LocalDate dateSubmitted, LocalDate dateReceived, Integer reportedVarietyId, Integer severityId, Integer sourceId, String severityOther, String sourceOther, String userComments, String adminComments, OutbreaksStatus status, Boolean isPublic, OutbreaksHost host, String reportedVariety) {
         super(Outbreaks.OUTBREAKS);
 
         setOutbreakId(outbreakId);
@@ -393,6 +407,7 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
         setStatus(status);
         setIsPublic(isPublic);
         setHost(host);
+        setReportedVariety(reportedVariety);
         resetTouchedOnNotNull();
     }
 
@@ -426,6 +441,7 @@ public class OutbreaksRecord extends UpdatableRecordImpl<OutbreaksRecord> {
             setStatus(value.getStatus());
             setIsPublic(value.getIsPublic());
             setHost(value.getHost());
+            setReportedVariety(value.getReportedVariety());
             resetTouchedOnNotNull();
         }
     }

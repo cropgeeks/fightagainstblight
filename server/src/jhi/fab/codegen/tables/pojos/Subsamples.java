@@ -25,7 +25,6 @@ public class Subsamples implements Serializable {
     private Integer varietyId;
     private String material;
     private LocalDate dateGenotyped;
-    private String userComments;
     private String adminComments;
     private Boolean myceliaPellet;
     private Boolean cultureSlope;
@@ -41,7 +40,6 @@ public class Subsamples implements Serializable {
         this.varietyId = value.varietyId;
         this.material = value.material;
         this.dateGenotyped = value.dateGenotyped;
-        this.userComments = value.userComments;
         this.adminComments = value.adminComments;
         this.myceliaPellet = value.myceliaPellet;
         this.cultureSlope = value.cultureSlope;
@@ -56,7 +54,6 @@ public class Subsamples implements Serializable {
         Integer varietyId,
         String material,
         LocalDate dateGenotyped,
-        String userComments,
         String adminComments,
         Boolean myceliaPellet,
         Boolean cultureSlope,
@@ -69,7 +66,6 @@ public class Subsamples implements Serializable {
         this.varietyId = varietyId;
         this.material = material;
         this.dateGenotyped = dateGenotyped;
-        this.userComments = userComments;
         this.adminComments = adminComments;
         this.myceliaPellet = myceliaPellet;
         this.cultureSlope = cultureSlope;
@@ -172,20 +168,6 @@ public class Subsamples implements Serializable {
      */
     public void setDateGenotyped(LocalDate dateGenotyped) {
         this.dateGenotyped = dateGenotyped;
-    }
-
-    /**
-     * Getter for <code>fab.subsamples.user_comments</code>.
-     */
-    public String getUserComments() {
-        return this.userComments;
-    }
-
-    /**
-     * Setter for <code>fab.subsamples.user_comments</code>.
-     */
-    public void setUserComments(String userComments) {
-        this.userComments = userComments;
     }
 
     /**
@@ -295,12 +277,6 @@ public class Subsamples implements Serializable {
         }
         else if (!this.dateGenotyped.equals(other.dateGenotyped))
             return false;
-        if (this.userComments == null) {
-            if (other.userComments != null)
-                return false;
-        }
-        else if (!this.userComments.equals(other.userComments))
-            return false;
         if (this.adminComments == null) {
             if (other.adminComments != null)
                 return false;
@@ -339,7 +315,6 @@ public class Subsamples implements Serializable {
         result = prime * result + ((this.varietyId == null) ? 0 : this.varietyId.hashCode());
         result = prime * result + ((this.material == null) ? 0 : this.material.hashCode());
         result = prime * result + ((this.dateGenotyped == null) ? 0 : this.dateGenotyped.hashCode());
-        result = prime * result + ((this.userComments == null) ? 0 : this.userComments.hashCode());
         result = prime * result + ((this.adminComments == null) ? 0 : this.adminComments.hashCode());
         result = prime * result + ((this.myceliaPellet == null) ? 0 : this.myceliaPellet.hashCode());
         result = prime * result + ((this.cultureSlope == null) ? 0 : this.cultureSlope.hashCode());
@@ -358,7 +333,6 @@ public class Subsamples implements Serializable {
         sb.append(", ").append(varietyId);
         sb.append(", ").append(material);
         sb.append(", ").append(dateGenotyped);
-        sb.append(", ").append(userComments);
         sb.append(", ").append(adminComments);
         sb.append(", ").append(myceliaPellet);
         sb.append(", ").append(cultureSlope);

@@ -42,6 +42,7 @@ public class Outbreaks implements Serializable {
     private OutbreaksStatus status;
     private Boolean isPublic;
     private OutbreaksHost host;
+    private String reportedVariety;
 
     public Outbreaks() {}
 
@@ -69,6 +70,7 @@ public class Outbreaks implements Serializable {
         this.status = value.status;
         this.isPublic = value.isPublic;
         this.host = value.host;
+        this.reportedVariety = value.reportedVariety;
     }
 
     public Outbreaks(
@@ -94,7 +96,8 @@ public class Outbreaks implements Serializable {
         String adminComments,
         OutbreaksStatus status,
         Boolean isPublic,
-        OutbreaksHost host
+        OutbreaksHost host,
+        String reportedVariety
     ) {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
@@ -119,6 +122,7 @@ public class Outbreaks implements Serializable {
         this.status = status;
         this.isPublic = isPublic;
         this.host = host;
+        this.reportedVariety = reportedVariety;
     }
 
     /**
@@ -443,6 +447,20 @@ public class Outbreaks implements Serializable {
         this.host = host;
     }
 
+    /**
+     * Getter for <code>fab.outbreaks.reported_variety</code>.
+     */
+    public String getReportedVariety() {
+        return this.reportedVariety;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.reported_variety</code>.
+     */
+    public void setReportedVariety(String reportedVariety) {
+        this.reportedVariety = reportedVariety;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -590,6 +608,12 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.host.equals(other.host))
             return false;
+        if (this.reportedVariety == null) {
+            if (other.reportedVariety != null)
+                return false;
+        }
+        else if (!this.reportedVariety.equals(other.reportedVariety))
+            return false;
         return true;
     }
 
@@ -620,6 +644,7 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.isPublic == null) ? 0 : this.isPublic.hashCode());
         result = prime * result + ((this.host == null) ? 0 : this.host.hashCode());
+        result = prime * result + ((this.reportedVariety == null) ? 0 : this.reportedVariety.hashCode());
         return result;
     }
 
@@ -650,6 +675,7 @@ public class Outbreaks implements Serializable {
         sb.append(", ").append(status);
         sb.append(", ").append(isPublic);
         sb.append(", ").append(host);
+        sb.append(", ").append(reportedVariety);
 
         sb.append(")");
         return sb.toString();

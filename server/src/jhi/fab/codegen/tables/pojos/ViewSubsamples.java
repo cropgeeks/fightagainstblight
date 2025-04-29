@@ -25,7 +25,6 @@ public class ViewSubsamples implements Serializable {
     private String genotypeName;
     private String material;
     private LocalDate dateGenotyped;
-    private String userComments;
     private String adminComments;
     private Integer varietyId;
     private String varietyName;
@@ -43,7 +42,6 @@ public class ViewSubsamples implements Serializable {
         this.genotypeName = value.genotypeName;
         this.material = value.material;
         this.dateGenotyped = value.dateGenotyped;
-        this.userComments = value.userComments;
         this.adminComments = value.adminComments;
         this.varietyId = value.varietyId;
         this.varietyName = value.varietyName;
@@ -60,7 +58,6 @@ public class ViewSubsamples implements Serializable {
         String genotypeName,
         String material,
         LocalDate dateGenotyped,
-        String userComments,
         String adminComments,
         Integer varietyId,
         String varietyName,
@@ -75,7 +72,6 @@ public class ViewSubsamples implements Serializable {
         this.genotypeName = genotypeName;
         this.material = material;
         this.dateGenotyped = dateGenotyped;
-        this.userComments = userComments;
         this.adminComments = adminComments;
         this.varietyId = varietyId;
         this.varietyName = varietyName;
@@ -180,20 +176,6 @@ public class ViewSubsamples implements Serializable {
      */
     public void setDateGenotyped(LocalDate dateGenotyped) {
         this.dateGenotyped = dateGenotyped;
-    }
-
-    /**
-     * Getter for <code>fab.view_subsamples.user_comments</code>.
-     */
-    public String getUserComments() {
-        return this.userComments;
-    }
-
-    /**
-     * Setter for <code>fab.view_subsamples.user_comments</code>.
-     */
-    public void setUserComments(String userComments) {
-        this.userComments = userComments;
     }
 
     /**
@@ -331,12 +313,6 @@ public class ViewSubsamples implements Serializable {
         }
         else if (!this.dateGenotyped.equals(other.dateGenotyped))
             return false;
-        if (this.userComments == null) {
-            if (other.userComments != null)
-                return false;
-        }
-        else if (!this.userComments.equals(other.userComments))
-            return false;
         if (this.adminComments == null) {
             if (other.adminComments != null)
                 return false;
@@ -387,7 +363,6 @@ public class ViewSubsamples implements Serializable {
         result = prime * result + ((this.genotypeName == null) ? 0 : this.genotypeName.hashCode());
         result = prime * result + ((this.material == null) ? 0 : this.material.hashCode());
         result = prime * result + ((this.dateGenotyped == null) ? 0 : this.dateGenotyped.hashCode());
-        result = prime * result + ((this.userComments == null) ? 0 : this.userComments.hashCode());
         result = prime * result + ((this.adminComments == null) ? 0 : this.adminComments.hashCode());
         result = prime * result + ((this.varietyId == null) ? 0 : this.varietyId.hashCode());
         result = prime * result + ((this.varietyName == null) ? 0 : this.varietyName.hashCode());
@@ -408,7 +383,6 @@ public class ViewSubsamples implements Serializable {
         sb.append(", ").append(genotypeName);
         sb.append(", ").append(material);
         sb.append(", ").append(dateGenotyped);
-        sb.append(", ").append(userComments);
         sb.append(", ").append(adminComments);
         sb.append(", ").append(varietyId);
         sb.append(", ").append(varietyName);
