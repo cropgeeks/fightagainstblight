@@ -57,6 +57,14 @@
         prepend-icon="mdi-file-word"
         text="Scout Response Form"
       />
+      <v-btn
+        v-if="banner.id === 'sign-in'"
+        block
+        class="mt-3"
+        href="https://forms.office.com/e/DRJYgDzNHd"
+        prepend-icon="mdi-file-sign"
+        text="Register as a scout"
+      />
     </v-col>
   </v-row>
 
@@ -83,3 +91,9 @@
   ])
 
 </script>
+
+<style scoped>
+:deep(.v-btn__content) {
+    white-space: pre-wrap;
+}
+</style>

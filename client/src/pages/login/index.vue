@@ -6,7 +6,28 @@
     max-width="448"
     rounded="lg"
   >
-    <div class="text-subtitle-1 text-medium-emphasis">Account</div>
+    <v-btn
+      block
+      class="my-5"
+      href="https://forms.office.com/e/DRJYgDzNHd"
+      prepend-icon="mdi-file-sign"
+      text="Register as a scout"
+    />
+
+    <v-alert
+      v-if="success"
+      text="If you provided a registered email address, a login link will have been sent to your email account. Please check your inbox."
+      type="success"
+      variant="tonal"
+    />
+    <v-alert
+      v-else
+      text="Please fill in your email address below. You'll receive an email with a login link that'll enable access to your data and allow you to submit new outbreaks."
+      type="info"
+      variant="tonal"
+    />
+
+    <div class="text-subtitle-1 text-medium-emphasis mt-5">Account</div>
 
     <v-text-field
       v-model="email"
@@ -18,22 +39,9 @@
       variant="outlined"
     />
 
-    <v-alert
-      v-if="success"
-      text="If you provided a registered email address, a login link will have been sent to your email account. Please check your inbox."
-      type="success"
-      variant="tonal"
-    />
-    <v-alert
-      v-else
-      text="Please fill in your email address above. You'll receive an email with a login link that'll enable access to your data and allow you to submit new outbreaks."
-      type="info"
-      variant="tonal"
-    />
-
     <v-btn
       block
-      class="my-8"
+      class="mb-8"
       color="primary"
       :disabled="disabled"
       prepend-icon="mdi-send"
