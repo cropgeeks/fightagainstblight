@@ -119,101 +119,87 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
     }
 
     /**
-     * Setter for <code>fab.view_subsamples.user_comments</code>.
-     */
-    public void setUserComments(String value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>fab.view_subsamples.user_comments</code>.
-     */
-    public String getUserComments() {
-        return (String) get(7);
-    }
-
-    /**
      * Setter for <code>fab.view_subsamples.admin_comments</code>.
      */
     public void setAdminComments(String value) {
-        set(8, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>fab.view_subsamples.admin_comments</code>.
      */
     public String getAdminComments() {
-        return (String) get(8);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>fab.view_subsamples.variety_id</code>.
      */
     public void setVarietyId(Integer value) {
-        set(9, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>fab.view_subsamples.variety_id</code>.
      */
     public Integer getVarietyId() {
-        return (Integer) get(9);
+        return (Integer) get(8);
     }
 
     /**
      * Setter for <code>fab.view_subsamples.variety_name</code>.
      */
     public void setVarietyName(String value) {
-        set(10, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>fab.view_subsamples.variety_name</code>.
      */
     public String getVarietyName() {
-        return (String) get(10);
+        return (String) get(9);
     }
 
     /**
      * Setter for <code>fab.view_subsamples.mycelia_pellet</code>.
      */
     public void setMyceliaPellet(Boolean value) {
-        set(11, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>fab.view_subsamples.mycelia_pellet</code>.
      */
     public Boolean getMyceliaPellet() {
-        return (Boolean) get(11);
+        return (Boolean) get(10);
     }
 
     /**
      * Setter for <code>fab.view_subsamples.culture_slope</code>.
      */
     public void setCultureSlope(Boolean value) {
-        set(12, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>fab.view_subsamples.culture_slope</code>.
      */
     public Boolean getCultureSlope() {
-        return (Boolean) get(12);
+        return (Boolean) get(11);
     }
 
     /**
      * Setter for <code>fab.view_subsamples.mating_type</code>.
      */
     public void setMatingType(ViewSubsamplesMatingType value) {
-        set(13, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>fab.view_subsamples.mating_type</code>.
      */
     public ViewSubsamplesMatingType getMatingType() {
-        return (ViewSubsamplesMatingType) get(13);
+        return (ViewSubsamplesMatingType) get(12);
     }
 
     // -------------------------------------------------------------------------
@@ -230,7 +216,7 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
     /**
      * Create a detached, initialised ViewSubsamplesRecord
      */
-    public ViewSubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, String genotypeName, String material, LocalDate dateGenotyped, String userComments, String adminComments, Integer varietyId, String varietyName, Boolean myceliaPellet, Boolean cultureSlope, ViewSubsamplesMatingType matingType) {
+    public ViewSubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, String genotypeName, String material, LocalDate dateGenotyped, String adminComments, Integer varietyId, String varietyName, Boolean myceliaPellet, Boolean cultureSlope, ViewSubsamplesMatingType matingType) {
         super(ViewSubsamples.VIEW_SUBSAMPLES);
 
         setSubsampleId(subsampleId);
@@ -240,7 +226,6 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
         setGenotypeName(genotypeName);
         setMaterial(material);
         setDateGenotyped(dateGenotyped);
-        setUserComments(userComments);
         setAdminComments(adminComments);
         setVarietyId(varietyId);
         setVarietyName(varietyName);
@@ -264,7 +249,6 @@ public class ViewSubsamplesRecord extends TableRecordImpl<ViewSubsamplesRecord> 
             setGenotypeName(value.getGenotypeName());
             setMaterial(value.getMaterial());
             setDateGenotyped(value.getDateGenotyped());
-            setUserComments(value.getUserComments());
             setAdminComments(value.getAdminComments());
             setVarietyId(value.getVarietyId());
             setVarietyName(value.getVarietyName());

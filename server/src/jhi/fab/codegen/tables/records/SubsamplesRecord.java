@@ -120,73 +120,59 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
     }
 
     /**
-     * Setter for <code>fab.subsamples.user_comments</code>.
-     */
-    public void setUserComments(String value) {
-        set(7, value);
-    }
-
-    /**
-     * Getter for <code>fab.subsamples.user_comments</code>.
-     */
-    public String getUserComments() {
-        return (String) get(7);
-    }
-
-    /**
      * Setter for <code>fab.subsamples.admin_comments</code>.
      */
     public void setAdminComments(String value) {
-        set(8, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>fab.subsamples.admin_comments</code>.
      */
     public String getAdminComments() {
-        return (String) get(8);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>fab.subsamples.mycelia_pellet</code>.
      */
     public void setMyceliaPellet(Boolean value) {
-        set(9, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>fab.subsamples.mycelia_pellet</code>.
      */
     public Boolean getMyceliaPellet() {
-        return (Boolean) get(9);
+        return (Boolean) get(8);
     }
 
     /**
      * Setter for <code>fab.subsamples.culture_slope</code>.
      */
     public void setCultureSlope(Boolean value) {
-        set(10, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>fab.subsamples.culture_slope</code>.
      */
     public Boolean getCultureSlope() {
-        return (Boolean) get(10);
+        return (Boolean) get(9);
     }
 
     /**
      * Setter for <code>fab.subsamples.mating_type</code>.
      */
     public void setMatingType(SubsamplesMatingType value) {
-        set(11, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>fab.subsamples.mating_type</code>.
      */
     public SubsamplesMatingType getMatingType() {
-        return (SubsamplesMatingType) get(11);
+        return (SubsamplesMatingType) get(10);
     }
 
     // -------------------------------------------------------------------------
@@ -212,7 +198,7 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
     /**
      * Create a detached, initialised SubsamplesRecord
      */
-    public SubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, Integer varietyId, String material, LocalDate dateGenotyped, String userComments, String adminComments, Boolean myceliaPellet, Boolean cultureSlope, SubsamplesMatingType matingType) {
+    public SubsamplesRecord(Integer subsampleId, String subsampleCode, Integer outbreakId, Integer genotypeId, Integer varietyId, String material, LocalDate dateGenotyped, String adminComments, Boolean myceliaPellet, Boolean cultureSlope, SubsamplesMatingType matingType) {
         super(Subsamples.SUBSAMPLES);
 
         setSubsampleId(subsampleId);
@@ -222,7 +208,6 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
         setVarietyId(varietyId);
         setMaterial(material);
         setDateGenotyped(dateGenotyped);
-        setUserComments(userComments);
         setAdminComments(adminComments);
         setMyceliaPellet(myceliaPellet);
         setCultureSlope(cultureSlope);
@@ -244,7 +229,6 @@ public class SubsamplesRecord extends UpdatableRecordImpl<SubsamplesRecord> {
             setVarietyId(value.getVarietyId());
             setMaterial(value.getMaterial());
             setDateGenotyped(value.getDateGenotyped());
-            setUserComments(value.getUserComments());
             setAdminComments(value.getAdminComments());
             setMyceliaPellet(value.getMyceliaPellet());
             setCultureSlope(value.getCultureSlope());

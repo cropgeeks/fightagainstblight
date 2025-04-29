@@ -181,6 +181,11 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
      */
     public final TableField<OutbreaksRecord, OutbreaksHost> HOST = createField(DSL.name("host"), SQLDataType.VARCHAR(6).defaultValue(DSL.inline("potato", SQLDataType.VARCHAR)).asEnumDataType(OutbreaksHost.class), this, "");
 
+    /**
+     * The column <code>fab.outbreaks.reported_variety</code>.
+     */
+    public final TableField<OutbreaksRecord, String> REPORTED_VARIETY = createField(DSL.name("reported_variety"), SQLDataType.VARCHAR(255), this, "");
+
     private Outbreaks(Name alias, Table<OutbreaksRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
