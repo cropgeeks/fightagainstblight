@@ -12,6 +12,14 @@ import { routes } from 'vue-router/auto-routes'
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: setupLayouts(routes),
+  // @ts-ignore
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition || (from && to && from.path === to.path)) {
+      return savedPosition
+    } else {
+      return { left: 0, top: 0 }
+    }
+  }
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804
