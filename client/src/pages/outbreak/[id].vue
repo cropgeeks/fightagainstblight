@@ -253,6 +253,10 @@
           />
         </template>
 
+        <template #item.adminComments="{ item }">
+          <div class="admin-comments" :title="item.adminComments">{{ item.adminComments }}</div>
+        </template>
+
         <template #item.actions="{ item }">
           <div v-if="isAdmin" class="d-flex ga-2 justify-end">
             <v-icon
@@ -813,5 +817,10 @@
 }
 .flex-unset {
   flex: unset;
+}
+.admin-comments {
+  max-width: 150px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
 }
 </style>
