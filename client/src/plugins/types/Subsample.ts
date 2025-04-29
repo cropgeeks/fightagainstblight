@@ -10,7 +10,6 @@ export interface Subsample {
   outbreakId?: number
   outbreakCode?: string
   dateGenotyped?: string
-  userComments?: string
   adminComments?: string
   myceliaPellet?: boolean
   cultureSlope?: boolean
