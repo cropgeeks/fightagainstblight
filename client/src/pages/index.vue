@@ -74,7 +74,7 @@
   const banners = ref<Banner[]>([
     { id: 'view-outbreaks', title: 'View reported outbreaks', img: 'outbreak-list.jpg', color: 'blue-darken-1', icon: 'mdi-table-eye', to: '/outbreak', text: 'View all reported outbreaks and their confirmation status as a list or on a map. Search and filter the results to find what you\'re looking for.' },
     { id: 'report-outbreak', title: 'Report a new outbreak', img: 'report-outbreak.jpg', color: 'cyan-darken-1', icon: 'mdi-file-document-alert-outline', to: '/submit', text: 'Submit a new potential outbreak to the system. The samples will be checked and the outbreak will be confirmed or marked as negative.' },
-    { id: 'sign-in', title: 'Scout sign in', img: 'login.jpg', color: 'green-darken-1', icon: 'mdi-login', to: '/login', text: 'Sign in with your email address to get access to your submitted outbreaks and to report a new outbreak.' },
+    { id: 'sign-in', title: 'Scout sign in', img: 'login.jpg', color: 'green-darken-1', icon: 'mdi-login', to: '/login', text: 'Click here to sign in with your registered email address to get access to your submitted outbreaks and to report a new outbreak.' },
     { id: 'blight-spy', title: 'BlightSpy forecast', img: 'blightspy.jpg', color: 'light-green-darken-1', icon: 'mdi-weather-partly-rainy', href: 'https://blightspy.huttonltd.com/', text: 'BlightSpy allows potato growers and agronomists to monitor weather forecasts for the predicted occurrence of Hutton Criteria blight risk.' },
   ])
 

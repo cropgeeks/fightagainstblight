@@ -94,7 +94,7 @@
             v-else-if="isOwner"
             :placeholder="store.token?.user?.userName"
             persistent-placeholder
-            disabled
+            readonly
             label="Owner"
           />
         </v-col>
@@ -339,20 +339,21 @@
                 :items="matingTypeOptions"
                 label="Mating type"
               />
-            </v-col>
-            <v-col cols="12" md="6" />
-            <v-col cols="12" md="6">
               <v-checkbox
                 v-model="record.myceliaPellet"
                 hide-details
                 label="Mycelia pellet"
               />
-            </v-col>
-            <v-col cols="12" md="6">
               <v-checkbox
                 v-model="record.cultureSlope"
                 hide-details
                 label="Culture slope"
+              />
+            </v-col>
+            <v-col cols="12" md="6">
+              <v-textarea
+                v-model="record.adminComments"
+                label="Admin comments"
               />
             </v-col>
           </v-row>
@@ -428,19 +429,6 @@
   const subsampleCodeValid = ref<boolean | undefined>()
   const subsampleCodesInUse = ref<string[]>([])
   const status = ref<Map<string, Status>>(outbreakStatus)
-  const headers = ref<any[]>([
-    { title: 'Pre-created/existing', key: 'subsampleId' },
-    { title: 'Outbreak code', key: 'outbreakCode' },
-    { title: 'Subsample code', key: 'subsampleCode' },
-    { title: 'Variety', key: 'varietyName' },
-    { title: 'Material', key: 'material' },
-    { title: 'Genotyped on', key: 'dateGenotyped', value: (item: Subsample) => (item && item.dateGenotyped) ? new Date(item.dateGenotyped).toLocaleDateString() : null },
-    { title: 'Genotype', key: 'genotypeName' },
-    { title: 'Mycelia pellet', key: 'myceliaPellet' },
-    { title: 'Culture slope', key: 'cultureSlope' },
-    { title: 'Mating type', key: 'matingType' },
-    { title: 'Actions', key: 'actions', align: 'end', sortable: false }
-  ])
   const dialog = ref<boolean>(false)
   const isEditing = ref<boolean>(false)
   const record = ref<Subsample>()
@@ -448,6 +436,30 @@
   const snackbarConfig = ref<SnackbarConfig>({
     text: '',
     color: 'success',
+  })
+
+  const headers: ComputedRef<any[]> = computed(() => {
+    const arr: any[] = [
+      { title: 'Pre-created/existing', key: 'subsampleId' },
+      { title: 'Outbreak code', key: 'outbreakCode' },
+      { title: 'Subsample code', key: 'subsampleCode' },
+      { title: 'Variety', key: 'varietyName' },
+      { title: 'Material', key: 'material' },
+      { title: 'Genotyped on', key: 'dateGenotyped', value: (item: Subsample) => (item && item.dateGenotyped) ? new Date(item.dateGenotyped).toLocaleDateString() : null },
+      { title: 'Genotype', key: 'genotypeName' }
+    ]
+
+    if (isAdmin.value) {
+      arr.push(
+        { title: 'Mycelia pellet', key: 'myceliaPellet' },
+        { title: 'Culture slope', key: 'cultureSlope' },
+        { title: 'Mating type', key: 'matingType' },
+        { title: 'Admin comment', key: 'adminComments' },
+        { title: 'Actions', key: 'actions', align: 'end', sortable: false }
+      )
+    }
+
+    return arr
   })
 
   const hasGps: ComputedRef<boolean> = computed(() => {

@@ -65,8 +65,8 @@
 
         <v-checkbox
           v-model="isPublic"
-          hint="When selected, we won't hide the precise location of this outbreak, helping everyone in the Fight against Blight."
-          label="Make outbreak public"
+          hint="When selected, we won't hide the precise location of this outbreak, helping everyone in the Fight Against Blight."
+          label="Share precise location"
           persistent-hint
         />
       </v-col>
@@ -219,7 +219,7 @@
   const users = ref<User[]>([])
   const comment = ref<string>()
   const submitting = ref<boolean>(false)
-  const isPublic = ref<boolean>(false)
+  const isPublic = ref<boolean>(true)
   const host = ref(outbreakHosts)
 
   let map: Map

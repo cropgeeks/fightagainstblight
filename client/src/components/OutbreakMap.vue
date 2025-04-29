@@ -199,9 +199,6 @@
       const div = L.DomUtil.create('div', 'info legend')
       div.classList.add('pa-2')
       outbreakStatus.forEach(status => {
-        if (status.dbValue === 'deleted') {
-          return
-        }
         div.innerHTML += `<i style="color: ${vTheme.current.value.colors[status.color] || 'grey'}"><?xml version="1.0" encoding="UTF-8" standalone="no"?><svg viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><g><path id="path1" style="fill:currentColor;" d="m 25.192388,4.1152238 a 13,13 0 0 0 -18.3847761,0 13,13 0 0 0 0,18.3847762 L 16,31.692388 25.192388,22.5 a 13,13 0 0 0 0,-18.3847762 z"/></g></svg></i><span>${status.text}</span><br>`
       })
       return div
