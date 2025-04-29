@@ -37,7 +37,7 @@ public class SeveritiesResource
 			{
 				Severities s = list.get(i);
 
-				if (s.getSeverityName().equalsIgnoreCase("unknown"))
+				if (s.getSeverityName().equalsIgnoreCase("unknown/other"))
 				{
 					list.remove(s);
 					list.add(0, s);

@@ -37,7 +37,7 @@ public class SourcesResource
 			{
 				Sources s = list.get(i);
 
-				if (s.getSourceName().equalsIgnoreCase("unknown"))
+				if (s.getSourceName().equalsIgnoreCase("unknown/other"))
 				{
 					list.remove(s);
 					list.add(0, s);
