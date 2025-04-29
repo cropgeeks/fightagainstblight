@@ -233,7 +233,7 @@ public class OutbreaksResource
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
 
 			context.update(OUTBREAKS)
-				.set(OUTBREAKS.USER_ID, user.getUserID())
+				.set(OUTBREAKS.USER_ID, outbreak.getUserId())
 				.set(OUTBREAKS.DATE_RECEIVED, outbreak.getDateReceived())
 				.set(OUTBREAKS.STATUS, outbreak.getStatus())
 				.set(OUTBREAKS.ADMIN_COMMENTS, outbreak.getAdminComments())

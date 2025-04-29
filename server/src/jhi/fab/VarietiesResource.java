@@ -37,7 +37,7 @@ public class VarietiesResource
 			{
 				Varieties v = list.get(i);
 
-				if (v.getVarietyName().equalsIgnoreCase("unknown"))
+				if (v.getVarietyName().equalsIgnoreCase("unknown/other"))
 				{
 					list.remove(v);
 					list.add(0, v);
