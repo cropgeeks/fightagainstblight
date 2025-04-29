@@ -1,9 +1,9 @@
 <template>
-  <h1 class="mb-4">Fight against Blight</h1>
+  <h1 class="mb-4">Fight Against Blight</h1>
 
   <v-row>
     <v-col :cols=12 :md=8>
-      <p class="mb-2">As a part of the research into blight populations, the Potatoes Fight against Blight service has been reporting blight alerts since 2017.</p>
+      <p class="mb-2">Welcome to the revised Fight Against Blight website.  Thanks to the below sponsors and the network of blight scouts this reporting service and Hutton’s research on the potato late blight pathogen population has been supporting the integrated management of potato late blight since 2006.</p>
       <p class="mb-2">To report a new outbreak, please use the form on <router-link to="/submit">this page</router-link>.</p>
     </v-col>
     <v-col :cols=12 :md=4 class="d-flex align-center pa-5 sponsor-img">

@@ -157,7 +157,9 @@
     :headers="headers"
     :items="outbreaks"
     :loading="loading"
+    :page="page"
     :sort-by="[{ key: 'dateSubmitted', order: 'desc' }]"
+    @update:page="p => { page = p }"
   >
     <template #item.status="{ value }">
       <v-chip
@@ -258,6 +260,7 @@
   import { coreStore } from '@/stores/app'
 
   const store = coreStore()
+  const router = useRouter()
 
   // Refs
   const outbreaks = ref<Outbreak[]>([])
@@ -276,7 +279,9 @@
   const selectedSeverity = ref<number>()
   const selectedVariety = ref<number>()
   const selectedYear = ref<number | undefined>()
-  const selectedStatus = ref<string>()
+  const selectedStatus = ref<string | undefined>()
+  const page = ref<number | undefined>(1)
+  const forcePage = ref<number | undefined>(1)
   const headers = ref<any[]>([
     { title: 'Outbreak code', key: 'outbreakCode' },
     { title: 'Severity', key: 'severityName' },
@@ -451,10 +456,25 @@
       }
     })
 
+  watch(page, async (newValue) => {
+    const q = Object.assign({}, router.currentRoute.value.query || {})
+    // @ts-ignore
+    q.page = newValue
+    router.replace({ query: q })
+  })
+
   // Watch for changes on the filtering options
-  watchEffect(async () => {
-    loading.value = true
-    axiosCall<Outbreak[]>({ url: 'outbreaks', params: {
+  watch(selectedSource, async () => update())
+  watch(selectedSeverity, async () => update())
+  watch(selectedVariety, async () => update())
+  watch(selectedYear, async () => update())
+  watch(selectedStatus, async () => update())
+  watch(outbreakCode, async () => update())
+  watch(postcode, async () => update())
+  watch(onlyShowUserData, async () => update())
+
+  function update () {
+    const params = {
       source: selectedSource.value,
       severity: selectedSeverity.value,
       variety: selectedVariety.value,
@@ -463,21 +483,52 @@
       outbreakCode: outbreakCode.value,
       outcode: postcode.value,
       userId: onlyShowUserData.value ? store.token?.user?.userId : null,
-    }})
+      page: page.value || 1,
+    }
+
+    router.replace({ query: params })
+
+    loading.value = true
+    axiosCall<Outbreak[]>({ url: 'outbreaks', params: params })
       .then((result: Outbreak[]) => {
         loading.value = false
         outbreaks.value = result
+
+        if (forcePage.value && forcePage.value !== 1) {
+          nextTick(() => {
+            page.value = forcePage.value
+            forcePage.value = undefined
+          })
+        }
       })
       .catch(() => {
         loading.value = false
       })
-  })
+  }
 
   // Initially get all outbreaks
   axiosCall<Outbreak[]>({ url: 'outbreaks' })
     .then((result: Outbreak[]) => {
       outbreaks.value = result
     })
+
+  onMounted(() => {
+    if (router.currentRoute.value.query) {
+      const q = router.currentRoute.value.query
+      console.log(q)
+      selectedSource.value = q.source ? +q.source : undefined
+      selectedSeverity.value = q.severity ? +q.severity : undefined
+      selectedVariety.value = q.variety ? +q.variety : undefined
+      selectedYear.value = q.year ? +q.year : undefined
+      selectedStatus.value = q.status ? `${q.status}` : undefined
+      outbreakCode.value = q.outbreakCode ? `${q.outbreakCode}` : undefined
+      outbreakCodeTemp.value = outbreakCode.value
+      postcode.value = q.outcode ? `${q.outcode}` : undefined
+      postcodeTemp.value = postcode.value
+      onlyShowUserData.value = q.userId !== undefined && q.userId !== null
+      forcePage.value = q.page ? +q.page : 1
+    }
+  })
 </script>
 
 <style>
