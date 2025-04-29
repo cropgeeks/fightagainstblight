@@ -3,8 +3,12 @@
 
   <v-row>
     <v-col :cols=12 :md=8>
-      <p class="mb-2">Welcome to the revised Fight Against Blight website.  Thanks to the below sponsors and the network of blight scouts this reporting service and Hutton’s research on the potato late blight pathogen population has been supporting the integrated management of potato late blight since 2006.</p>
-      <p class="mb-2">To report a new outbreak, please use the form on <router-link to="/submit">this page</router-link>.</p>
+      <p class="mb-2">Welcome to the revised Fight Against Blight website.  Thanks to the below sponsors and the network of blight scouts this reporting service and Hutton's research on the potato late blight pathogen population has been supporting the integrated management of potato late blight since 2006.</p>
+      <v-list>
+        <v-list-item prepend-icon="mdi-file-document-alert-outline">To report a new outbreak, please use the form on <router-link to="/submit">this page</router-link>.</v-list-item>
+        <v-list-item prepend-icon="mdi-file-sign">To register as a new FAB scout, please complete this <a href="https://forms.office.com/e/DRJYgDzNHd">registration form</a> and we will be in touch.</v-list-item>
+        <v-list-item prepend-icon="mdi-email-outline">If you would like more information about Fight Against Blight or encounter any issues, please contact us at <a href="mailto:fab@hutton.ac.uk">fab@hutton.ac.uk</a>.</v-list-item>
+      </v-list>
     </v-col>
     <v-col :cols=12 :md=4 class="d-flex align-center pa-5 sponsor-img">
       <v-img class="d-none d-md-inline-block" position="right center" src="@/assets/hutton.svg" />
