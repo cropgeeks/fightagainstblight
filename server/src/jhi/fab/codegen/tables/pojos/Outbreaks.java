@@ -32,6 +32,7 @@ public class Outbreaks implements Serializable {
     private Double viewLongitude;
     private LocalDate dateSubmitted;
     private LocalDate dateReceived;
+    private OutbreaksHost host;
     private Integer reportedVarietyId;
     private Integer severityId;
     private Integer sourceId;
@@ -41,8 +42,6 @@ public class Outbreaks implements Serializable {
     private String adminComments;
     private OutbreaksStatus status;
     private Boolean isPublic;
-    private OutbreaksHost host;
-    private String reportedVariety;
 
     public Outbreaks() {}
 
@@ -60,6 +59,7 @@ public class Outbreaks implements Serializable {
         this.viewLongitude = value.viewLongitude;
         this.dateSubmitted = value.dateSubmitted;
         this.dateReceived = value.dateReceived;
+        this.host = value.host;
         this.reportedVarietyId = value.reportedVarietyId;
         this.severityId = value.severityId;
         this.sourceId = value.sourceId;
@@ -69,8 +69,6 @@ public class Outbreaks implements Serializable {
         this.adminComments = value.adminComments;
         this.status = value.status;
         this.isPublic = value.isPublic;
-        this.host = value.host;
-        this.reportedVariety = value.reportedVariety;
     }
 
     public Outbreaks(
@@ -87,6 +85,7 @@ public class Outbreaks implements Serializable {
         Double viewLongitude,
         LocalDate dateSubmitted,
         LocalDate dateReceived,
+        OutbreaksHost host,
         Integer reportedVarietyId,
         Integer severityId,
         Integer sourceId,
@@ -95,9 +94,7 @@ public class Outbreaks implements Serializable {
         String userComments,
         String adminComments,
         OutbreaksStatus status,
-        Boolean isPublic,
-        OutbreaksHost host,
-        String reportedVariety
+        Boolean isPublic
     ) {
         this.outbreakId = outbreakId;
         this.outbreakCode = outbreakCode;
@@ -112,6 +109,7 @@ public class Outbreaks implements Serializable {
         this.viewLongitude = viewLongitude;
         this.dateSubmitted = dateSubmitted;
         this.dateReceived = dateReceived;
+        this.host = host;
         this.reportedVarietyId = reportedVarietyId;
         this.severityId = severityId;
         this.sourceId = sourceId;
@@ -121,8 +119,6 @@ public class Outbreaks implements Serializable {
         this.adminComments = adminComments;
         this.status = status;
         this.isPublic = isPublic;
-        this.host = host;
-        this.reportedVariety = reportedVariety;
     }
 
     /**
@@ -308,6 +304,20 @@ public class Outbreaks implements Serializable {
     }
 
     /**
+     * Getter for <code>fab.outbreaks.host</code>.
+     */
+    public OutbreaksHost getHost() {
+        return this.host;
+    }
+
+    /**
+     * Setter for <code>fab.outbreaks.host</code>.
+     */
+    public void setHost(OutbreaksHost host) {
+        this.host = host;
+    }
+
+    /**
      * Getter for <code>fab.outbreaks.reported_variety_id</code>.
      */
     public Integer getReportedVarietyId() {
@@ -433,34 +443,6 @@ public class Outbreaks implements Serializable {
         this.isPublic = isPublic;
     }
 
-    /**
-     * Getter for <code>fab.outbreaks.host</code>.
-     */
-    public OutbreaksHost getHost() {
-        return this.host;
-    }
-
-    /**
-     * Setter for <code>fab.outbreaks.host</code>.
-     */
-    public void setHost(OutbreaksHost host) {
-        this.host = host;
-    }
-
-    /**
-     * Getter for <code>fab.outbreaks.reported_variety</code>.
-     */
-    public String getReportedVariety() {
-        return this.reportedVariety;
-    }
-
-    /**
-     * Setter for <code>fab.outbreaks.reported_variety</code>.
-     */
-    public void setReportedVariety(String reportedVariety) {
-        this.reportedVariety = reportedVariety;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -548,6 +530,12 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.dateReceived.equals(other.dateReceived))
             return false;
+        if (this.host == null) {
+            if (other.host != null)
+                return false;
+        }
+        else if (!this.host.equals(other.host))
+            return false;
         if (this.reportedVarietyId == null) {
             if (other.reportedVarietyId != null)
                 return false;
@@ -602,18 +590,6 @@ public class Outbreaks implements Serializable {
         }
         else if (!this.isPublic.equals(other.isPublic))
             return false;
-        if (this.host == null) {
-            if (other.host != null)
-                return false;
-        }
-        else if (!this.host.equals(other.host))
-            return false;
-        if (this.reportedVariety == null) {
-            if (other.reportedVariety != null)
-                return false;
-        }
-        else if (!this.reportedVariety.equals(other.reportedVariety))
-            return false;
         return true;
     }
 
@@ -634,6 +610,7 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.viewLongitude == null) ? 0 : this.viewLongitude.hashCode());
         result = prime * result + ((this.dateSubmitted == null) ? 0 : this.dateSubmitted.hashCode());
         result = prime * result + ((this.dateReceived == null) ? 0 : this.dateReceived.hashCode());
+        result = prime * result + ((this.host == null) ? 0 : this.host.hashCode());
         result = prime * result + ((this.reportedVarietyId == null) ? 0 : this.reportedVarietyId.hashCode());
         result = prime * result + ((this.severityId == null) ? 0 : this.severityId.hashCode());
         result = prime * result + ((this.sourceId == null) ? 0 : this.sourceId.hashCode());
@@ -643,8 +620,6 @@ public class Outbreaks implements Serializable {
         result = prime * result + ((this.adminComments == null) ? 0 : this.adminComments.hashCode());
         result = prime * result + ((this.status == null) ? 0 : this.status.hashCode());
         result = prime * result + ((this.isPublic == null) ? 0 : this.isPublic.hashCode());
-        result = prime * result + ((this.host == null) ? 0 : this.host.hashCode());
-        result = prime * result + ((this.reportedVariety == null) ? 0 : this.reportedVariety.hashCode());
         return result;
     }
 
@@ -665,6 +640,7 @@ public class Outbreaks implements Serializable {
         sb.append(", ").append(viewLongitude);
         sb.append(", ").append(dateSubmitted);
         sb.append(", ").append(dateReceived);
+        sb.append(", ").append(host);
         sb.append(", ").append(reportedVarietyId);
         sb.append(", ").append(severityId);
         sb.append(", ").append(sourceId);
@@ -674,8 +650,6 @@ public class Outbreaks implements Serializable {
         sb.append(", ").append(adminComments);
         sb.append(", ").append(status);
         sb.append(", ").append(isPublic);
-        sb.append(", ").append(host);
-        sb.append(", ").append(reportedVariety);
 
         sb.append(")");
         return sb.toString();

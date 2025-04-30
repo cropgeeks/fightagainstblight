@@ -208,6 +208,7 @@ public class OutbreaksResource
 				.set(OUTBREAKS.USER_COMMENTS, newOutbreak.getUserComments())
 				.set(OUTBREAKS.ADMIN_COMMENTS, newOutbreak.getAdminComments())
 				.set(OUTBREAKS.IS_PUBLIC, newOutbreak.getIsPublic())
+				.set(OUTBREAKS.REPORTED_VARIETY_ID, newOutbreak.getReportedVarietyId())
 				.returning(OUTBREAKS.fields())
 				.fetchOneInto(Outbreaks.class);
 

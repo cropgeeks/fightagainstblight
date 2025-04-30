@@ -104,12 +104,12 @@ public class Subsamples extends TableImpl<SubsamplesRecord> {
     /**
      * The column <code>fab.subsamples.mycelia_pellet</code>.
      */
-    public final TableField<SubsamplesRecord, Boolean> MYCELIA_PELLET = createField(DSL.name("mycelia_pellet"), SQLDataType.BOOLEAN.defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<SubsamplesRecord, Boolean> MYCELIA_PELLET = createField(DSL.name("mycelia_pellet"), SQLDataType.BOOLEAN, this, "");
 
     /**
      * The column <code>fab.subsamples.culture_slope</code>.
      */
-    public final TableField<SubsamplesRecord, Boolean> CULTURE_SLOPE = createField(DSL.name("culture_slope"), SQLDataType.BOOLEAN.defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<SubsamplesRecord, Boolean> CULTURE_SLOPE = createField(DSL.name("culture_slope"), SQLDataType.BOOLEAN, this, "");
 
     /**
      * The column <code>fab.subsamples.mating_type</code>.

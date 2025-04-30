@@ -132,6 +132,11 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     public final TableField<OutbreaksRecord, LocalDate> DATE_RECEIVED = createField(DSL.name("date_received"), SQLDataType.LOCALDATE, this, "");
 
     /**
+     * The column <code>fab.outbreaks.host</code>.
+     */
+    public final TableField<OutbreaksRecord, OutbreaksHost> HOST = createField(DSL.name("host"), SQLDataType.VARCHAR(6).defaultValue(DSL.inline("potato", SQLDataType.VARCHAR)).asEnumDataType(OutbreaksHost.class), this, "");
+
+    /**
      * The column <code>fab.outbreaks.reported_variety_id</code>.
      */
     public final TableField<OutbreaksRecord, Integer> REPORTED_VARIETY_ID = createField(DSL.name("reported_variety_id"), SQLDataType.INTEGER, this, "");
@@ -169,22 +174,12 @@ public class Outbreaks extends TableImpl<OutbreaksRecord> {
     /**
      * The column <code>fab.outbreaks.status</code>.
      */
-    public final TableField<OutbreaksRecord, OutbreaksStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).defaultValue(DSL.inline("pending", SQLDataType.VARCHAR)).asEnumDataType(OutbreaksStatus.class), this, "");
+    public final TableField<OutbreaksRecord, OutbreaksStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).asEnumDataType(OutbreaksStatus.class), this, "");
 
     /**
      * The column <code>fab.outbreaks.is_public</code>.
      */
     public final TableField<OutbreaksRecord, Boolean> IS_PUBLIC = createField(DSL.name("is_public"), SQLDataType.BOOLEAN.defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
-
-    /**
-     * The column <code>fab.outbreaks.host</code>.
-     */
-    public final TableField<OutbreaksRecord, OutbreaksHost> HOST = createField(DSL.name("host"), SQLDataType.VARCHAR(6).defaultValue(DSL.inline("potato", SQLDataType.VARCHAR)).asEnumDataType(OutbreaksHost.class), this, "");
-
-    /**
-     * The column <code>fab.outbreaks.reported_variety</code>.
-     */
-    public final TableField<OutbreaksRecord, String> REPORTED_VARIETY = createField(DSL.name("reported_variety"), SQLDataType.VARCHAR(255), this, "");
 
     private Outbreaks(Name alias, Table<OutbreaksRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
