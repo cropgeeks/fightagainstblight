@@ -168,8 +168,14 @@ public class OutbreaksResource
 			int[] nextID = {0};
 			context.selectFrom(OUTBREAKS)
 				.forEach(outbreakRecord -> {
-					int code = Integer.parseInt(outbreakRecord.getOutbreakCode().substring(7));
-					nextID[0] = Math.max(code, nextID[0]);
+					try
+					{
+						// Some of the older codes in the database don't match
+						// this format, so expect exceptions
+						int code = Integer.parseInt(outbreakRecord.getOutbreakCode().substring(7));
+						nextID[0] = Math.max(code, nextID[0]);
+					}
+					catch (Exception e) {}
 				});
 
 			// Ensure we always have a value for isPublic
