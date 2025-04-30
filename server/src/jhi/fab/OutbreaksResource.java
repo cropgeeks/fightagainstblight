@@ -474,9 +474,12 @@ public class OutbreaksResource
 			OutputStreamWriter writer = new OutputStreamWriter(baos, StandardCharsets.UTF_8);
 			BufferedWriter out = new BufferedWriter(writer);
 
+			out.write("Running_No\t");
 			out.write("SampleCode\t");
 			out.write("SampleType\t");
-			out.write("CollectionDate\t");
+			out.write("CollectionYear\t");
+			out.write("CollectionMonth\t");
+			out.write("CollectionDay\t");
 			out.write("GenotypedDate\t");
 			out.write("Collector\t");
 			out.write("Institution\t");
@@ -487,6 +490,7 @@ public class OutbreaksResource
 			out.write("Location\t");
 			out.write("Latitude\t");
 			out.write("Longtitude\t");
+			out.write("Altitude\t");
 			out.write("Site\t");
 			out.write("Outbreak size\t");
 			out.write("SSR genotype\t");
@@ -500,7 +504,9 @@ public class OutbreaksResource
 
 				out.write(format(result.getSubsampleCode()));
 				out.write(format(result.getMaterial()));
-				out.write(format(result.getDateSubmitted()));
+				out.write(format(result.getDateSubmitted().getYear()));
+				out.write(format(result.getDateSubmitted().getMonthValue()));
+				out.write(format(result.getDateSubmitted().getDayOfMonth()));
 				out.write(format(result.getDateGenotyped()));
 				out.write(format(result.getUserName()));
 				out.write(format("The James Hutton Institute"));
@@ -511,6 +517,7 @@ public class OutbreaksResource
 				out.write(format(result.getOutcode()));
 				out.write(format(result.getViewLatitude()));
 				out.write(format(result.getViewLongitude()));
+				out.write(format(null));
 				out.write(format(result.getSourceName()));
 				out.write(format(result.getSeverityName()));
 				out.write(format(result.getGenotypeName()));
