@@ -506,6 +506,7 @@
       viewLongitude: selectedOutcode.value?.longitude,
       isPublic: isPublic.value,
       host: selectedHost.value,
+      reportedVarietyId: selectedVariety.value,
     }
 
     axiosCall<Outbreak>({ url: 'outbreaks', method: 'POST', params: outbreak })
