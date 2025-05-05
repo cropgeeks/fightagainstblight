@@ -454,9 +454,9 @@
   const forcedVariety: ComputedRef<number | undefined> = computed(() => {
     if (selectedHost.value && selectedHost.value !== 'potato') {
       if (varieties.value) {
-        let match = varieties.value.find(v => v.varietyName.toLowerCase() === 'other')
+        let match = varieties.value.find(v => v.varietyName.toLowerCase().includes('other'))
         if (!match) {
-          match = varieties.value.find(v => v.varietyName.toLowerCase() === 'unknown')
+          match = varieties.value.find(v => v.varietyName.toLowerCase().includes('unknown'))
         }
 
         return match?.varietyId
