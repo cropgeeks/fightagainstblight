@@ -57,6 +57,9 @@
   import BackButton from '@/components/BackButton.vue'
   import { axiosCall } from '@/plugins/api'
 
+  // @ts-ignore
+  import emitter from 'tiny-emitter/instance'
+
   const email = ref<string>()
   const sending = ref<boolean>(false)
   const success = ref<boolean | undefined>()
@@ -73,6 +76,7 @@
 
     axiosCall({ url: 'users/login', method: 'POST', params: email.value, contentType: 'text/plain; charset=utf-8' })
       .then(() => {
+        emitter.emit('plausible-event', { key: 'login' })
         sending.value = false
         success.value = true
         email.value = ''

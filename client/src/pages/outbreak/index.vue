@@ -260,6 +260,9 @@
   
   import { coreStore } from '@/stores/app'
 
+  // @ts-ignore
+  import emitter from 'tiny-emitter/instance'
+
   const store = coreStore()
   const router = useRouter()
 
@@ -486,6 +489,8 @@
       userId: onlyShowUserData.value ? store.token?.user?.userId : null,
       page: page.value || 1,
     }
+
+    emitter.emit('plausible-event', { key: 'outbreak-filtering', props: params })
 
     router.replace({ query: params })
 

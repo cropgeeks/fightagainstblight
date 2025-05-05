@@ -96,9 +96,11 @@
   import { coreStore } from '@/stores/app'
   import { useRoute, useRouter } from 'vue-router'
   import { useGoTo } from 'vuetify'
+  import { usePlausible } from 'v-plausible/vue'
   import type { User } from '@/plugins/types/User'
   // @ts-ignore
   import emitter from 'tiny-emitter/instance'
+  const { trackEvent } = usePlausible()
 
   type CallbackFunction = () => void
 
@@ -187,11 +189,23 @@
     loading.value = newValue
   }
 
+  function plausibleEvent (data: any) {
+    if (data) {
+      if (data.props) {
+        trackEvent(data.key, { props: data.props })
+      } else {
+        trackEvent(data.key)
+      }
+    }
+  }
+
   onMounted(() => {
     emitter.on('set-loading', setLoading)
+    emitter.on('plausible-event', plausibleEvent)
   })
   onBeforeUnmount(() => {
     emitter.off('set-loading', setLoading)
+    emitter.off('plausible-event', plausibleEvent)
   })
 </script>
 

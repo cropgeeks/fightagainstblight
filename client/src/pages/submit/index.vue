@@ -511,6 +511,7 @@
 
     axiosCall<Outbreak>({ url: 'outbreaks', method: 'POST', params: outbreak })
       .then((result: Outbreak) => {
+        emitter.emit('plausible-event', { key: 'outbreak-submit', props: { outcode: selectedPostcode.value?.outcode } })
         submitting.value = false
         emitter.emit('set-loading', false)
         router.push(`/outbreak/${result.outbreakId}`)
