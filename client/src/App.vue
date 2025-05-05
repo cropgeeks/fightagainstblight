@@ -88,6 +88,8 @@
         indeterminate
       />
     </v-overlay>
+
+    <ConfirmModal ref="confirmModal" />
   </v-app>
 </template>
 
@@ -125,6 +127,7 @@
   const store = coreStore()
   const goTo = useGoTo()
 
+  const confirmModal = ref()
   const loading = ref<boolean>(false)
   const logoutWarning = ref<boolean>(false)
 
@@ -182,7 +185,12 @@
     })
   
   function logout () {
-    store.setToken(null)
+    confirmModal.value.open(undefined, 'Log out of Fight Against Blight?', { color: 'error' })
+      .then((response: boolean) => {
+        if (response) {
+          store.setToken(null)
+        }
+      })
   }
 
   function setLoading (newValue: boolean) {
