@@ -64,12 +64,12 @@ public class ViewEuroblight extends TableImpl<ViewEuroblightRecord> {
     /**
      * The column <code>fab.view_euroblight.mycelia_pellet</code>.
      */
-    public final TableField<ViewEuroblightRecord, Boolean> MYCELIA_PELLET = createField(DSL.name("mycelia_pellet"), SQLDataType.BOOLEAN.defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<ViewEuroblightRecord, Boolean> MYCELIA_PELLET = createField(DSL.name("mycelia_pellet"), SQLDataType.BOOLEAN, this, "");
 
     /**
      * The column <code>fab.view_euroblight.culture_slope</code>.
      */
-    public final TableField<ViewEuroblightRecord, Boolean> CULTURE_SLOPE = createField(DSL.name("culture_slope"), SQLDataType.BOOLEAN.defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<ViewEuroblightRecord, Boolean> CULTURE_SLOPE = createField(DSL.name("culture_slope"), SQLDataType.BOOLEAN, this, "");
 
     /**
      * The column <code>fab.view_euroblight.mating_type</code>.
@@ -159,7 +159,7 @@ public class ViewEuroblight extends TableImpl<ViewEuroblightRecord> {
     /**
      * The column <code>fab.view_euroblight.status</code>.
      */
-    public final TableField<ViewEuroblightRecord, ViewEuroblightStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).defaultValue(DSL.inline("pending", SQLDataType.VARCHAR)).asEnumDataType(ViewEuroblightStatus.class), this, "");
+    public final TableField<ViewEuroblightRecord, ViewEuroblightStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).asEnumDataType(ViewEuroblightStatus.class), this, "");
 
     /**
      * The column <code>fab.view_euroblight.date_submitted</code>.

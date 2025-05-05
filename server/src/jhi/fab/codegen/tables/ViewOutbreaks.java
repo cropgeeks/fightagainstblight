@@ -123,7 +123,7 @@ public class ViewOutbreaks extends TableImpl<ViewOutbreaksRecord> {
     /**
      * The column <code>fab.view_outbreaks.status</code>.
      */
-    public final TableField<ViewOutbreaksRecord, ViewOutbreaksStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).defaultValue(DSL.inline("pending", SQLDataType.VARCHAR)).asEnumDataType(ViewOutbreaksStatus.class), this, "");
+    public final TableField<ViewOutbreaksRecord, ViewOutbreaksStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).asEnumDataType(ViewOutbreaksStatus.class), this, "");
 
     /**
      * The column <code>fab.view_outbreaks.host</code>.
