@@ -190,6 +190,7 @@
     <template #item.outbreakCode="{ value, item }">
       <v-btn
         v-if="store.token"
+        block
         :color="(currentUserId && (item.userId === currentUserId)) ? 'secondary' : 'primary'"
         :to="`/outbreak/${item.outbreakId}`"
       >
