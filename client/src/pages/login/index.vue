@@ -56,14 +56,15 @@
 <script lang="ts" setup>
   import BackButton from '@/components/BackButton.vue'
   import { axiosCall } from '@/plugins/api'
-
   // @ts-ignore
   import emitter from 'tiny-emitter/instance'
 
+  // REFS
   const email = ref<string>()
   const sending = ref<boolean>(false)
   const success = ref<boolean | undefined>()
 
+  // COMPUTED
   const disabled: ComputedRef<boolean> = computed(() => {
     if (!email.value || !email.value.match(/.+@.+\.{1}.+/) || sending.value) {
       return true
@@ -71,6 +72,7 @@
     return false
   })
 
+  // METHODS
   function send () {
     sending.value = true
 

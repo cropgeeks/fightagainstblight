@@ -25,11 +25,9 @@
   import 'leaflet.markercluster'
   import { useTheme } from 'vuetify'
   import { outbreakStatus } from '@/plugins/constants'
-
   import 'leaflet/dist/leaflet.css'
   import 'leaflet.markercluster/dist/MarkerCluster.css'
   import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
-
   import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
   import iconUrl from 'leaflet/dist/images/marker-icon.png'
   import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
@@ -51,21 +49,32 @@
     showOutbreakLink?: boolean,
   }
 
+  // PROPS
   const props = withDefaults(defineProps<Props>(), {
     outbreaks: () => [],
     showOutbreakLink: true,
   })
 
-  const selectedOutbreak = ref<Outbreak>()
-  const mapElement = ref('')
-
+  // COMPOSITION
   const store = coreStore()
   const vTheme = useTheme()
+
+  // REFS
+  // HTML Element
+  const mapElement = ref('')
+  // User selection
+  const selectedOutbreak = ref<Outbreak>()
 
   let map: any
   let markers: Marker[] = []
   let clusterer: any
 
+  // WATCH
+  watch(() => props.outbreaks, () => {
+    updateMarkers()
+  })
+
+  // METHODS
   function updateMarkers () {
     if (markers && markers.length > 0) {
       markers.forEach(m => m.removeFrom(map))
@@ -166,10 +175,6 @@
 
     return latLng
   }
-
-  watch(() => props.outbreaks, () => {
-    updateMarkers()
-  })
 
   function initMap () {
     map = L.map(mapElement.value)

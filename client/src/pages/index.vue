@@ -2,6 +2,7 @@
   <h1 class="mb-4">Fight Against Blight</h1>
 
   <v-row>
+    <!-- Stuff along the top -->
     <v-col :cols=12 :md=8>
       <p class="mb-2">Welcome to the revised Fight Against Blight website.  Thanks to the below sponsors and the network of blight scouts this reporting service and Hutton's research on the potato late blight pathogen population has been supporting the integrated management of potato late blight since 2006.</p>
       <v-list>
@@ -11,12 +12,14 @@
       </v-list>
     </v-col>
     <v-col :cols=12 :md=4 class="d-flex align-center pa-5 sponsor-img">
+      <!-- Hutton logos, hidden or right aligned depending on screen size -->
       <v-img class="d-none d-md-inline-block" position="right center" src="@/assets/hutton.svg" />
       <v-img class="d-md-none" position="center center" src="@/assets/hutton.svg" />
     </v-col>
   </v-row>
 
   <v-row class="mb-4">
+    <!-- The cards for the banners -->
     <v-col
       v-for="banner in banners"
       :key="`banners-${banner.id}`"
@@ -36,7 +39,9 @@
           height="200px"
           cover
         >
-          <v-card-title class="text-white">{{ banner.title }}</v-card-title>
+          <v-card-title class="text-white">
+            {{ banner.title }}
+          </v-card-title>
         </v-img>
 
         <v-card-text :class="`bg-${banner.color} pt-4 d-flex align-center`">
@@ -49,6 +54,7 @@
         </v-card-text>
       </v-card>
 
+      <!-- Place the corresponding buttons below certain cards -->
       <v-btn
         v-if="banner.id === 'report-outbreak'"
         block
@@ -68,10 +74,12 @@
     </v-col>
   </v-row>
 
+  <!-- Sponsors along the bottom -->
   <Sponsors />
 </template>
 
 <script lang="ts" setup>
+  // Template interface for a banner
   interface Banner {
     id: string
     title: string

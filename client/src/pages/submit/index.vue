@@ -14,7 +14,13 @@
     <p>Please complete the form below to report a new outbreak.</p>
 
     <v-row>
-      <v-col v-if="isAdmin" :cols=12 :lg=3 :md=6>
+      <v-col
+        v-if="isAdmin"
+        :cols="12"
+        :lg="3"
+        :md="6"
+      >
+        <!-- SELECTED USER -->
         <v-autocomplete
           v-model="selectedUser"
           hide-details
@@ -24,8 +30,14 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col :cols=12 :lg=3 :md=6>
+      <v-col
+        :cols="12"
+        :lg="3"
+        :md="6"
+      >
+        <!-- VueUse Geolocation helper -->
         <UseGeolocation v-slot="{ coords: { latitude, longitude } }">
+          <!-- POSTCODE -->
           <v-text-field
             v-model="postcode"
             autocomplete="off"
@@ -39,10 +51,15 @@
           />
         </UseGeolocation>
 
+        <!-- Details about selected postcode -->
         <v-list v-if="selectedPostcode">
-          <v-list-item :title="selectedPostcode.nuts" :subtitle="selectedPostcode.country" />
+          <v-list-item
+            :title="selectedPostcode.nuts"
+            :subtitle="selectedPostcode.country"
+          />
         </v-list>
 
+        <!-- Autocomplete suggestions for postcode -->
         <v-list
           v-if="postcodeOptions"
           class="mt-0 pt-0 mh-30vh"
@@ -63,6 +80,7 @@
           </template>
         </v-list>
 
+        <!-- Make detailed location public? -->
         <v-checkbox
           v-model="isPublic"
           hint="When selected, we won't hide the precise location of this outbreak, helping everyone in the Fight Against Blight."
@@ -70,39 +88,57 @@
           persistent-hint
         />
       </v-col>
-      <v-col :cols=12 :lg=3 :md=6>
+      <v-col
+        :cols="12"
+        :lg="3"
+        :md="6"
+      >
+        <!-- SEVERITY -->
         <v-autocomplete
           v-model="selectedSeverity"
           autocomplete="off"
           label="Severity"
           :items="severityOptions"
         />
+        <!-- SEVERITY OTHER -->
         <v-text-field
           v-model="severityOther"
           autocomplete="off"
           label="Other severity (if not listed above)"
         />
       </v-col>
-      <v-col :cols=12 :lg=3 :md=6>
+      <v-col
+        :cols="12"
+        :lg="3"
+        :md="6"
+      >
+        <!-- SOURCE -->
         <v-autocomplete
           v-model="selectedSource"
           autocomplete="off"
           label="Source"
           :items="sourceOptions"
         />
+        <!-- SOURCE OTHER -->
         <v-text-field
           v-model="sourceOther"
           autocomplete="off"
           label="Other source (if not listed above)"
         />
       </v-col>
-      <v-col :cols=12 :lg=3 :md=6>
+      <v-col
+        :cols="12"
+        :lg="3"
+        :md="6"
+      >
+        <!-- HOST -->
         <v-autocomplete
           v-model="selectedHost"
           autocomplete="off"
           label="Host"
           :items="hostOptions"
         />
+        <!-- VARIETY -->
         <v-autocomplete
           v-model="selectedVariety"
           autocomplete="off"
@@ -110,6 +146,7 @@
           label="Variety"
           :items="varietyOptions"
         />
+        <!-- COMMENT -->
         <v-textarea
           v-model="comment"
           autocomplete="off"
@@ -145,11 +182,20 @@
   import 'leaflet/dist/leaflet.css'
   // @ts-ignore
   import emitter from 'tiny-emitter/instance'
-
   import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
   import iconUrl from 'leaflet/dist/images/marker-icon.png'
   import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
   import { UseGeolocation } from '@vueuse/components'
+  import { coreStore } from '@/stores/app'
+  import type { Severity } from '@/plugins/types/Severity'
+  import type { Source } from '@/plugins/types/Source'
+  import { axiosCall } from '@/plugins/api'
+  import type { Outbreak } from '@/plugins/types/Outbreak'
+  import router from '@/router'
+  import type { Variety } from '@/plugins/types/Variety'
+  import type { SelectOption } from '@/plugins/types/SelectOption'
+  import type { User } from '@/plugins/types/User'
+  import { outbreakHosts, type Host } from '@/plugins/constants'
 
   // Set the leaflet marker icon
   // @ts-ignore
@@ -160,12 +206,12 @@
     shadowUrl: shadowUrl
   })
 
+  // Helper types for typescript
   interface PostcodeOption {
     value: Postcode
     title: string
     subtitle: string
   }
-
   interface Postcode {
     country: string
     outcode: string
@@ -178,67 +224,50 @@
     longitude?: number,
     nuts?: string
   }
-
   interface Outcode {
     outcode: string
     latitude?: number
     longitude?: number
   }
-
-  import { coreStore } from '@/stores/app'
-  import type { Severity } from '@/plugins/types/Severity'
-  import type { Source } from '@/plugins/types/Source'
-  import { axiosCall } from '@/plugins/api'
-  import type { Outbreak } from '@/plugins/types/Outbreak'
-  import router from '@/router'
-  import type { Variety } from '@/plugins/types/Variety'
-  import type { SelectOption } from '@/plugins/types/SelectOption'
-  import type { User } from '@/plugins/types/User'
-  import { outbreakHosts, type Host } from '@/plugins/constants'
+  
+  // COMPOSITION
   const store = coreStore()
 
-  // Refs
+  // REFS
+  // HTML elements
   const mapElement = ref('')
+  // User input
   const gpsLatitude = ref<number | undefined>()
   const gpsLongitude = ref<number | undefined>()
   const postcode = ref<string | undefined>()
+  const sourceOther = ref<string>()
+  const severityOther = ref<string>()
+  const comment = ref<string>()
+  // User selection
   const selectedPostcode = ref<Postcode | undefined>()
   const selectedOutcode = ref<Outcode | undefined>()
-  const postcodeValid = ref<boolean | undefined>()
-  const varieties = ref<Variety[]>([])
-  const postcodeOptions = ref<PostcodeOption[]>([])
-  const severities = ref<Severity[]>([])
-  const sourceOther = ref<string>()
   const selectedSource = ref<number>()
   const selectedSeverity = ref<number>()
   const selectedVariety = ref<number>()
   const selectedHost = ref<string>('potato')
   const selectedUser = ref<number>()
-  const severityOther = ref<string>()
-  const sources = ref<Source[]>([])
-  const users = ref<User[]>([])
-  const comment = ref<string>()
+  // Stuff
+  const postcodeValid = ref<boolean | undefined>()
   const submitting = ref<boolean>(false)
   const isPublic = ref<boolean>(true)
   const host = ref(outbreakHosts)
-
+  // Select options
+  const postcodeOptions = ref<PostcodeOption[]>([])
+  // Database values
+  const varieties = ref<Variety[]>([])
+  const severities = ref<Severity[]>([])
+  const sources = ref<Source[]>([])
+  const users = ref<User[]>([])
+  
   let map: Map
   let marker: Marker
 
-  // Get all the filtering options
-  axiosCall<Severity[]>({ url: 'severities' })
-    .then((result: Severity[]) => {
-      severities.value = result
-    })
-  axiosCall<Source[]>({ url: 'sources' })
-    .then((result: Source[]) => {
-      sources.value = result
-    })
-  axiosCall<User[]>({ url: 'users' })
-    .then(result => {
-      users.value = result
-    })
-
+  // COMPUTED
   const isAdmin: ComputedRef<boolean> = computed(() => {
     if (store.token && store.token.token && store.token.user && store.token.user.isAdmin) {
       return true
@@ -247,6 +276,130 @@
     }
   })
 
+  const canContinue: ComputedRef<boolean> = computed(() => {
+    if (!selectedHost.value || selectedHost.value.trim().length < 1) {
+      return false
+    }
+    if (!selectedSeverity.value) {
+      return false
+    }
+    if (!selectedSource.value) {
+      return false
+    }
+    if (!postcode.value) {
+      return false
+    }
+    if (!gpsLatitude.value || !gpsLongitude.value) {
+      return false
+    }
+
+    return true
+  })
+
+  const severityOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
+    if (severities.value) {
+      return severities.value.map(s => {
+        return {
+          value: s.severityId,
+          title: s.severityName
+        }
+      })
+    } else {
+      return []
+    }
+  })
+
+  const hostOptions: ComputedRef<SelectOption<string>[]> = computed(() => {
+    const result: SelectOption<string>[] = []
+
+    host.value.forEach((value: Host) => {
+      result.push({
+        title: value.text,
+        value: value.dbValue,
+      })
+    })
+
+    return result
+  })
+
+  const userOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
+    if (users.value) {
+      return users.value.sort((a: User, b: User) => a.userName.localeCompare(b.userName)).map(s => {
+        return {
+          value: s.userId,
+          title: s.userName
+        }
+      })
+    } else {
+      return []
+    }
+  })
+
+  const sourceOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
+    if (sources.value) {
+      return sources.value.map(s => {
+        return {
+          value: s.sourceId,
+          title: s.sourceName
+        }
+      })
+    } else {
+      return []
+    }
+  })
+
+
+
+  const varietyOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
+    if (varieties.value) {
+      return varieties.value.map(s => {
+        return {
+          value: s.varietyId,
+          title: s.varietyName
+        }
+      })
+    } else {
+      return []
+    }
+  })
+
+  const forcedVariety: ComputedRef<number | undefined> = computed(() => {
+    if (selectedHost.value && selectedHost.value !== 'potato') {
+      if (varieties.value) {
+        let match = varieties.value.find(v => v.varietyName.toLowerCase().includes('other'))
+        if (!match) {
+          match = varieties.value.find(v => v.varietyName.toLowerCase().includes('unknown'))
+        }
+
+        return match?.varietyId
+      }
+    }
+  })
+
+  // WATCH
+  watch(selectedPostcode, async (newValue) => {
+    if (newValue) {
+      axios.get(`https://api.postcodes.io/outcodes/${newValue?.outcode}`).then(r => {
+        if (r && r.data && r.data.result) {
+          selectedOutcode.value = r.data.result
+        } else {
+          selectedOutcode.value = undefined
+        }
+      })
+    } else {
+      selectedOutcode.value = undefined
+    }
+  })
+
+  watch(forcedVariety, async (newValue) => {
+    if (forcedVariety) {
+      selectedVariety.value = newValue
+    } else {
+      selectedVariety.value = undefined
+    }
+  })
+
+  // METHODS
   function validatePostcode () {
     postcodeValid.value = undefined
     selectedPostcode.value = undefined
@@ -364,128 +517,6 @@
     // map.on('blur', () => map.scrollWheelZoom.disable())
   }
 
-  const canContinue: ComputedRef<boolean> = computed(() => {
-    if (!selectedHost.value || selectedHost.value.trim().length < 1) {
-      return false
-    }
-    if (!selectedSeverity.value) {
-      return false
-    }
-    if (!selectedSource.value) {
-      return false
-    }
-    if (!postcode.value) {
-      return false
-    }
-    if (!gpsLatitude.value || !gpsLongitude.value) {
-      return false
-    }
-
-    return true
-  })
-
-  const severityOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
-    if (severities.value) {
-      return severities.value.map(s => {
-        return {
-          value: s.severityId,
-          title: s.severityName
-        }
-      })
-    } else {
-      return []
-    }
-  })
-
-  const hostOptions: ComputedRef<SelectOption<string>[]> = computed(() => {
-    const result: SelectOption<string>[] = []
-
-    host.value.forEach((value: Host) => {
-      result.push({
-        title: value.text,
-        value: value.dbValue,
-      })
-    })
-
-    return result
-  })
-
-  const userOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
-    if (users.value) {
-      return users.value.sort((a: User, b: User) => a.userName.localeCompare(b.userName)).map(s => {
-        return {
-          value: s.userId,
-          title: s.userName
-        }
-      })
-    } else {
-      return []
-    }
-  })
-
-  const sourceOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
-    if (sources.value) {
-      return sources.value.map(s => {
-        return {
-          value: s.sourceId,
-          title: s.sourceName
-        }
-      })
-    } else {
-      return []
-    }
-  })
-
-
-
-  const varietyOptions: ComputedRef<SelectOption<number>[]> = computed(() => {
-    if (varieties.value) {
-      return varieties.value.map(s => {
-        return {
-          value: s.varietyId,
-          title: s.varietyName
-        }
-      })
-    } else {
-      return []
-    }
-  })
-
-  const forcedVariety: ComputedRef<number | undefined> = computed(() => {
-    if (selectedHost.value && selectedHost.value !== 'potato') {
-      if (varieties.value) {
-        let match = varieties.value.find(v => v.varietyName.toLowerCase().includes('other'))
-        if (!match) {
-          match = varieties.value.find(v => v.varietyName.toLowerCase().includes('unknown'))
-        }
-
-        return match?.varietyId
-      }
-    }
-  })
-
-  watch(selectedPostcode, async (newValue) => {
-    if (newValue) {
-      axios.get(`https://api.postcodes.io/outcodes/${newValue?.outcode}`).then(r => {
-        if (r && r.data && r.data.result) {
-          selectedOutcode.value = r.data.result
-        } else {
-          selectedOutcode.value = undefined
-        }
-      })
-    } else {
-      selectedOutcode.value = undefined
-    }
-  })
-
-  watch(forcedVariety, async (newValue) => {
-    if (forcedVariety) {
-      selectedVariety.value = newValue
-    } else {
-      selectedVariety.value = undefined
-    }
-  })
-
   function onSubmit () {
     submitting.value = true
     emitter.emit('set-loading', true)
@@ -522,6 +553,20 @@
         console.error(e)
       })
   }
+
+  // Get database values for filtering
+  axiosCall<Severity[]>({ url: 'severities' })
+    .then((result: Severity[]) => {
+      severities.value = result
+    })
+  axiosCall<Source[]>({ url: 'sources' })
+    .then((result: Source[]) => {
+      sources.value = result
+    })
+  axiosCall<User[]>({ url: 'users' })
+    .then(result => {
+      users.value = result
+    })
 
   if (store.token && store.token.user) {
     selectedUser.value = store.token.user.userId

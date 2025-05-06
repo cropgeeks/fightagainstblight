@@ -9,7 +9,8 @@
       :subtitle="props.outbreak.dateSubmitted ? new Date(props.outbreak.dateSubmitted).toLocaleDateString() : 'N/A'"
     />
     <v-list-item
-      title="Status">
+      title="Status"
+    >
       <template #subtitle>
         <v-chip
           v-if="props.outbreak.status"
@@ -21,7 +22,8 @@
       </template>
     </v-list-item>
     <v-list-item
-      title="Severity">
+      title="Severity"
+    >
       <template #subtitle>
         <v-chip v-if="props.outbreak.severityName">
           <v-img
@@ -36,7 +38,8 @@
       </template>
     </v-list-item>
     <v-list-item
-      title="Source">
+      title="Source"
+    >
       <template #subtitle>
         <v-chip v-if="props.outbreak.sourceName">
           <v-img
@@ -51,7 +54,8 @@
       </template>
     </v-list-item>
     <v-list-item
-      title="Host">
+      title="Host"
+    >
       <template #subtitle>
         <v-chip
           v-if="props.outbreak.host"
@@ -79,10 +83,12 @@
     outbreak: Outbreak,
   }
 
+  // PROPS
   const props = withDefaults(defineProps<Props>(), {
     outbreak: undefined,
   })
 
+  // REFS
   const status = ref<Map<string, Status>>(outbreakStatus)
   const host = ref<Map<string, Host>>(outbreakHosts)
 </script>

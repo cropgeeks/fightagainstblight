@@ -12,10 +12,10 @@
         v-for="sponsor in sponsorsPerRow.get(row)"
         :key="`sponsor-${sponsor.name}`"
         class="d-flex align-center pa-5 sponsor-img mx-auto"
-        :cols=12
-        :lg=3
-        :md=4
-        :sm=6
+        :cols="12"
+        :lg="3"
+        :md="4"
+        :sm="6"
       >
         <v-img
           :src="`/img/sponsors/${sponsor.logo}`"
