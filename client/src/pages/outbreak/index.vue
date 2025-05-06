@@ -451,7 +451,7 @@
     .then((result: number[]) => {
       years.value = result
 
-      if (result.length > 0) {
+      if (result.length > 0 && !selectedYear.value) {
         const max = Math.max(...result)
 
         if (max) {
@@ -478,7 +478,9 @@
   watch(onlyShowUserData, async () => update())
 
   function update () {
-    const params = {
+    page.value = 1
+
+    const params: any = {
       source: selectedSource.value,
       severity: selectedSeverity.value,
       variety: selectedVariety.value,
@@ -486,11 +488,14 @@
       status: selectedStatus.value,
       outbreakCode: outbreakCode.value,
       outcode: postcode.value,
-      userId: onlyShowUserData.value ? store.token?.user?.userId : null,
       page: page.value || 1,
     }
 
     emitter.emit('plausible-event', { key: 'outbreak-filtering', props: params })
+
+    if (onlyShowUserData.value && store.token?.user?.userId) {
+      params.userId = store.token?.user?.userId
+    }
 
     router.replace({ query: params })
 

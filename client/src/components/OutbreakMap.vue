@@ -77,7 +77,7 @@
       // @ts-ignore
       clusterer = L.markerClusterGroup({
         chunkedLoading: true,
-        disableClusteringAtZoom: 10,
+        disableClusteringAtZoom: 9,
         polygonOptions: {
           color: 'rgb(var(--v-theme-secondary))'
         }
@@ -290,7 +290,6 @@
   color: #555;
 }
 .legend i {
-  background-image: ;
   width: 1.5em;
   height: 1.5em;
   float: left;
