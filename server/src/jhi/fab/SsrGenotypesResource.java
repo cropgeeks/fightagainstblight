@@ -37,7 +37,7 @@ public class SsrGenotypesResource
 			{
 				SsrGenotypes ssr = list.get(i);
 
-				if (ssr.getGenotypeName().equalsIgnoreCase("unknown/other"))
+				if (ssr.getGenotypeName().equalsIgnoreCase("other"))
 				{
 					list.remove(ssr);
 					list.add(0, ssr);
