@@ -4,8 +4,4 @@ tomcat.manager.username =
 tomcat.manager.password =
 tomcat.manager.app = fab
 
-mysql.username =
-mysql.password =
-mysql.url =
-
 project.dist =
