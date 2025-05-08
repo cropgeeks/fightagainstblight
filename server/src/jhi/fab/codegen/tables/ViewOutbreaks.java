@@ -123,17 +123,17 @@ public class ViewOutbreaks extends TableImpl<ViewOutbreaksRecord> {
     /**
      * The column <code>fab.view_outbreaks.status</code>.
      */
-    public final TableField<ViewOutbreaksRecord, ViewOutbreaksStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).asEnumDataType(ViewOutbreaksStatus.class), this, "");
+    public final TableField<ViewOutbreaksRecord, ViewOutbreaksStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).nullable(false).defaultValue(DSL.inline("pending", SQLDataType.VARCHAR)).asEnumDataType(ViewOutbreaksStatus.class), this, "");
 
     /**
      * The column <code>fab.view_outbreaks.host</code>.
      */
-    public final TableField<ViewOutbreaksRecord, ViewOutbreaksHost> HOST = createField(DSL.name("host"), SQLDataType.VARCHAR(6).defaultValue(DSL.inline("potato", SQLDataType.VARCHAR)).asEnumDataType(ViewOutbreaksHost.class), this, "");
+    public final TableField<ViewOutbreaksRecord, ViewOutbreaksHost> HOST = createField(DSL.name("host"), SQLDataType.VARCHAR(6).nullable(false).defaultValue(DSL.inline("potato", SQLDataType.VARCHAR)).asEnumDataType(ViewOutbreaksHost.class), this, "");
 
     /**
      * The column <code>fab.view_outbreaks.is_public</code>.
      */
-    public final TableField<ViewOutbreaksRecord, Boolean> IS_PUBLIC = createField(DSL.name("is_public"), SQLDataType.BOOLEAN.defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
+    public final TableField<ViewOutbreaksRecord, Boolean> IS_PUBLIC = createField(DSL.name("is_public"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "");
 
     /**
      * The column <code>fab.view_outbreaks.severity_id</code>.

@@ -159,7 +159,7 @@ public class ViewEuroblight extends TableImpl<ViewEuroblightRecord> {
     /**
      * The column <code>fab.view_euroblight.status</code>.
      */
-    public final TableField<ViewEuroblightRecord, ViewEuroblightStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).asEnumDataType(ViewEuroblightStatus.class), this, "");
+    public final TableField<ViewEuroblightRecord, ViewEuroblightStatus> STATUS = createField(DSL.name("status"), SQLDataType.VARCHAR(9).defaultValue(DSL.inline("pending", SQLDataType.VARCHAR)).asEnumDataType(ViewEuroblightStatus.class), this, "");
 
     /**
      * The column <code>fab.view_euroblight.date_submitted</code>.
