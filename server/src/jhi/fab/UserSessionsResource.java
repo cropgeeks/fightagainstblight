@@ -125,7 +125,7 @@ public class UserSessionsResource
 					+ "<p>You can also scan this QR code to login on other devices:</p>"
 					+ "<p><img src='cid:imageID'/></p>"
 					+ "<p>Thanks for using Fight Against Blight and helping with "
-					+ "research into blight populations around the UK.</p>";
+					+ "research into populations of the blight pathogen around the UK.</p>";
 
 				byte[] qrCode = generateQRCodeBase64(link);
 				FAB.email(user.getEmail(), false, "Login to Fight Against Blight", message, qrCode);

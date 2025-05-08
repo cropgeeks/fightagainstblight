@@ -407,7 +407,7 @@ public class OutbreaksResource
 			message += "<p>You can view full details at: "
 				+ "<a href='" + link + "'>" + link + "</a></p>"
 				+ "<p>Thanks for using Fight Against Blight and helping with "
-				+ "research into blight populations around the UK.</p>";
+				+ "research into populations of the blight pathogen around the UK.</p>";
 
 			FAB.email(viewOB.getUserEmail(), true, "Fight Against Blight: Outbreak Reported/Updated", message, null);
 		}
