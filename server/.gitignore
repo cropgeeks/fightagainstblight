@@ -1,0 +1,4 @@
+*.war
+fab.jar
+/classes
+build.properties
