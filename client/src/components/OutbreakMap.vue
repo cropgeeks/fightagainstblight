@@ -223,7 +223,7 @@
 
 <style>
 #map {
-  height: 50vh;
+  height: 75vh;
 }
 
 .marker-style {
