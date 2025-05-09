@@ -160,7 +160,7 @@
         :items="subsamples"
         :items-per-page="-1"
         :no-data-text="(!isAdmin && !isOwner) ? 'Sample information is private to the scout who reported it.' : undefined"
-        :sort-by="[{ key: 'dateGenotyped', order: 'desc' }]"
+        :sort-by="[{ key: 'subsampleCode', order: 'asc' }]"
       >
         <template #top>
           <v-toolbar
