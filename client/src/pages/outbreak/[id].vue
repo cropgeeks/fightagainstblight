@@ -733,7 +733,6 @@
 
       if (record.value.varietyId) {
         const variety = varieties.value.find(v => v.varietyId === record.value?.varietyId)
-        console.log(record.value.varietyId, variety)
 
         if (variety) {
           record.value.varietyName = variety.varietyName

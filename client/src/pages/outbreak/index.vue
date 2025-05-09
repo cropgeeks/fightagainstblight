@@ -555,7 +555,6 @@
     if (router.currentRoute.value.query) {
       // Read URL parameters to restore page state
       const q = router.currentRoute.value.query
-      console.log(q)
       selectedSource.value = q.source ? +q.source : undefined
       selectedSeverity.value = q.severity ? +q.severity : undefined
       selectedVariety.value = q.variety ? +q.variety : undefined
