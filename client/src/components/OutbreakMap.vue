@@ -144,10 +144,12 @@
         map.setView(latLng, 12)
       }
 
-      markers[0].openPopup()
-      nextTick(() => {
-        selectedOutbreak.value = props.outbreaks[0]
-      })
+      setTimeout(() => {
+        markers[0].openPopup()
+        nextTick(() => {
+          selectedOutbreak.value = props.outbreaks[0]
+        })
+      }, 300)
     } else {
       if (bounds && bounds.isValid()) {
         map.fitBounds(bounds, { padding: [25, 25] })
@@ -215,7 +217,7 @@
     // map.on('focus', () => map.scrollWheelZoom.enable())
     // map.on('blur', () => map.scrollWheelZoom.disable())
 
-    updateMarkers()
+    nextTick(() => updateMarkers())
   }
 
   onMounted(() => initMap())
