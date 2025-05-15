@@ -71,6 +71,7 @@
 
   // WATCH
   watch(() => props.outbreaks, () => {
+    selectedOutbreak.value = undefined
     updateMarkers()
   })
 

@@ -35,6 +35,7 @@
       placeholder="Email address"
       prepend-inner-icon="mdi-email-outline"
       required
+      name="email"
       type="email"
       variant="outlined"
     />
