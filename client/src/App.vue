@@ -72,7 +72,7 @@
         </v-btn>
 
         <div class="flex-1-0-100 text-center mt-2">
-          {{ new Date().getFullYear() }} — <strong><a href="https://ics.hutton.ac.uk/">Information &amp; Computational Sciences</a> - <a href="https://www.hutton.ac.uk/">The James Hutton Institute</a></strong>
+          {{ new Date().getFullYear() }} — <strong><a href="https://ics.hutton.ac.uk/">Information &amp; Computational Sciences</a> — <a href="https://www.hutton.ac.uk/">The James Hutton Institute</a></strong>
         </div>
       </v-footer>
     </v-main>
