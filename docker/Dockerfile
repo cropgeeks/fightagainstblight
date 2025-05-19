@@ -25,6 +25,7 @@ RUN apk add --no-cache openjdk21 && \
     wget https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.15-bin.zip -P /tmp/ && \
     unzip /tmp/apache-ant-1.10.15-bin.zip -d /opt/ && \
     echo "project.dist=../client/dist" > /opt/fab/server/build.properties && \
+    mkdir /opt/fab/server/classes && \
     /opt/apache-ant-1.10.15/bin/ant -f /opt/fab/server/build.xml war
 
 
