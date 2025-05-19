@@ -25,7 +25,7 @@ RUN apk add --no-cache openjdk21 && \
     wget https://dlcdn.apache.org//ant/binaries/apache-ant-1.10.15-bin.zip -P /tmp/ && \
     unzip /tmp/apache-ant-1.10.15-bin.zip -d /opt/ && \
     echo "project.dist=../client/dist" > /opt/fab/server/build.properties && \
-    /opt/apache-ant-1.10.15/bin/gradle -f /opt/fab/server/build.xml war
+    /opt/apache-ant-1.10.15/bin/ant -f /opt/fab/server/build.xml war
 
 
 FROM tomcat:10.1-jdk21
