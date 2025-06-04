@@ -494,6 +494,9 @@ public class OutbreaksResource
 			out.write("Site\t");
 			out.write("Outbreak size\t");
 			out.write("SSR genotype\t");
+			out.write("MyceliaPellet\t");
+			out.write("CultureSlope\t");
+			out.write("MatingType\t");
 			out.write("Comment");
 			out.newLine();
 
@@ -502,7 +505,11 @@ public class OutbreaksResource
 			{
 				out.write((++count) + "\t");
 
-				out.write(format(result.getSubsampleCode()));
+				if (year <= 2024)
+					out.write(format(result.getSubsampleCode()));
+				else
+					out.write(format(result.getOutbreakCode()+result.getSubsampleCode()));
+				
 				out.write(format(result.getMaterial()));
 				out.write(format(result.getDateSubmitted().getYear()));
 				out.write(format(result.getDateSubmitted().getMonthValue()));
@@ -521,6 +528,9 @@ public class OutbreaksResource
 				out.write(format(result.getSourceName()));
 				out.write(format(result.getSeverityName()));
 				out.write(format(result.getGenotypeName()));
+				out.write(format(result.getMyceliaPellet()));
+				out.write(format(result.getCultureSlope()));
+				out.write(format(result.getMatingType()));
 
 				if (result.getAdminComments() != null)
 					out.write(result.getAdminComments());
