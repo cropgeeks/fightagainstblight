@@ -48,6 +48,7 @@ const sponsors = ref<Sponsor[]>([
   { logo: 'mccain.svg', name: 'McCain', row: 2 },
   { logo: 'scottish-agronomy.png', name: 'Scottish Agronomy', row: 2 },
   { logo: 'procam.svg', name: 'PROCAM', row: 2 },
+  { logo: 'pepsico.svg', name: 'PEPSICO', row: 3 },
   { logo: 'sruc.svg', name: 'SRUC', row: 3 },
   // { logo: 'spo.png', name: 'Seed Potato Organisation' },
   // { logo: 'agrico.svg', name: 'AGRICO' },
