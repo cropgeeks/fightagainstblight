@@ -187,4 +187,67 @@ public class UserSessionsResource
 		// Run now (0), and then every hour
 		}, 0, (60*60*1000));
 	}
+
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public synchronized Response postUser(@HeaderParam("Authorization") String authHeader, Users userInfo)
+		throws SQLException
+	{
+		User user = new User(authHeader);
+
+		// Must be logged in to create a new user
+		if (user.isOK() == false)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		// And an admin
+		if (user.isAdmin() == false)
+			return Response.status(Response.Status.FORBIDDEN).build();
+		if (userInfo == null || userInfo.getUserName() == null || userInfo.getIsAdmin() == null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
+
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+
+			Users dbUser = context.insertInto(USERS)
+				.set(USERS.USER_NAME, userInfo.getUserName())
+				.set(USERS.EMAIL, userInfo.getEmail())
+				.set(USERS.IS_ADMIN, userInfo.getIsAdmin())
+				.returning(USERS.fields())
+				.fetchOneInto(Users.class);
+
+			return Response.ok(dbUser).build();
+		}
+	}
+
+	@PATCH
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public synchronized Response patchUser(@HeaderParam("Authorization") String authHeader, @PathParam("id") int id, Users userInfo)
+		throws SQLException
+	{
+		User user = new User(authHeader);
+
+		// Must be logged in to update an outbreak
+		if (user.isOK() == false)
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		// And an admin
+		if (user.isAdmin() == false)
+			return Response.status(Response.Status.FORBIDDEN).build();
+		if (userInfo == null || userInfo.getUserName() == null || userInfo.getIsAdmin() == null)
+			return Response.status(Response.Status.BAD_REQUEST).build();
+
+		try (Connection conn = DatabaseUtils.getConnection())
+		{
+			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
+
+			context.update(USERS)
+				.set(USERS.USER_NAME, userInfo.getUserName())
+				.set(USERS.EMAIL, userInfo.getEmail())
+				.set(USERS.IS_ADMIN, userInfo.getIsAdmin())
+				.where(USERS.USER_ID.eq(userInfo.getUserId()))
+				.execute();
+
+			return Response.ok(userInfo).build();
+		}
+	}
 }
