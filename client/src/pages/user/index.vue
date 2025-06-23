@@ -149,6 +149,8 @@
   import { axiosCall } from '@/plugins/api'
   import type { User } from '@/plugins/types/User'
   import { coreStore } from '@/stores/app'
+  // @ts-ignore
+  import emitter from 'tiny-emitter/instance'
 
   interface SnackbarConfig {
     text: string,
@@ -226,6 +228,7 @@
         axiosCall({ url: `users/${record.value.userId}`, method: 'PATCH', params: record.value })
           .then(() => {
             update()
+            emitter.emit('plausible-event', { key: 'user-edit' })
             snackbarConfig.value.text = 'User successfully updated.'
             snackbar.value = true
           })
@@ -242,6 +245,7 @@
         axiosCall({ url: 'users', method: 'POST', params: { userName: record.value.userName, isAdmin: record.value.isAdmin, email: record.value.email } })
           .then(() => {
             update()
+            emitter.emit('plausible-event', { key: 'user-add' })
             snackbarConfig.value.text = 'User successfully added.'
             snackbar.value = true
           })
