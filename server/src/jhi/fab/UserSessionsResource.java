@@ -210,7 +210,7 @@ public class UserSessionsResource
 
 			Users dbUser = context.insertInto(USERS)
 				.set(USERS.USER_NAME, userInfo.getUserName())
-				.set(USERS.EMAIL, userInfo.getEmail())
+				.set(USERS.EMAIL, userInfo.getEmail().toLowerCase())
 				.set(USERS.IS_ADMIN, userInfo.getIsAdmin())
 				.returning(USERS.fields())
 				.fetchOneInto(Users.class);
@@ -242,7 +242,7 @@ public class UserSessionsResource
 
 			context.update(USERS)
 				.set(USERS.USER_NAME, userInfo.getUserName())
-				.set(USERS.EMAIL, userInfo.getEmail())
+				.set(USERS.EMAIL, userInfo.getEmail().toLowerCase())
 				.set(USERS.IS_ADMIN, userInfo.getIsAdmin())
 				.where(USERS.USER_ID.eq(userInfo.getUserId()))
 				.execute();
