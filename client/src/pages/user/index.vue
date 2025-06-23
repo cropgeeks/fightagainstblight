@@ -160,7 +160,7 @@
 
   // REFS
   const searchTerm = ref<string>()
-  const users = ref<User[]>([])
+  const users = ref<User[]>([] as User[])
   const record = ref<User>()
   const dialog = ref<boolean>(false)
   const isEditing = ref<boolean>(false)
@@ -203,8 +203,10 @@
     usernameValid.value = undefined
     isEditing.value = true
     const found = users.value.find(s => s.userId === id)
-    record.value = { ...found }
-    dialog.value = true
+    if (found) {
+      record.value = { ...found }
+      dialog.value = true
+    }
   }
   function add () {
     usernameValid.value = undefined
