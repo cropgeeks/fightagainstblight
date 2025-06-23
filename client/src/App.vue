@@ -12,6 +12,12 @@
         />
 
         <template #append>
+          <v-btn
+            v-if="store.token && store.token.token && store.token.user && store.token.user.isAdmin"
+            icon="mdi-account-details"
+            to="/user"
+          />
+
           <v-tooltip v-if="userInitials" :text="store.token?.user?.userName">
             <template v-slot:activator="{ props }">
               <v-avatar v-bind="props" class="mx-2" color="primary">
@@ -19,7 +25,6 @@
               </v-avatar>
             </template>
           </v-tooltip>
-
           <v-btn
             v-if="store.token && store.token.token"
             icon="mdi-logout"

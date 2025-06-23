@@ -23,5 +23,6 @@ declare module 'vue-router/auto-routes' {
     '/outbreak/': RouteRecordInfo<'/outbreak/', '/outbreak', Record<never, never>, Record<never, never>>,
     '/outbreak/[id]': RouteRecordInfo<'/outbreak/[id]', '/outbreak/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     '/submit/': RouteRecordInfo<'/submit/', '/submit', Record<never, never>, Record<never, never>>,
+    '/user/': RouteRecordInfo<'/user/', '/user', Record<never, never>, Record<never, never>>,
   }
 }
