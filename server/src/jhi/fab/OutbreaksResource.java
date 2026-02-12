@@ -242,6 +242,7 @@ public class OutbreaksResource
 			context.update(OUTBREAKS)
 				.set(OUTBREAKS.USER_ID, outbreak.getUserId())
 				.set(OUTBREAKS.DATE_RECEIVED, outbreak.getDateReceived())
+				.set(OUTBREAKS.DATE_SUBMITTED, outbreak.getDateSubmitted())
 				.set(OUTBREAKS.STATUS, outbreak.getStatus())
 				.set(OUTBREAKS.ADMIN_COMMENTS, outbreak.getAdminComments())
 				.where(OUTBREAKS.OUTBREAK_ID.eq(outbreak.getOutbreakId()))

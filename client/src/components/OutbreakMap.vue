@@ -21,7 +21,7 @@
 <script lang="ts" setup>
   import OutbreakDetails from '@/components/OutbreakDetails.vue'
   import type { Outbreak } from '@/plugins/types/Outbreak'
-  import L, { Control, Marker, type LatLngExpression } from 'leaflet'
+  import L, { Control, LatLng, Marker, type LatLngExpression } from 'leaflet'
   import 'leaflet.markercluster'
   import { useTheme } from 'vuetify'
   import { outbreakStatus } from '@/plugins/constants'
@@ -112,6 +112,7 @@
     const isSingleMarker = props.outbreaks.length === 1
     const bounds = L.latLngBounds([])
 
+    const locations = new Set<string>()
     props.outbreaks.forEach(o => {
       const isConfirmed = o.status === 'confirmed'
       const status = o.status ? outbreakStatus.get(o.status) : undefined
@@ -125,6 +126,13 @@
       const latLng = getLatLng(o)
 
       if (latLng) {
+        if (locations.has(`${latLng.lat}|${latLng.lng}`)) {
+          latLng.lat += (Math.random() - 0.5) * 0.0008
+          latLng.lng += (Math.random() - 0.5) * 0.0008
+        }
+
+        locations.add(`${latLng.lat}|${latLng.lng}`)
+
         const marker = new DataMarker<Outbreak>(latLng, o, {
           icon: icon,
         })
@@ -158,13 +166,13 @@
     }
   }
 
-  function getLatLng (o: Outbreak): LatLngExpression | undefined {
-    let latLng: LatLngExpression | undefined = undefined
+  function getLatLng (o: Outbreak): LatLng | undefined {
+    let latLng: LatLng | undefined = undefined
     if (store.token && store.token.user && (store.token.user.isAdmin || store.token.user.userId === o.userId)) {
       // Admins or owners get to see precise location (if available)
       if (isValidLatLng(o.realLatitude, o.realLongitude)) {
         // @ts-ignore
-        latLng = [o.realLatitude, o.realLongitude]
+        latLng = L.latLng(o.realLatitude, o.realLongitude)
       }
     }
 
@@ -172,7 +180,7 @@
       // Fall-back to view location else
       if (isValidLatLng(o.viewLatitude, o.viewLongitude)) {
         // @ts-ignore
-        latLng = [o.viewLatitude, o.viewLongitude]
+        latLng = L.latLng(o.viewLatitude, o.viewLongitude)
       }
     }
 
@@ -214,9 +222,9 @@
     legend.addTo(map)
     
     // Disable zoom until focus gained, disable when blur
-    // map.scrollWheelZoom.disable()
-    // map.on('focus', () => map.scrollWheelZoom.enable())
-    // map.on('blur', () => map.scrollWheelZoom.disable())
+    map.scrollWheelZoom.disable()
+    map.on('focus', () => map.scrollWheelZoom.enable())
+    map.on('blur', () => map.scrollWheelZoom.disable())
 
     nextTick(() => updateMarkers())
   }

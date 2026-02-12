@@ -170,7 +170,7 @@
     :items="outbreaks"
     :loading="loading"
     :page="page"
-    :sort-by="[{ key: 'dateSubmitted', order: 'desc' }]"
+    :sort-by="[{ key: 'outbreakCode', order: 'desc' }]"
     @update:page="p => { page = p }"
   >
     <template #item.status="{ value }">

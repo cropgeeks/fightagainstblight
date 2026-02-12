@@ -7,30 +7,6 @@
   <div v-if="outbreak">
     <h1>Outbreak details: {{ outbreak.outbreakCode }}</h1>
 
-    <div
-      v-if="isAdmin"
-      class="my-5"
-    >
-      <v-btn
-        class="me-2"
-        color="primary"
-        :disabled="loading"
-        prepend-icon="mdi-send"
-        @click="notifyOwner"
-      >
-        Notify owner
-      </v-btn>
-
-      <v-btn
-        class="me-2"
-        color="error"
-        :disabled="loading"
-        prepend-icon="mdi-delete"
-        text="Delete outbreak"
-        @click="deleteOutbreak"
-      />
-    </div>
-
     <v-sheet
       :border="true"
       class="mb-5"
@@ -57,7 +33,7 @@
         >
           <v-text-field
             v-model="outbreak.dateSubmitted"
-            readonly
+            :readonly="!isAdmin"
             persistent-placeholder
             label="Submitted on"
             type="date"
@@ -138,16 +114,41 @@
         </v-col>
       </v-row>
 
-      <v-btn
+      <div
         v-if="isAdmin"
-        class="mb-5 mx-4"
-        color="primary"
-        :disabled="loading"
-        prepend-icon="mdi-content-save"
-        @click="submitOutbreak"
+        class="d-flex"
       >
-        Update outbreak
-      </v-btn>
+        <v-btn
+          class="mb-5 mx-4"
+          color="primary"
+          :disabled="loading"
+          prepend-icon="mdi-content-save"
+          @click="submitOutbreak"
+        >
+          Update outbreak
+        </v-btn>
+
+        <v-spacer />
+
+        <v-btn
+          class="me-2"
+          color="primary"
+          :disabled="loading"
+          prepend-icon="mdi-send"
+          @click="notifyOwner"
+        >
+          Notify owner
+        </v-btn>
+
+        <v-btn
+          class="me-2"
+          color="error"
+          :disabled="loading"
+          prepend-icon="mdi-delete"
+          text="Delete outbreak"
+          @click="deleteOutbreak"
+        />
+      </div>
     </v-sheet>
 
     <v-sheet
@@ -236,8 +237,8 @@
           <div v-if="isAdmin" class="me-auto">
             <v-btn
               class=" ms-2"
-              color="primary"
-              :disabled="loading"
+              :color="hasChanges ? 'success' : 'primary'"
+              :disabled="loading || !hasChanges"
               prepend-icon="mdi-content-save"
               @click="submitSubsamples"
             >
@@ -409,6 +410,7 @@
   import type { User } from '@/plugins/types/User'
   import { outbreakStatus, type Status } from '@/plugins/constants'
   import type { Genotype } from '@/plugins/types/Genotype'
+  import { onBeforeRouteLeave } from 'vue-router'
 
   const store = coreStore()
   const route = useRoute('/outbreak/[id]')
@@ -441,6 +443,7 @@
     text: '',
     color: 'success',
   })
+  const hasChanges = ref(false)
 
   const headers: ComputedRef<any[]> = computed(() => {
     const arr: any[] = [
@@ -612,6 +615,7 @@
     confirmModal.value.open(undefined, 'Remove subsample variety?')
       .then((response: boolean) => {
         if (response) {
+          hasChanges.value = true
           subsamples.value.forEach(s => {
             delete s.varietyId
             delete s.varietyName
@@ -671,6 +675,7 @@
     confirmModal.value.open(undefined, 'Delete selected subsample?')
       .then((response: boolean) => {
         if (response) {
+          hasChanges.value = true
           subsamples.value = subsamples.value.filter(s => s.tempId !== tempId)
         }
       })
@@ -761,6 +766,7 @@
       } else {
         subsamples.value.push(record.value)
       }
+      hasChanges.value = true
       dialog.value = false
     }
   }
@@ -779,16 +785,21 @@
       })
   }
   function notifyOwner () {
-    loading.value = true
-    axiosCall({ url: `outbreaks/${outbreak.value?.outbreakId}/notify` })
-      .then(() => {
-        loading.value = false
-        snackbarConfig.value.text = 'Outbreak owner successfully notified.'
-        snackbar.value = true
-      })
-      .catch(e => {
-        console.error(e)
-        loading.value = false
+    confirmModal.value.open(undefined, 'Notify the outbreak owner?', { color: 'success' })
+      .then((response: boolean) => {
+        if (response) {
+          loading.value = true
+          axiosCall({ url: `outbreaks/${outbreak.value?.outbreakId}/notify` })
+            .then(() => {
+              loading.value = false
+              snackbarConfig.value.text = 'Outbreak owner successfully notified.'
+              snackbar.value = true
+            })
+            .catch(e => {
+              console.error(e)
+              loading.value = false
+            })
+        }
       })
   }
   function submitSubsamples () {
@@ -805,6 +816,17 @@
   }
 
   update(true)
+
+  onBeforeRouteLeave((from, to, next) => {
+    if (hasChanges.value === true) {
+      confirmModal.value.open(undefined, 'You have unsaved changes to subsamples. Are you sure you want to leave this page?', { color: 'error' })
+        .then((response: boolean) => {
+          if (response) {
+            next()
+          }
+        })
+    }
+  })
 </script>
 
 <style scoped>
