@@ -208,9 +208,13 @@ public class UserSessionsResource
 		{
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
 
+			String email = userInfo.getEmail();
+			if (email != null)
+				email = email.toLowerCase();
+
 			Users dbUser = context.insertInto(USERS)
 				.set(USERS.USER_NAME, userInfo.getUserName())
-				.set(USERS.EMAIL, userInfo.getEmail().toLowerCase())
+				.set(USERS.EMAIL, email)
 				.set(USERS.IS_ADMIN, userInfo.getIsAdmin())
 				.returning(USERS.fields())
 				.fetchOneInto(Users.class);
@@ -240,9 +244,13 @@ public class UserSessionsResource
 		{
 			DSLContext context = DSL.using(conn, SQLDialect.MYSQL);
 
+			String email = userInfo.getEmail();
+			if (email != null)
+				email = email.toLowerCase();
+
 			context.update(USERS)
 				.set(USERS.USER_NAME, userInfo.getUserName())
-				.set(USERS.EMAIL, userInfo.getEmail().toLowerCase())
+				.set(USERS.EMAIL, email)
 				.set(USERS.IS_ADMIN, userInfo.getIsAdmin())
 				.where(USERS.USER_ID.eq(userInfo.getUserId()))
 				.execute();
