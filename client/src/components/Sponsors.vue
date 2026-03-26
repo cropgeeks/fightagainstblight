@@ -55,6 +55,7 @@ const sponsors = ref<Sponsor[]>([
   // { logo: 'agrico.svg', name: 'AGRICO' },
   { logo: 'branston.svg', name: 'BRANSTON', row: 3 },
   { logo: 'agrii.svg', name: 'Agrii', row: 3 },
+  { logo: 'aipc.svg', name: 'AIPC', row: 3 },
 ])
 
 const sponsorsPerRow: ComputedRef<Map<number, Sponsor[]>> = computed(() => {
