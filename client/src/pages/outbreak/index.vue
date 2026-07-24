@@ -243,7 +243,7 @@
   </v-data-table>
 
   <!-- Outbreak map -->
-  <OutbreakMap :outbreaks="outbreaksWithGps" />
+  <OutbreakMap :outbreaks="outbreaksWithGps" :legend-config="legendConfig" />
 
   <!-- Contact information -->
   <v-alert
@@ -265,13 +265,12 @@
 <script lang="ts" setup>
   import * as XLSX from 'xlsx'
   import axios from 'axios'
-  import OutbreakMap from '@/components/OutbreakMap.vue'
+  import OutbreakMap, { type LegendConfig } from '@/components/OutbreakMap.vue'
   import Sponsors from '@/components/Sponsors.vue'
   import BackButton from '@/components/BackButton.vue'
   import { axiosCall } from '@/plugins/api'
   import { outbreakStatus, outbreakHosts } from '@/plugins/constants'
   import type { Host, Status } from '@/plugins/constants'
-  import type { Outbreak } from '@/plugins/types/Outbreak'
   import type { SelectOption } from '@/plugins/types/SelectOption'
   import type { Severity } from '@/plugins/types/Severity'
   import type { Source } from '@/plugins/types/Source'
@@ -279,6 +278,9 @@
   import { coreStore } from '@/stores/app'
   // @ts-ignore
   import emitter from 'tiny-emitter/instance'
+  import type { HighlightOutbreak } from '@/plugins/types/client'
+  import type { Outbreak } from '@/plugins/types/Outbreak'
+  import { createMultiColorGradient, GRADIENT_YL_OR_RED_6 } from '@/plugins/color'
 
   // COMPOSITION
   const store = coreStore()
@@ -286,7 +288,7 @@
 
   // REFS
   // Database values
-  const outbreaks = ref<Outbreak[]>([])
+  const outbreaks = ref<HighlightOutbreak[]>([])
   const severities = ref<Severity[]>([])
   const varieties = ref<Variety[]>([])
   const sources = ref<Source[]>([])
@@ -297,6 +299,12 @@
   const postcodeValid = ref<boolean | undefined>()
   const page = ref<number | undefined>(1)
   const forcePage = ref<number | undefined>(1)
+  const legendConfig = ref<LegendConfig>({
+    minColor: undefined,
+    minLabel: undefined,
+    maxColor: undefined,
+    maxLabel: undefined,
+  })
   
   // User input
   const onlyShowUserData = ref<boolean>(false)
@@ -319,8 +327,8 @@
     { title: 'Source', key: 'sourceName' },
     { title: 'Status', key: 'status' },
     { title: 'Host', key: 'host' },
-    { title: 'Reported on', key: 'dateSubmitted', sortRaw: sort('dateSubmitted'), value: (item: Outbreak) => (item && item.dateSubmitted) ? new Date(item.dateSubmitted).toLocaleDateString() : null },
-    { title: 'Sample received on', key: 'dateReceived', sortRaw: sort('dateReceived'), value: (item: Outbreak) => (item && item.dateReceived) ? new Date(item.dateReceived).toLocaleDateString() : null },
+    { title: 'Reported on', key: 'dateSubmitted', sortRaw: sort('dateSubmitted'), value: (item: HighlightOutbreak) => (item && item.dateSubmitted) ? new Date(item.dateSubmitted).toLocaleDateString() : null },
+    { title: 'Sample received on', key: 'dateSubmitted', sortRaw: sort('dateSubmitted'), value: (item: HighlightOutbreak) => (item && item.dateSubmitted) ? new Date(item.dateSubmitted).toLocaleDateString() : null },
   ])
   const status = ref<Map<string, Status>>(outbreakStatus)
   const host = ref<Map<string, Host>>(outbreakHosts)
@@ -394,9 +402,9 @@
     }
   })
 
-  const outbreaksWithGps: ComputedRef<Outbreak[]> = computed(() => {
+  const outbreaksWithGps: ComputedRef<HighlightOutbreak[]> = computed(() => {
     if (outbreaks.value) {
-      return outbreaks.value.filter(o => o.viewLatitude !== undefined && o.viewLatitude !== null && o.viewLongitude !== undefined && o.viewLongitude !== null)
+      return outbreaks.value.filter(o => o.viewLatitude !== undefined && o.viewLatitude !== null && o.viewLongitude !== undefined && o.viewLongitude !== null) as HighlightOutbreak[]
     } else {
       return []
     }
@@ -489,7 +497,8 @@
     axiosCall<Outbreak[]>({ url: 'outbreaks', params: params })
       .then((result: Outbreak[]) => {
         loading.value = false
-        outbreaks.value = result
+
+        processAndSetOutbkreaks(result)        
 
         if (forcePage.value && forcePage.value !== 1) {
           nextTick(() => {
@@ -501,6 +510,42 @@
       .catch(() => {
         loading.value = false
       })
+  }
+
+  function processAndSetOutbkreaks (result: Outbreak[]) {
+    outbreaks.value = result as HighlightOutbreak[]
+
+    let minDateString = `${selectedYear.value || new Date().getFullYear()}-12-31`
+    let maxDateString = `${selectedYear.value || new Date().getFullYear()}-01-01`
+
+    outbreaks.value.forEach(o => {
+      if (o.dateSubmitted) {
+        minDateString = minDateString.localeCompare(o.dateSubmitted) <= 0 ? minDateString : o.dateSubmitted
+        maxDateString = maxDateString.localeCompare(o.dateSubmitted) <= 0 ? o.dateSubmitted : maxDateString
+
+        o.highlightValue = new Date(o.dateSubmitted).toLocaleDateString()
+      }
+    })
+
+    const minDate = new Date(minDateString).getTime()
+    const maxDate = new Date(maxDateString).getTime()
+
+    const gradient = createMultiColorGradient(GRADIENT_YL_OR_RED_6, 100)
+
+    outbreaks.value.forEach(o => {
+      if (o.dateSubmitted) {
+        const v = Math.floor((new Date(o.dateSubmitted).getTime() - minDate) / (maxDate - minDate) * 100)
+
+        if (o.status === 'confirmed') {
+          o.highlightColor = gradient[Math.min(v, gradient.length - 1)]
+        }
+      }
+    })
+
+    legendConfig.value.minColor = gradient[0]
+    legendConfig.value.minLabel = new Date(minDate).toLocaleDateString()
+    legendConfig.value.maxColor = gradient[gradient.length - 1]
+    legendConfig.value.maxLabel = new Date(maxDate).toLocaleDateString()
   }
 
   // WATCH
@@ -521,37 +566,37 @@
     router.replace({ query: q })
   })
 
-  // Query the database to get all database values
-  axiosCall<Severity[]>({ url: 'severities' })
-    .then((result: Severity[]) => {
-      severities.value = result
-    })
-  axiosCall<Variety[]>({ url: 'varieties' })
-    .then((result: Variety[]) => {
-      varieties.value = result
-    })
-  axiosCall<Source[]>({ url: 'sources' })
-    .then((result: Source[]) => {
-      sources.value = result
-    })
-  axiosCall<number[]>({ url: 'outbreaks/years' })
-    .then((result: number[]) => {
-      years.value = result
-
-      if (result.length > 0 && !selectedYear.value) {
-        const max = Math.max(...result)
-
-        if (max) {
-          selectedYear.value = max
-        }
-      }
-    })
-  axiosCall<Outbreak[]>({ url: 'outbreaks' })
-    .then((result: Outbreak[]) => {
-      outbreaks.value = result
-    })
-
   onMounted(() => {
+    // Query the database to get all database values
+    axiosCall<Severity[]>({ url: 'severities' })
+      .then((result: Severity[]) => {
+        severities.value = result
+      })
+    axiosCall<Variety[]>({ url: 'varieties' })
+      .then((result: Variety[]) => {
+        varieties.value = result
+      })
+    axiosCall<Source[]>({ url: 'sources' })
+      .then((result: Source[]) => {
+        sources.value = result
+      })
+    axiosCall<number[]>({ url: 'outbreaks/years' })
+      .then((result: number[]) => {
+        years.value = result
+
+        if (result.length > 0 && !selectedYear.value) {
+          const max = Math.max(...result)
+
+          if (max) {
+            selectedYear.value = max
+          }
+        }
+      })
+    axiosCall<Outbreak[]>({ url: 'outbreaks' })
+      .then((result: Outbreak[]) => {
+        processAndSetOutbkreaks(result)
+      })
+
     if (router.currentRoute.value.query) {
       // Read URL parameters to restore page state
       const q = router.currentRoute.value.query

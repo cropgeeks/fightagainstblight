@@ -411,6 +411,7 @@
   import { outbreakStatus, type Status } from '@/plugins/constants'
   import type { Genotype } from '@/plugins/types/Genotype'
   import { onBeforeRouteLeave } from 'vue-router'
+  import type { HighlightOutbreak } from '@/plugins/types/client'
 
   const store = coreStore()
   const route = useRoute('/outbreak/[id]')
@@ -423,7 +424,7 @@
 
   const confirmModal = ref()
   const outbreakId = ref<number>(+(route.params.id || -1))
-  const outbreak = ref<Outbreak>()
+  const outbreak = ref<HighlightOutbreak>()
   const allSubsampleVariety = ref<number>()
   const varieties = ref<Variety[]>([])
   const genotypes = ref<Genotype[]>([])
@@ -627,7 +628,7 @@
   function update (updateSubsamples: boolean) {
     axiosCall<Outbreak>({ url: `outbreaks/${outbreakId.value}` })
       .then((o: Outbreak) => {
-        outbreak.value = o
+        outbreak.value = o as HighlightOutbreak
 
         if (updateSubsamples && o) {
           axiosCall<Subsample[]>({ url: `outbreaks/${outbreakId.value}/subsamples` })
