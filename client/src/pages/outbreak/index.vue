@@ -328,7 +328,7 @@
     { title: 'Status', key: 'status' },
     { title: 'Host', key: 'host' },
     { title: 'Reported on', key: 'dateSubmitted', sortRaw: sort('dateSubmitted'), value: (item: HighlightOutbreak) => (item && item.dateSubmitted) ? new Date(item.dateSubmitted).toLocaleDateString() : null },
-    { title: 'Sample received on', key: 'dateSubmitted', sortRaw: sort('dateSubmitted'), value: (item: HighlightOutbreak) => (item && item.dateSubmitted) ? new Date(item.dateSubmitted).toLocaleDateString() : null },
+    { title: 'Sample received on', key: 'dateReceived', sortRaw: sort('dateReceived'), value: (item: HighlightOutbreak) => (item && item.dateReceived) ? new Date(item.dateReceived).toLocaleDateString() : null },
   ])
   const status = ref<Map<string, Status>>(outbreakStatus)
   const host = ref<Map<string, Host>>(outbreakHosts)
